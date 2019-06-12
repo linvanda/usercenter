@@ -1,0 +1,34 @@
+{
+    "name": "wechar/wecarswoole_proj",
+    "description": "your project name",
+    "type": "project",
+    "require": {
+        "framework/wecarswoole": "dev-master"
+    },
+    "repositories": {
+        "0": {
+            "type": "vcs",
+            "url": "https://gitlab4.weicheche.cn/framework/wecarswoole.git"
+        },
+        "1": {
+            "type": "vcs",
+            "url": "https://gitlab4.weicheche.cn/dev/locker.git"
+        },
+        "2": {
+            "type": "vcs",
+            "url": "https://gitlab4.weicheche.cn/dev/mysql.git"
+        },
+        "3": {
+            "type": "vcs",
+            "url": "https://gitlab4.weicheche.cn/framework/wecar_easyswoole.git"
+        },
+        "4": {
+            "type": "vcs",
+            "url": "https://gitlab4.weicheche.cn/framework/easyswoole_http.git"
+        },
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.laravel-china.org"
+        }
+    }
+}
