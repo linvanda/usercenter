@@ -7,6 +7,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 
 return [
     // 仓储
+    \App\Domain\User\IUserRepository::class => \DI\create(\App\Foundation\Repository\User\MySQLUserRepository::class),
     'App\Domain\*\I*Repository' => \DI\create('\App\Foundation\Repository\*\MySQL*Repository'),
     // 缓存
     CacheInterface::class => \DI\factory([CacheFactory::class, 'build']),

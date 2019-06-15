@@ -11,7 +11,6 @@ use EasySwoole\Http\Response;
 use EasySwoole\Component\Di;
 use WecarSwoole\Process\HotReload;
 use DI\ContainerBuilder;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class EasySwooleEvent implements Event
@@ -38,7 +37,7 @@ class EasySwooleEvent implements Event
             $builder->writeProxiesToFile(true, File::join(EASYSWOOLE_ROOT, 'storage/di/proxies'));
         }
         $container = $builder->build();
-        Di::getInstance()->set(SysConst::DI_CONTAINER, $container);
+        Di::getInstance()->set('di-container', $container);
 
         // 事件订阅
         $dispatcher = $container->get('SymfonyEventDispatcher');

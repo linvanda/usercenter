@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Foundation\Repository;
+namespace App\Foundation\Repository\User;
 
 use App\Domain\User\IMerchantRepository;
 use WecarSwoole\Repository\MySQLRepository;
@@ -17,5 +17,10 @@ class MySQLMerchantRepository extends MySQLRepository implements IMerchantReposi
                 'channel' => '测试'
             ])
             ->execute();
+    }
+
+    public function dbAlias(): string
+    {
+        return 'user_center';
     }
 }

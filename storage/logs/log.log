@@ -1,0 +1,58 @@
+[2019-06-13 16:41:00][DEBUG][ERROR] : [Too few arguments to function App\Http\Controllers\V1\Users::__construct(), 0 passed in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/http/src/Dispatcher.php on line 224 and exactly 6 expected at file:/Users/linvanda/Application/weicheche/usercenter/app/Http/Controllers/V1/Users.php line:49]
+[2019-06-13 20:18:21][DEBUG][NOTICE] : [Undefined index: app_id at file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/Middleware/ApiAuthMiddleware.php line:26]
+[2019-06-13 20:18:21][DEBUG][NOTICE] : [Undefined index: token at file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/Middleware/ApiAuthMiddleware.php line:27]
+[2019-06-13 20:21:52][DEBUG][NOTICE] : [Undefined index: app_id at file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/Middleware/ApiAuthMiddleware.php line:26]
+[2019-06-13 20:21:52][DEBUG][NOTICE] : [Undefined index: token at file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/Middleware/ApiAuthMiddleware.php line:27]
+[2019-06-13 20:21:59][DEBUG][NOTICE] : [Undefined index: app_id at file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/Middleware/ApiAuthMiddleware.php line:26]
+[2019-06-13 20:21:59][DEBUG][NOTICE] : [Undefined index: token at file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/Middleware/ApiAuthMiddleware.php line:27]
+[2019-06-13 20:22:13][DEBUG][NOTICE] : [Undefined index: app_id at file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/Middleware/ApiAuthMiddleware.php line:26]
+[2019-06-13 20:22:13][DEBUG][NOTICE] : [Undefined index: token at file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/Middleware/ApiAuthMiddleware.php line:27]
+[2019-06-13 20:22:18][DEBUG][NOTICE] : [Undefined index: app_id at file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/Middleware/ApiAuthMiddleware.php line:26]
+[2019-06-13 20:22:18][DEBUG][NOTICE] : [Undefined index: token at file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/Middleware/ApiAuthMiddleware.php line:27]
+[2019-06-13 20:25:15][DEBUG][NOTICE] : [Undefined index: app_id at file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/Middleware/ApiAuthMiddleware.php line:26]
+[2019-06-13 20:25:15][DEBUG][NOTICE] : [Undefined index: token at file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/Middleware/ApiAuthMiddleware.php line:27]
+[2019-06-13 20:26:44][DEBUG][ERROR] : [Static route "/v1/users/merge" is shadowed by previously defined variable route "/v1/users/([^/]+)" for method "POST" at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/http/src/Dispatcher.php line:74]
+[2019-06-13 20:28:49][DEBUG][NOTICE] : [Undefined index: app_id at file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/Middleware/ApiAuthMiddleware.php line:26]
+[2019-06-13 20:28:49][DEBUG][NOTICE] : [Undefined index: token at file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/Middleware/ApiAuthMiddleware.php line:27]
+[2019-06-15 09:52:02][DEBUG][ERROR] : [Uncaught Swoole\Exception: failed to listen server port[0.0.0.0:9501], Error: Address already in use[48] in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php:56
+Stack trace:
+#0 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php(56): Swoole\Server->__construct('0.0.0.0', 9501, 2, 1)
+#1 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php(117): EasySwoole\EasySwoole\ServerManager->createSwooleServer(9501, 2, '0.0.0.0', Array, 2, 1)
+#2 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/DefaultCommand/Start.php(42): EasySwoole\EasySwoole\Core->createServer()
+#3 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandContainer.php(44): EasySwoole\EasySwoole\Command\DefaultCommand\Start->exec(Array)
+#4 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandRunn at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php line:56]
+[2019-06-15 09:52:35][DEBUG][ERROR] : [Uncaught Swoole\Exception: failed to listen server port[0.0.0.0:9501], Error: Address already in use[48] in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php:56
+Stack trace:
+#0 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php(56): Swoole\Server->__construct('0.0.0.0', 9501, 2, 1)
+#1 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php(117): EasySwoole\EasySwoole\ServerManager->createSwooleServer(9501, 2, '0.0.0.0', Array, 2, 1)
+#2 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/DefaultCommand/Start.php(42): EasySwoole\EasySwoole\Core->createServer()
+#3 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandContainer.php(44): EasySwoole\EasySwoole\Command\DefaultCommand\Start->exec(Array)
+#4 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandRunn at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php line:56]
+[2019-06-15 09:52:38][DEBUG][ERROR] : [Uncaught Swoole\Exception: failed to listen server port[0.0.0.0:9501], Error: Address already in use[48] in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php:56
+Stack trace:
+#0 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php(56): Swoole\Server->__construct('0.0.0.0', 9501, 2, 1)
+#1 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php(117): EasySwoole\EasySwoole\ServerManager->createSwooleServer(9501, 2, '0.0.0.0', Array, 2, 1)
+#2 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/DefaultCommand/Start.php(42): EasySwoole\EasySwoole\Core->createServer()
+#3 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandContainer.php(44): EasySwoole\EasySwoole\Command\DefaultCommand\Start->exec(Array)
+#4 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandRunn at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php line:56]
+[2019-06-15 09:52:55][DEBUG][ERROR] : [Uncaught Swoole\Exception: failed to listen server port[0.0.0.0:9501], Error: Address already in use[48] in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php:56
+Stack trace:
+#0 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php(56): Swoole\Server->__construct('0.0.0.0', 9501, 2, 1)
+#1 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php(117): EasySwoole\EasySwoole\ServerManager->createSwooleServer(9501, 2, '0.0.0.0', Array, 2, 1)
+#2 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/DefaultCommand/Start.php(42): EasySwoole\EasySwoole\Core->createServer()
+#3 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandContainer.php(44): EasySwoole\EasySwoole\Command\DefaultCommand\Start->exec(Array)
+#4 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandRunn at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php line:56]
+[2019-06-15 09:53:04][DEBUG][ERROR] : [Uncaught Swoole\Exception: failed to listen server port[0.0.0.0:9501], Error: Address already in use[48] in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php:56
+Stack trace:
+#0 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php(56): Swoole\Server->__construct('0.0.0.0', 9501, 2, 1)
+#1 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php(117): EasySwoole\EasySwoole\ServerManager->createSwooleServer(9501, 2, '0.0.0.0', Array, 2, 1)
+#2 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/DefaultCommand/Start.php(42): EasySwoole\EasySwoole\Core->createServer()
+#3 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandContainer.php(44): EasySwoole\EasySwoole\Command\DefaultCommand\Start->exec(Array)
+#4 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandRunn at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php line:56]
+[2019-06-15 09:53:39][DEBUG][ERROR] : [Uncaught Swoole\Exception: failed to listen server port[0.0.0.0:9501], Error: Address already in use[48] in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php:56
+Stack trace:
+#0 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php(56): Swoole\Server->__construct('0.0.0.0', 9501, 2, 1)
+#1 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php(117): EasySwoole\EasySwoole\ServerManager->createSwooleServer(9501, 2, '0.0.0.0', Array, 2, 1)
+#2 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/DefaultCommand/Start.php(42): EasySwoole\EasySwoole\Core->createServer()
+#3 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandContainer.php(44): EasySwoole\EasySwoole\Command\DefaultCommand\Start->exec(Array)
+#4 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandRunn at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php line:56]

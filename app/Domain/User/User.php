@@ -31,8 +31,14 @@ class User extends Entity
 
     public function __construct($phone = '', $name = '', $nickname = '')
     {
+        echo "get user\n";
         $this->phone = $phone;
         $this->name = $name;
         $this->nickname = $nickname;
+    }
+
+    public function getName()
+    {
+        return $this->name;
     }
 }

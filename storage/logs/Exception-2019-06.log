@@ -1,0 +1,110 @@
+[2019-06-12 16:29:24][Exception][file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/easyswoole_http/src/Dispatcher.php][line:226]Class 'EasySwoole\Http\SysConst' not found
+[2019-06-12 16:37:44][Exception][file:/Users/linvanda/Application/weicheche/usercenter/vendor/php-di/php-di/src/Definition/Source/ReflectionBasedAutowiring.php][line:65]Class App\Foundation\Mailer does not exist
+[2019-06-12 16:40:34][Exception][file:/Users/linvanda/Application/weicheche/usercenter/vendor/php-di/php-di/src/Definition/Exception/InvalidDefinition.php][line:18]Entry "App\Http\Controllers\V1\Users" cannot be resolved: Entry "App\Domain\User\MergeUserService" cannot be resolved: Entry "App\Domain\User\IUserRepository" cannot be resolved: the class doesn't exist
+Full definition:
+Object (
+    class = #UNKNOWN# \App\Foundation\Repository\User\MySQLUserRepository
+    lazy = false
+)
+Full definition:
+Object (
+    class = App\Domain\User\MergeUserService
+    lazy = false
+    __construct(
+        $userRepository = get(App\Domain\User\IUserRepository)
+    )
+)
+Full definition:
+Object (
+    class = App\Http\Controllers\V1\Users
+    lazy = false
+    __construct(
+        $mergeUserService = get(App\Domain\User\MergeUserService)
+        $mailer = get(WecarSwoole\Mailer)
+        $logger = get(Psr\Log\LoggerInterface)
+        $eventDispatcher = get(Psr\EventDispatcher\EventDispatcherInterface)
+        $userRepository = get(App\Domain\User\IUserRepository)
+    )
+)
+[2019-06-12 16:54:07][Exception][file:/Users/linvanda/Application/weicheche/usercenter/vendor/php-di/php-di/src/Definition/Exception/InvalidDefinition.php][line:18]Entry "App\Http\Controllers\V1\Users" cannot be resolved: Entry "App\Domain\User\MergeUserService" cannot be resolved: Entry "App\Domain\User\IUserRepository" cannot be resolved: the class doesn't exist
+Full definition:
+Object (
+    class = #UNKNOWN# \App\Foundation\Repository\User\MySQLUserRepository
+    lazy = false
+)
+Full definition:
+Object (
+    class = App\Domain\User\MergeUserService
+    lazy = false
+    __construct(
+        $userRepository = get(App\Domain\User\IUserRepository)
+    )
+)
+Full definition:
+Object (
+    class = App\Http\Controllers\V1\Users
+    lazy = false
+    __construct(
+        $mergeUserService = get(App\Domain\User\MergeUserService)
+        $mailer = get(WecarSwoole\Mailer)
+        $logger = get(Psr\Log\LoggerInterface)
+        $eventDispatcher = get(Psr\EventDispatcher\EventDispatcherInterface)
+        $userRepository = get(App\Domain\User\IUserRepository)
+    )
+)
+[2019-06-12 16:54:37][Exception][file:/Users/linvanda/Application/weicheche/usercenter/vendor/php-di/php-di/src/Definition/Exception/InvalidDefinition.php][line:18]Entry "App\Http\Controllers\V1\Users" cannot be resolved: Entry "App\Domain\User\MergeUserService" cannot be resolved: Entry "App\Domain\User\IUserRepository" cannot be resolved: the class doesn't exist
+Full definition:
+Object (
+    class = #UNKNOWN# \App\Foundation\Repository\User\MySQLUserRepository
+    lazy = false
+)
+Full definition:
+Object (
+    class = App\Domain\User\MergeUserService
+    lazy = false
+    __construct(
+        $userRepository = get(App\Domain\User\IUserRepository)
+    )
+)
+Full definition:
+Object (
+    class = App\Http\Controllers\V1\Users
+    lazy = false
+    __construct(
+        $mergeUserService = get(App\Domain\User\MergeUserService)
+    )
+)
+[2019-06-12 16:54:38][Exception][file:/Users/linvanda/Application/weicheche/usercenter/vendor/php-di/php-di/src/Definition/Exception/InvalidDefinition.php][line:18]Entry "App\Http\Controllers\V1\Users" cannot be resolved: Entry "App\Domain\User\MergeUserService" cannot be resolved: Entry "App\Domain\User\IUserRepository" cannot be resolved: the class doesn't exist
+Full definition:
+Object (
+    class = #UNKNOWN# \App\Foundation\Repository\User\MySQLUserRepository
+    lazy = false
+)
+Full definition:
+Object (
+    class = App\Domain\User\MergeUserService
+    lazy = false
+    __construct(
+        $userRepository = get(App\Domain\User\IUserRepository)
+    )
+)
+Full definition:
+Object (
+    class = App\Http\Controllers\V1\Users
+    lazy = false
+    __construct(
+        $mergeUserService = get(App\Domain\User\MergeUserService)
+    )
+)
+[2019-06-12 16:56:48][Exception][file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/MySQLFactory.php][line:29]未找到配置信息：mysql.user_center
+[2019-06-12 16:57:07][Exception][file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/MySQLFactory.php][line:29]未找到配置信息：mysql.user_center
+[2019-06-12 21:23:23][Exception][file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/MySQLFactory.php][line:29]未找到配置信息：mysql.user_center
+[2019-06-12 21:23:48][Exception][file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/MySQLFactory.php][line:29]未找到配置信息：mysql.user_center
+[2019-06-12 21:23:49][Exception][file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/MySQLFactory.php][line:29]未找到配置信息：mysql.user_center
+[2019-06-12 21:25:35][Exception][file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/MySQLFactory.php][line:60]Class 'Dev\MySQL\Connector\DBConfig' not found
+[2019-06-12 21:36:55][Exception][file:/Users/linvanda/Application/weicheche/usercenter/vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/AbstractSmtpTransport.php][line:195]Cannot send message without a sender address
+[2019-06-12 22:03:30][Exception][file:/Users/linvanda/Application/weicheche/usercenter/vendor/php-di/php-di/src/Definition/Source/ReflectionBasedAutowiring.php][line:65]Class Psr\SimpleCache\CacheInterface does not exist
+[2019-06-12 22:15:04][Exception][file:/Users/linvanda/Application/weicheche/usercenter/vendor/php-di/php-di/src/Definition/Source/ReflectionBasedAutowiring.php][line:65]Class Psr\SimpleCache\CacheInterface does not exist
+[2019-06-12 22:15:05][Exception][file:/Users/linvanda/Application/weicheche/usercenter/vendor/php-di/php-di/src/Definition/Source/ReflectionBasedAutowiring.php][line:65]Class Psr\SimpleCache\CacheInterface does not exist
+[2019-06-12 22:16:02][Exception][file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/RedisFactory.php][line:28]Operation timed out
+[2019-06-13 14:19:18][Exception][file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/RedisFactory.php][line:28]Operation timed out

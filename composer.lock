@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "dev/locker",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://gitlab4.weicheche.cn/dev/locker.git",
-                "reference": "095ab9c19f76510eba572e20f76012057bf65c56"
+                "reference": "59e78bfb8821bc1def258b4b4810fbf4ac67180a"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Devar\\DistributeLocker\\": "src/"
+                    "Dev\\Locker\\": "src/"
                 }
             },
             "authors": [
@@ -27,15 +27,15 @@
                 }
             ],
             "description": "locker by redis",
-            "time": "2019-06-05T14:44:48+00:00"
+            "time": "2019-06-06T08:30:24+00:00"
         },
         {
             "name": "dev/mysql",
-            "version": "v1.0.1",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://gitlab4.weicheche.cn/dev/mysql.git",
-                "reference": "60923d10fb332f6edf756a3ae4e558789be7dd94"
+                "reference": "e840eb0bc16f1cf79be9a0a0e71f126ca9adeaa8"
             },
             "require": {
                 "ext-swoole": ">=4.3.0",
@@ -44,8 +44,8 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Devar\\MySQL\\": "src/",
-                    "Devar\\MySQL\\Test\\": "tests/"
+                    "Dev\\MySQL\\": "src/",
+                    "Dev\\MySQL\\Test\\": "tests/"
                 }
             },
             "authors": [
@@ -54,7 +54,7 @@
                     "email": "1049180458@qq.com"
                 }
             ],
-            "time": "2019-06-05T14:47:18+00:00"
+            "time": "2019-06-14T10:24:43+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -314,17 +314,17 @@
             "time": "2019-05-31T16:32:21+00:00"
         },
         {
-            "name": "easyswoole/console",
-            "version": "1.0.2",
+            "name": "easyswoole/easyswoole",
+            "version": "3.2.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/easy-swoole/console.git",
-                "reference": "e7153da3b351c4d1cf74ddcf5ab53a516647dbf9"
+                "url": "https://github.com/easy-swoole/easyswoole.git",
+                "reference": "496ace623057a30f3484a0fcf2ab4926fc5c3402"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/easy-swoole/console/zipball/e7153da3b351c4d1cf74ddcf5ab53a516647dbf9",
-                "reference": "e7153da3b351c4d1cf74ddcf5ab53a516647dbf9",
+                "url": "https://api.github.com/repos/easy-swoole/easyswoole/zipball/496ace623057a30f3484a0fcf2ab4926fc5c3402",
+                "reference": "496ace623057a30f3484a0fcf2ab4926fc5c3402",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -334,19 +334,26 @@
                 ]
             },
             "require": {
-                "easyswoole/component": "^1.5",
-                "easyswoole/socket": "^1.1",
-                "easyswoole/spl": "^1.1",
-                "ext-swoole": ">=4.2.13",
+                "dragonmantank/cron-expression": "^2.2",
+                "easyswoole/component": "^1.0",
+                "easyswoole/http": "^1.0",
+                "easyswoole/spl": "^1.0",
+                "easyswoole/trigger": "^1.0",
+                "easyswoole/utility": "^1.0",
+                "ext-swoole": ">=4.3.0",
+                "jeremeamia/superclosure": "^2.4",
                 "php": ">=7.1.0"
             },
             "require-dev": {
                 "easyswoole/swoole-ide-helper": "^1.2"
             },
+            "bin": [
+                "bin/easyswoole"
+            ],
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "EasySwoole\\Console\\": "src/"
+                    "EasySwoole\\EasySwoole\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -367,20 +374,20 @@
                 "framework",
                 "swoole"
             ],
-            "time": "2019-03-08T13:49:44+00:00"
+            "time": "2019-06-06T15:41:28+00:00"
         },
         {
-            "name": "easyswoole/socket",
-            "version": "1.1.10",
+            "name": "easyswoole/http",
+            "version": "1.2.18",
             "source": {
                 "type": "git",
-                "url": "https://github.com/easy-swoole/socket.git",
-                "reference": "d6100a3f7c35c256f67cb9b9c539032568c8aa83"
+                "url": "https://github.com/easy-swoole/http.git",
+                "reference": "12657d5e8ebf9527ca2ba8c7588f6ac59e097620"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/easy-swoole/socket/zipball/d6100a3f7c35c256f67cb9b9c539032568c8aa83",
-                "reference": "d6100a3f7c35c256f67cb9b9c539032568c8aa83",
+                "url": "https://api.github.com/repos/easy-swoole/http/zipball/12657d5e8ebf9527ca2ba8c7588f6ac59e097620",
+                "reference": "12657d5e8ebf9527ca2ba8c7588f6ac59e097620",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -390,17 +397,21 @@
                 ]
             },
             "require": {
+                "easyswoole/component": "^1.0",
                 "easyswoole/spl": "^1.0",
-                "php": ">=7.1.0"
+                "easyswoole/validate": "^1.1",
+                "ext-swoole": "^4.0",
+                "nikic/fast-route": "^1.3",
+                "php": ">=7.1.0",
+                "psr/http-message": "*"
             },
             "require-dev": {
-                "easyswoole/phpunit": "^1.0",
-                "easyswoole/swoole-ide-helper": "dev-master"
+                "easyswoole/swoole-ide-helper": "^1.0"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "EasySwoole\\Socket\\": "src/"
+                    "EasySwoole\\Http\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -421,7 +432,53 @@
                 "framework",
                 "swoole"
             ],
-            "time": "2019-05-30T02:54:45+00:00"
+            "time": "2019-05-16T07:23:06+00:00"
+        },
+        {
+            "name": "easyswoole/log",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/easy-swoole/log.git",
+                "reference": "a9f7a8c139523db90992f89a91f2714413f6d637"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/easy-swoole/log/zipball/a9f7a8c139523db90992f89a91f2714413f6d637",
+                "reference": "a9f7a8c139523db90992f89a91f2714413f6d637",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "EasySwoole\\Log\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "YF",
+                    "email": "291323003@qq.com"
+                }
+            ],
+            "description": "An efficient swoole framework",
+            "homepage": "https://www.easyswoole.com/",
+            "keywords": [
+                "async",
+                "easyswoole",
+                "framework",
+                "swoole"
+            ],
+            "time": "2019-05-30T05:30:17+00:00"
         },
         {
             "name": "easyswoole/spl",
@@ -476,17 +533,17 @@
             "time": "2019-06-12T01:06:34+00:00"
         },
         {
-            "name": "easyswoole/trace",
-            "version": "1.1.17",
+            "name": "easyswoole/trigger",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/easy-swoole/trace.git",
-                "reference": "57f589b5b2bbd2c94e30a9aee715a1a13e3ea50c"
+                "url": "https://github.com/easy-swoole/trigger.git",
+                "reference": "f449f974d6645342134f455ce4a6885c8ad3a92e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/easy-swoole/trace/zipball/57f589b5b2bbd2c94e30a9aee715a1a13e3ea50c",
-                "reference": "57f589b5b2bbd2c94e30a9aee715a1a13e3ea50c",
+                "url": "https://api.github.com/repos/easy-swoole/trigger/zipball/f449f974d6645342134f455ce4a6885c8ad3a92e",
+                "reference": "f449f974d6645342134f455ce4a6885c8ad3a92e",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -496,12 +553,12 @@
                 ]
             },
             "require": {
-                "php": ">=7.1.0"
+                "easyswoole/log": "^1.0"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "EasySwoole\\Trace\\": "src/"
+                    "EasySwoole\\Trigger\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -522,7 +579,7 @@
                 "framework",
                 "swoole"
             ],
-            "time": "2019-02-25T02:32:05+00:00"
+            "time": "2019-05-29T15:33:12+00:00"
         },
         {
             "name": "easyswoole/utility",
@@ -683,128 +740,31 @@
             "time": "2019-05-16T22:02:54+00:00"
         },
         {
-            "name": "framework/easyswoole_http",
-            "version": "1.3.1",
-            "source": {
-                "type": "git",
-                "url": "https://gitlab4.weicheche.cn/framework/easyswoole_http.git",
-                "reference": "522597169135321ece5a8261a5b19ddc95c74fdf"
-            },
-            "require": {
-                "easyswoole/component": "^1.0",
-                "easyswoole/spl": "^1.0",
-                "easyswoole/validate": "^1.1",
-                "ext-swoole": "^4.0",
-                "nikic/fast-route": "^1.3",
-                "php": ">=7.1.0",
-                "php-di/php-di": "^6.0",
-                "psr/http-message": "*"
-            },
-            "require-dev": {
-                "easyswoole/swoole-ide-helper": "^1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "EasySwoole\\Http\\": "src/"
-                }
-            },
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "YF",
-                    "email": "291323003@qq.com"
-                }
-            ],
-            "description": "An efficient swoole framework",
-            "homepage": "https://www.easyswoole.com/",
-            "keywords": [
-                "async",
-                "easyswoole",
-                "framework",
-                "swoole"
-            ],
-            "time": "2019-06-10T06:52:26+00:00"
-        },
-        {
-            "name": "framework/wecar_easyswoole",
-            "version": "3.3.1",
-            "source": {
-                "type": "git",
-                "url": "https://gitlab4.weicheche.cn/framework/wecar_easyswoole.git",
-                "reference": "dd6e30a3c4d683825b34a9142e1f14fa44332b75"
-            },
-            "require": {
-                "dragonmantank/cron-expression": "^2.2",
-                "easyswoole/component": "^1.0",
-                "easyswoole/console": "^1.0",
-                "easyswoole/socket": "^1.0",
-                "easyswoole/spl": "^1.0",
-                "easyswoole/trace": "^1.0",
-                "easyswoole/utility": "^1.0",
-                "ext-swoole": ">=4.3.0",
-                "framework/easyswoole_http": "^1.3",
-                "jeremeamia/superclosure": "^2.4",
-                "php": ">=7.1.0"
-            },
-            "require-dev": {
-                "easyswoole/swoole-ide-helper": "^1.2"
-            },
-            "bin": [
-                "bin/easyswoole"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "EasySwoole\\EasySwoole\\": "src/"
-                }
-            },
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "YF",
-                    "email": "291323003@qq.com"
-                }
-            ],
-            "description": "An efficient swoole framework",
-            "homepage": "https://www.easyswoole.com/",
-            "keywords": [
-                "async",
-                "easyswoole",
-                "framework",
-                "swoole"
-            ],
-            "time": "2019-06-10T06:57:05+00:00"
-        },
-        {
             "name": "framework/wecarswoole",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://gitlab4.weicheche.cn/framework/wecarswoole.git",
-                "reference": "070f63e411419145188b93bad4d0e3cd7c2fcd82"
+                "reference": "d9f72f7a024b9fc116b748af4f14c638cbe8da2e"
             },
             "require": {
-                "dev/locker": "*",
-                "dev/mysql": "*",
-                "doctrine/annotations": "^1.6",
+                "dev/locker": "^1.0",
+                "dev/mysql": "^1.0",
+                "doctrine/annotations": "~1.6.0",
+                "easyswoole/easyswoole": "3.x",
                 "ext-redis": "*",
                 "ext-swoole": ">=4.3.0",
-                "framework/wecar_easyswoole": "^3.3",
-                "monolog/monolog": "^1.24",
-                "ocramius/proxy-manager": "2.2.2",
+                "monolog/monolog": "~1.24.0",
+                "ocramius/proxy-manager": "~2.2.2",
                 "php": ">=7.2",
-                "php-di/php-di": "^6.0",
+                "php-di/php-di": "~6.0.0",
                 "psr/event-dispatcher": "^1.0",
-                "ramsey/uuid": "^3.8",
-                "swiftmailer/swiftmailer": "^6.2",
-                "swlib/saber": "^1.0",
-                "symfony/cache": "^4.2",
-                "symfony/event-dispatcher": "^4.3"
+                "psr/simple-cache": "^1.0",
+                "ramsey/uuid": "~3.8.0",
+                "swiftmailer/swiftmailer": "~6.2.0",
+                "swlib/saber": "~1.0.0",
+                "symfony/cache": "~4.2.0",
+                "symfony/event-dispatcher": "~4.3.0"
             },
             "bin": [
                 "bin/wecarswoole"
@@ -817,7 +777,7 @@
                 }
             },
             "description": "wecheche foundational web framework",
-            "time": "2019-06-12T04:11:13+00:00"
+            "time": "2019-06-14T08:01:54+00:00"
         },
         {
             "name": "jeremeamia/superclosure",
@@ -1689,6 +1649,60 @@
             "time": "2018-11-20T15:27:04+00:00"
         },
         {
+            "name": "psr/simple-cache",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/simple-cache.git",
+                "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/simple-cache/zipball/408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
+                "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\SimpleCache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interfaces for simple caching",
+            "keywords": [
+                "cache",
+                "caching",
+                "psr",
+                "psr-16",
+                "simple-cache"
+            ],
+            "time": "2017-10-23T01:57:42+00:00"
+        },
+        {
             "name": "ramsey/uuid",
             "version": "3.8.0",
             "source": {
@@ -2021,16 +2035,16 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v4.3.1",
+            "version": "v4.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "2edc417da273bafee589a8758f0278416d04af38"
+                "reference": "bc64c1908e609969ce510763e0bd42797e79656d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/2edc417da273bafee589a8758f0278416d04af38",
-                "reference": "2edc417da273bafee589a8758f0278416d04af38",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/bc64c1908e609969ce510763e0bd42797e79656d",
+                "reference": "bc64c1908e609969ce510763e0bd42797e79656d",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -2043,8 +2057,8 @@
                 "php": "^7.1.3",
                 "psr/cache": "~1.0",
                 "psr/log": "~1.0",
-                "symfony/cache-contracts": "^1.1",
-                "symfony/service-contracts": "^1.1",
+                "psr/simple-cache": "^1.0",
+                "symfony/contracts": "^1.0",
                 "symfony/var-exporter": "^4.2"
             },
             "conflict": {
@@ -2062,7 +2076,6 @@
                 "doctrine/cache": "~1.6",
                 "doctrine/dbal": "~2.5",
                 "predis/predis": "~1.1",
-                "psr/simple-cache": "^1.0",
                 "symfony/config": "~4.2",
                 "symfony/dependency-injection": "~3.4|~4.1",
                 "symfony/var-dumper": "^4.1.1"
@@ -2070,7 +2083,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.3-dev"
+                    "dev-master": "4.2-dev"
                 }
             },
             "autoload": {
@@ -2101,20 +2114,20 @@
                 "caching",
                 "psr6"
             ],
-            "time": "2019-06-06T10:05:02+00:00"
+            "time": "2019-05-11T18:09:18+00:00"
         },
         {
-            "name": "symfony/cache-contracts",
-            "version": "v1.1.1",
+            "name": "symfony/contracts",
+            "version": "v1.1.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/cache-contracts.git",
-                "reference": "7ff3902cc747dd5e2c6f26dc42603ed07b530293"
+                "url": "https://github.com/symfony/contracts.git",
+                "reference": "2d19b12caccbd80cf0c85624dc87b7021a0df1d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache-contracts/zipball/7ff3902cc747dd5e2c6f26dc42603ed07b530293",
-                "reference": "7ff3902cc747dd5e2c6f26dc42603ed07b530293",
+                "url": "https://api.github.com/repos/symfony/contracts/zipball/2d19b12caccbd80cf0c85624dc87b7021a0df1d5",
+                "reference": "2d19b12caccbd80cf0c85624dc87b7021a0df1d5",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -2126,9 +2139,27 @@
             "require": {
                 "php": "^7.1.3"
             },
+            "replace": {
+                "symfony/cache-contracts": "self.version",
+                "symfony/event-dispatcher-contracts": "self.version",
+                "symfony/http-client-contracts": "self.version",
+                "symfony/service-contracts": "self.version",
+                "symfony/translation-contracts": "self.version"
+            },
+            "require-dev": {
+                "psr/cache": "^1.0",
+                "psr/container": "^1.0",
+                "symfony/polyfill-intl-idn": "^1.10"
+            },
             "suggest": {
-                "psr/cache": "",
-                "symfony/cache-implementation": ""
+                "psr/cache": "When using the Cache contracts",
+                "psr/container": "When using the Service contracts",
+                "psr/event-dispatcher": "When using the EventDispatcher contracts",
+                "symfony/cache-implementation": "",
+                "symfony/event-dispatcher-implementation": "",
+                "symfony/http-client-implementation": "",
+                "symfony/service-implementation": "",
+                "symfony/translation-implementation": ""
             },
             "type": "library",
             "extra": {
@@ -2138,8 +2169,11 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Symfony\\Contracts\\Cache\\": ""
-                }
+                    "Symfony\\Contracts\\": ""
+                },
+                "exclude-from-classmap": [
+                    "**/Tests/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -2155,7 +2189,7 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Generic abstractions related to caching",
+            "description": "A set of abstractions extracted out of the Symfony components",
             "homepage": "https://symfony.com",
             "keywords": [
                 "abstractions",
@@ -2165,7 +2199,7 @@
                 "interoperability",
                 "standards"
             ],
-            "time": "2019-05-22T12:23:29+00:00"
+            "time": "2019-06-05T13:28:50+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -2242,70 +2276,6 @@
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
             "time": "2019-05-30T16:10:05+00:00"
-        },
-        {
-            "name": "symfony/event-dispatcher-contracts",
-            "version": "v1.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/event-dispatcher-contracts.git",
-                "reference": "8fa2cf2177083dd59cf8e44ea4b6541764fbda69"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher-contracts/zipball/8fa2cf2177083dd59cf8e44ea4b6541764fbda69",
-                "reference": "8fa2cf2177083dd59cf8e44ea4b6541764fbda69",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "php": "^7.1.3"
-            },
-            "suggest": {
-                "psr/event-dispatcher": "",
-                "symfony/event-dispatcher-implementation": ""
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Contracts\\EventDispatcher\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Generic abstractions related to dispatching event",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "abstractions",
-                "contracts",
-                "decoupling",
-                "interfaces",
-                "interoperability",
-                "standards"
-            ],
-            "time": "2019-05-22T12:23:29+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -2749,70 +2719,6 @@
                 "shim"
             ],
             "time": "2019-02-08T14:16:39+00:00"
-        },
-        {
-            "name": "symfony/service-contracts",
-            "version": "v1.1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/service-contracts.git",
-                "reference": "191afdcb5804db960d26d8566b7e9a2843cab3a0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/191afdcb5804db960d26d8566b7e9a2843cab3a0",
-                "reference": "191afdcb5804db960d26d8566b7e9a2843cab3a0",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "php": "^7.1.3"
-            },
-            "suggest": {
-                "psr/container": "",
-                "symfony/service-implementation": ""
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Contracts\\Service\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Generic abstractions related to writing services",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "abstractions",
-                "contracts",
-                "decoupling",
-                "interfaces",
-                "interoperability",
-                "standards"
-            ],
-            "time": "2019-05-28T07:50:59+00:00"
         },
         {
             "name": "symfony/var-exporter",

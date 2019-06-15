@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\V1;
 
 use App\Domain\Events\UserAddedEvent;
+use App\Domain\User\IMerchantRepository;
 use App\Domain\User\IUserRepository;
+use App\Domain\User\Merchant;
 use App\Domain\User\MergeUserService;
 use App\Domain\User\User;
 use App\Foundation\CacheFactory;
 use App\Foundation\Client\Client;
 use App\Foundation\Client\ClientFactory;
-use App\Foundation\Mailer;
-use App\Foundation\RedisFactory;
+use WecarSwoole\Mailer;
+use WecarSwoole\RedisFactory;
 use WecarSwoole\Http\Controller;
-use App\Tasks\AsyncProxy;
-use App\Tasks\Test;
 use DI\Annotation\Inject;
-use DI\Container;
+use WecarSwoole\Container;
 use EasySwoole\Component\Di;
 use EasySwoole\EasySwoole\Config;
 use EasySwoole\EasySwoole\Swoole\Task\SuperClosure;
@@ -30,6 +30,7 @@ use Psr\SimpleCache\CacheInterface;
 use Swlib\Http\Uri;
 use Swlib\Saber;
 use Swlib\SaberGM;
+use WecarSwoole\Transaction;
 
 /**
  * 用户控制器
@@ -38,30 +39,6 @@ use Swlib\SaberGM;
  */
 class Users extends Controller
 {
-    protected $userRepos;
-    protected $cache;
-    protected $mergeUserService;
-    protected $mailer;
-    protected $logger;
-    protected $eventDispatcher;
-
-    public function __construct(
-        MergeUserService $mergeUserService,
-        Mailer $mailer,
-        LoggerInterface $logger,
-        EventDispatcherInterface $eventDispatcher,
-        IUserRepository $userRepository
-    ) {
-        $this->userRepos = $userRepository;
-//        $this->cache = $cache;
-        $this->mergeUserService = $mergeUserService;
-        $this->mailer = $mailer;
-        $this->logger = $logger;
-        $this->eventDispatcher = $eventDispatcher;
-
-        parent::__construct();
-    }
-
     /**
      * 添加用户
      */
@@ -91,10 +68,6 @@ class Users extends Controller
 
 //        $bean = new SplBean(['name' => '张三', 'age' => 34]);
 //        var_export($bean);
-
-//        $redis = Redis::instance('main');
-//        $redis->set('wocao', json_encode(['haha', 'niji']));
-//        var_export(json_decode($redis->get('wocao'), true));
 
 //        Cache::instance()->set("testccc", ['name' => '林子']);
 //        $this->ok(Cache::instance()->get('testccc'));
@@ -132,13 +105,14 @@ class Users extends Controller
 //
 //        $result = Client::call('wc:users.add', $reqData);
 //        $this->return($result->getBody());
-        $user = $this->userRepos->getById(3);
+//        $user = $this->userRepos->getById(3);
 //        $user = $this->session()->sid();
 
         // 投递异步任务
 //        TaskManager::async(new Test(['name' => 'test async task']));
 
         // 缓存
+//        $this->cache->get('testtt');
 
         // 发送邮件
 //        $message = new \Swift_Message("测试邮件", "<span style='color:red;'>邮件征文</span>");
@@ -153,21 +127,19 @@ class Users extends Controller
 
 //        throw new \Exception("我是异常");
 
-        // 投递异步代理
-        $async = new AsyncProxy([
-//            'call' => new SuperClosure(function ($name) {
-//                echo "async call:$name \n";
-//                return $name;
-//            }),
-        'call' => new TestAsyncP(),
-            'params' => ["张三"],
-//            'finish' => function ($result) {
-//                echo "finished async call:$result \n";
-//            }
-        ]);
-        TaskManager::async($async);
+//        TaskManager::async($async);
 
-        $this->return([445, time()]);
+        // redis
+//        $redis = RedisFactory::build('main');
+//        $redis->set('testredis', 'abcdef');
+//        $result = $redis->get('testredis');
+
+//        $repos1 = \WecarSwoole\Container::get(IUserRepository::class);
+//        \DI\create(User::class);
+
+        echo Container::make(User::class, ['name' => 'lisi'])->getName();
+
+        $this->return([12, time()]);
     }
 
     public function delete()

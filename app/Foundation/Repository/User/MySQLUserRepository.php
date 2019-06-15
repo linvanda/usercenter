@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Foundation\Repository;
+namespace App\Foundation\Repository\User;
 
 use App\Domain\User\User;
 use App\Domain\User\IUserRepository;
@@ -8,11 +8,15 @@ use WecarSwoole\Repository\MySQLRepository;
 
 /**
  * MySQL 版仓储实现
- * Class MySQLUserRepository
- * @package App\Foundation\Repository
  */
 class MySQLUserRepository extends MySQLRepository implements IUserRepository
 {
+    public function __construct()
+    {
+        echo "get user Repository\n";
+        parent::__construct();
+    }
+
     /**
      * 添加用户
      * @param User $user
@@ -20,7 +24,9 @@ class MySQLUserRepository extends MySQLRepository implements IUserRepository
      */
     public function add(User $user)
     {
-        $this->query->insert('users')->values([
+        $this->query
+            ->insert('users')
+            ->values([
             [
                 'name' => $user->name,
                 'phone' => $user->phone,
@@ -44,8 +50,6 @@ class MySQLUserRepository extends MySQLRepository implements IUserRepository
      * 根据 uid 获取用户
      * @param int $uid
      * @return User
-     * @throws \App\Exceptions\PropertyNotFoundException
-     * @throws \App\Exceptions\InvalidOperationException
      */
     public function getById(int $uid): ?User
     {
@@ -58,5 +62,10 @@ class MySQLUserRepository extends MySQLRepository implements IUserRepository
         }
 
         return null;
+    }
+
+    protected function dbAlias(): string
+    {
+        return 'user_center';
     }
 }

@@ -5,6 +5,12 @@
     "require": {
         "framework/wecarswoole": "dev-master"
     },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Test\\": "tests/"
+        }
+    },
     "repositories": {
         "0": {
             "type": "vcs",

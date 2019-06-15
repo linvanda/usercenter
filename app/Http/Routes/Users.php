@@ -2,9 +2,9 @@
 
 namespace App\Http\Routes;
 
-use WecarSwoole\Http\Route;
+use WecarSwoole\Http\ApiRoute;
 
-class Users extends Route
+class Users extends ApiRoute
 {
     public function map()
     {

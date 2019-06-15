@@ -9,5 +9,5 @@ namespace App\Domain\User;
  */
 interface IMerchantRepository
 {
-    public function add();
+    public function add(Merchant $merchant);
 }

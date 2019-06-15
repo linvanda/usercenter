@@ -1,0 +1,19 @@
+[2019-06-12 21:36:09][default][file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/Http/Controller.php][line:47]Call to a member function send() on null
+[2019-06-13 15:07:27][default][file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/Http/Controller.php][line:47]Entry "App\Domain\User\IUserRepository" cannot be resolved: the class doesn't exist
+Full definition:
+Object (
+    class = #UNKNOWN# \App\Foundation\Repository\Domain\MySQLUserRepository
+    lazy = false
+)
+[2019-06-13 15:08:12][default][file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/Http/Controller.php][line:47]Entry "App\Domain\User\IUserRepository" cannot be resolved: the class doesn't exist
+Full definition:
+Object (
+    class = #UNKNOWN# \App\Foundation\Repository\Domain\MySQLUserRepository
+    lazy = false
+)
+[2019-06-13 15:08:56][default][file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/Http/Controller.php][line:47]Entry "App\Domain\User\IUserRepository" cannot be resolved: the class doesn't exist
+Full definition:
+Object (
+    class = #UNKNOWN# \App\Foundation\Repository\Domain\MySQLUserRepository
+    lazy = false
+)
