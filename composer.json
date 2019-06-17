@@ -24,14 +24,6 @@
             "type": "vcs",
             "url": "https://gitlab4.weicheche.cn/dev/mysql.git"
         },
-        "3": {
-            "type": "vcs",
-            "url": "https://gitlab4.weicheche.cn/framework/wecar_easyswoole.git"
-        },
-        "4": {
-            "type": "vcs",
-            "url": "https://gitlab4.weicheche.cn/framework/easyswoole_http.git"
-        },
         "packagist": {
             "type": "composer",
             "url": "https://packagist.laravel-china.org"

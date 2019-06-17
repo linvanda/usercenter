@@ -137,9 +137,11 @@ class Users extends Controller
 //        $repos1 = \WecarSwoole\Container::get(IUserRepository::class);
 //        \DI\create(User::class);
 
-        echo Container::make(User::class, ['name' => 'lisi'])->getName();
+//        echo Container::make(User::class, ['name' => 'lisi'])->getName();
+        $repos = Container::make(IUserRepository::class);
+        $result = $repos->getById(123);
 
-        $this->return([12, time()]);
+        $this->return([$result, time()]);
     }
 
     public function delete()

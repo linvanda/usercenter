@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "57b901302720b3c12b40ae33c7ce23af",
+    "content-hash": "34eae9457a58bd8581dd35eb2e289df1",
     "packages": [
         {
             "name": "dev/locker",
@@ -745,7 +745,7 @@
             "source": {
                 "type": "git",
                 "url": "https://gitlab4.weicheche.cn/framework/wecarswoole.git",
-                "reference": "d9f72f7a024b9fc116b748af4f14c638cbe8da2e"
+                "reference": "a714b1222ab1c5a5638123b4dce22af42b261c4c"
             },
             "require": {
                 "dev/locker": "^1.0",
@@ -777,7 +777,7 @@
                 }
             },
             "description": "wecheche foundational web framework",
-            "time": "2019-06-14T08:01:54+00:00"
+            "time": "2019-06-15T10:04:32+00:00"
         },
         {
             "name": "jeremeamia/superclosure",

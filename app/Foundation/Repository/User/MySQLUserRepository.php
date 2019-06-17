@@ -26,13 +26,15 @@ class MySQLUserRepository extends MySQLRepository implements IUserRepository
     {
         $this->query
             ->insert('users')
-            ->values([
-            [
-                'name' => $user->name,
-                'phone' => $user->phone,
-                'nickname' => $user->nickname,
-            ]
-        ])->execute();
+            ->values(
+                [
+                    [
+                        'name' => $user->name,
+                        'phone' => $user->phone,
+                        'nickname' => $user->nickname,
+                    ]
+                ]
+            )->execute();
 
         return $this->query->lastInsertId();
     }
