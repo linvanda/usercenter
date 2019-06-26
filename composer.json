@@ -1,6 +1,6 @@
 {
-    "name": "wechar/wecarswoole_proj",
-    "description": "your project name",
+    "name": "dev/usercenter",
+    "description": "user center system",
     "type": "project",
     "require": {
         "framework/wecarswoole": "dev-master"
@@ -28,5 +28,8 @@
             "type": "composer",
             "url": "https://packagist.laravel-china.org"
         }
+    },
+    "require-dev": {
+        "swoole/ide-helper": "@dev"
     }
 }

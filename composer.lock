@@ -4,15 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "34eae9457a58bd8581dd35eb2e289df1",
+    "content-hash": "4478fa9b5c654d80e7e88d4ee9749e9b",
     "packages": [
         {
             "name": "dev/locker",
-            "version": "v1.0.2",
+            "version": "v1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://gitlab4.weicheche.cn/dev/locker.git",
-                "reference": "59e78bfb8821bc1def258b4b4810fbf4ac67180a"
+                "reference": "9c2d5c385602795a5f43a1aafe83a44374923c53"
             },
             "type": "library",
             "autoload": {
@@ -27,15 +27,15 @@
                 }
             ],
             "description": "locker by redis",
-            "time": "2019-06-06T08:30:24+00:00"
+            "time": "2019-06-22T00:32:40+00:00"
         },
         {
             "name": "dev/mysql",
-            "version": "v1.0.3",
+            "version": "v1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://gitlab4.weicheche.cn/dev/mysql.git",
-                "reference": "e840eb0bc16f1cf79be9a0a0e71f126ca9adeaa8"
+                "reference": "4174bd14fc2f506bf728732ba76a52992a3ed533"
             },
             "require": {
                 "ext-swoole": ">=4.3.0",
@@ -54,7 +54,7 @@
                     "email": "1049180458@qq.com"
                 }
             ],
-            "time": "2019-06-14T10:24:43+00:00"
+            "time": "2019-06-24T10:00:29+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -745,7 +745,7 @@
             "source": {
                 "type": "git",
                 "url": "https://gitlab4.weicheche.cn/framework/wecarswoole.git",
-                "reference": "a714b1222ab1c5a5638123b4dce22af42b261c4c"
+                "reference": "9ee6cb0da7a8475223b2a60656a83c9d44fa348f"
             },
             "require": {
                 "dev/locker": "^1.0",
@@ -766,6 +766,9 @@
                 "symfony/cache": "~4.2.0",
                 "symfony/event-dispatcher": "~4.3.0"
             },
+            "require-dev": {
+                "swoole/ide-helper": "dev-master"
+            },
             "bin": [
                 "bin/wecarswoole"
             ],
@@ -777,7 +780,7 @@
                 }
             },
             "description": "wecheche foundational web framework",
-            "time": "2019-06-15T10:04:32+00:00"
+            "time": "2019-06-26T12:05:00+00:00"
         },
         {
             "name": "jeremeamia/superclosure",
@@ -2906,11 +2909,56 @@
             "time": "2018-04-25T15:33:34+00:00"
         }
     ],
-    "packages-dev": [],
+    "packages-dev": [
+        {
+            "name": "swoole/ide-helper",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/swoole/ide-helper.git",
+                "reference": "7035aeb5c6d42c22b44aef1304aac62d6733b5e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/swoole/ide-helper/zipball/7035aeb5c6d42c22b44aef1304aac62d6733b5e5",
+                "reference": "7035aeb5c6d42c22b44aef1304aac62d6733b5e5",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require-dev": {
+                "squizlabs/php_codesniffer": "~3.4.0",
+                "zendframework/zend-code": "~3.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Swoole\\IDEHelper\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Team Swoole",
+                    "email": "team@swoole.com"
+                }
+            ],
+            "description": "IDE help files for Swoole.",
+            "time": "2019-05-22T19:49:35+00:00"
+        }
+    ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "framework/wecarswoole": 20
+        "framework/wecarswoole": 20,
+        "swoole/ide-helper": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

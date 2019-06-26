@@ -6,6 +6,7 @@ use WecarSwoole\Entity;
 
 class User extends Entity
 {
+    protected $uid;
     /**
      * @var string
      * @field

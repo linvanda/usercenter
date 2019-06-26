@@ -1,19 +1,20 @@
 <?php
 
 return [
-    'SERVER_NAME' => "EasySwoole",
+    'SERVER_NAME' => "usercenter",
     'MAIN_SERVER' => [
         'LISTEN_ADDRESS' => '0.0.0.0',
-        'PORT' => 9501,
+        'PORT' => 8080,
         'SERVER_TYPE' => EASYSWOOLE_WEB_SERVER,
         'SOCK_TYPE' => SWOOLE_TCP,
         'RUN_MODEL' => SWOOLE_PROCESS,
         'SETTING' => [
-            'worker_num' => 8,
-            'task_worker_num' => 8,
+            'worker_num' => 2,
+            'task_worker_num' => 3,
             'reload_async' => true,
             'task_enable_coroutine' => true,
-            'max_wait_time'=>5
+            'max_wait_time' => 5,
+            'pid_file' => \WecarSwoole\Util\File::join(EASYSWOOLE_ROOT, 'storage/temp/master.pid')
         ],
     ],
     'TEMP_DIR' => 'storage/temp',
@@ -24,7 +25,7 @@ return [
         'HOST' => '127.0.0.1',
         'PORT' => 9500,
         'USER' => 'root',
-        'PASSWORD' =>'123456'
+        'PASSWORD' => '123456'
     ],
     'DISPLAY_ERROR' => true,
     'PHAR' => [

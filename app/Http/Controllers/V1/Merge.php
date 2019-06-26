@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\V1;
 
-use App\Http\Controllers\Controller;
+use WecarSwoole\Http\Controller;
 
 /**
  * 合并
@@ -13,6 +13,6 @@ class Merge extends Controller
 {
     public function mergeUsers()
     {
-
+        $this->return([json_encode(basename($this->request()->getRequestTarget()))]);
     }
 }

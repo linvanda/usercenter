@@ -2,6 +2,8 @@
 
 namespace App\Domain\User;
 
+use App\DTO\User\UserDTO;
+
 /**
  * 用户聚合仓储
  * Interface IUserRepository
@@ -17,11 +19,9 @@ interface IUserRepository
     public function add(User $user);
 
     /**
-     * 根据 uid 获取用户
-     * @param int $uid
-     * @return User
+     * 根据 UserId 获取用户信息
+     * @param UserId $userId
+     * @return UserDTO
      */
-    public function getById(int $uid): ?User;
-
-    public function addTest();
+    public function getDTOByUserId(UserId $userId): ?UserDTO;
 }

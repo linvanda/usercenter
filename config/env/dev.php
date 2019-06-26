@@ -70,4 +70,5 @@ return [
     ],
     // 最低记录级别：debug, info, warning, error, critical, off
     'log_level' => 'debug',
+    'server' => require_once __DIR__ . '/dev_server.php'
 ];
