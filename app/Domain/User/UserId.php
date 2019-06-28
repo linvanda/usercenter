@@ -57,17 +57,16 @@ class UserId
 
     /**
      * @param int $uid
-     * @throws InvalidOperationException
+     * @return bool
      */
     public function setUid(int $uid)
     {
         if ($this->uid && $this->uid != $uid) {
-            throw new InvalidOperationException(
-                "can not set uid when it is aready exists.exist-uid:{$this->uid}, set-uid:{$uid}"
-            );
+            return false;
         }
 
         $this->uid = $uid;
+        return true;
     }
 
     public function getRelUids(): array

@@ -22,8 +22,7 @@ class Users extends ApiRoute
          * 添加用户
          * 可接收的字段：name、nickname、phone、gender、birthday、id_number_type、id_number、channel、
          *           partner_type 、partner_id、partner_flag、merchant_type、merchant_id、car_numbers
-         *           update_when_exist 当用户存在时，是否拿这些信息更新用户信息，默认 0
-         *           merge_when_conflict 当根据不同的查询标识查到多条记录时，是否自动合并，默认 0
+         *           update_strategy 当用户存在时，更新策略：1 不更新，2 仅更新空值，3 以新值更新旧值，默认 2
          */
         $this->post('/v1/users', '/V1/Users/add');
         // 用户-商户关系绑定

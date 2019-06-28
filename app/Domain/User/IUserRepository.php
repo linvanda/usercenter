@@ -31,5 +31,5 @@ interface IUserRepository
 
     public function getUserByUid(int $uid): User;
 
-    public function update(User $user, bool $onlyUpdateIfNull = false): bool;
+    public function update(User $user, int $updateStrategy = User::UPDATE_NEW): bool;
 }
