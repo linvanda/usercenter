@@ -14,10 +14,17 @@ class Users extends ApiRoute
          *      user_flag：必填。用户标识
          * query_params:
          *      flag_type: 必填。表示 user_flag 的类型：1 uid，3 phone，4 partner_id(第三方id)
-         *      partner_type：flag_type = 4 时必填，第三方类型，1 微信，2 支付宝，100 其它
+         *      partner_type：flag_type = 4 时必填，见 PartnerUser 里面的常量定义
+         *      partner_flag：flag_type = 4 时一般需要提供该参数，第三方标识（如微信卡号），微信大号和支付宝大号可以选填（建议带上）
          */
         $this->get('/v1/users/{user_flag}', '/V1/Users/info');
-        // 添加用户
+        /**
+         * 添加用户
+         * 可接收的字段：name、nickname、phone、gender、birthday、id_number_type、id_number、channel、
+         *           partner_type 、partner_id、partner_flag、merchant_type、merchant_id、car_numbers
+         *           update_when_exist 当用户存在时，是否拿这些信息更新用户信息，默认 0
+         *           merge_when_conflict 当根据不同的查询标识查到多条记录时，是否自动合并，默认 0
+         */
         $this->post('/v1/users', '/V1/Users/add');
         // 用户-商户关系绑定
         $this->post('/v1/merchants/{merchant}/users/{uid}', '/V1/MerchantUsers/bind');

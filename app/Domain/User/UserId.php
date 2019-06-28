@@ -3,7 +3,7 @@
 namespace App\Domain\User;
 
 use Swoole\Exception;
-use WecarSwoole\Exceptions\PropertyNotFoundException;
+use WecarSwoole\Exceptions\InvalidOperationException;
 use WecarSwoole\Util\AutoProperty;
 
 /**
@@ -21,23 +21,68 @@ class UserId
     public const FLAG_PARTNER = 4;
 
     protected $uid;
+    /**
+     * 被合并的关联用户 uid
+     * @var array
+     */
     protected $relUids;
     protected $phone;
     /**
-     * @var Partner
+     * 第三方用户标识列表
+     * @var PartnerUserMap
      */
-    protected $partner;
+    protected $partnerUsers;
 
     /**
      * UserId constructor.
      * @param int|null $uid
      * @param string|null $phone
      * @param array $relUids
-     * @param Partner|null $partner
+     * @param PartnerUser $partner
      */
-    public function __construct(int $uid = null, string $phone = null, array $relUids = [], Partner $partner = null)
-    {
+    public function __construct(
+        int $uid = null,
+        string $phone = null,
+        array $relUids = [],
+        PartnerUserMap $partners = null
+    ) {
         $this->setProperties(func_get_args());
+        $this->partnerUsers = $partners ?? new PartnerUserMap();
+    }
+
+    public function getUid(): int
+    {
+        return $this->uid;
+    }
+
+    /**
+     * @param int $uid
+     * @throws InvalidOperationException
+     */
+    public function setUid(int $uid)
+    {
+        if ($this->uid && $this->uid != $uid) {
+            throw new InvalidOperationException(
+                "can not set uid when it is aready exists.exist-uid:{$this->uid}, set-uid:{$uid}"
+            );
+        }
+
+        $this->uid = $uid;
+    }
+
+    public function getRelUids(): array
+    {
+        return $this->relUids;
+    }
+
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    public function getPartnerUsers(): PartnerUserMap
+    {
+        return $this->partnerUsers;
     }
 
     /**
@@ -59,10 +104,8 @@ class UserId
                 $this->phone = $flag;
                 break;
             case self::FLAG_PARTNER:
-                if ($flag instanceof Partner) {
-                    $this->partner = $flag;
-                } elseif (is_array($flag) && count($flag) == 2) {
-                    $this->partner = new Partner($flag[0], $flag[1]);
+                if ($flag instanceof PartnerUser) {
+                    $this->addPartnerUser($flag);
                 } else {
                     throw new Exception("invalid partner id for user");
                 }
@@ -73,16 +116,26 @@ class UserId
     }
 
     /**
-     * @param $name
-     * @return mixed
-     * @throws PropertyNotFoundException
+     * 添加用户的第三方标识
+     * @param PartnerUser $partner
      */
-    public function __get($name)
+    public function addPartnerUser(PartnerUser $partner)
     {
-        if (!property_exists($this, $name)) {
-            throw new PropertyNotFoundException(get_called_class(), $name);
-        }
+        $this->partnerUsers[$partner->getPartnerKey()] = $partner;
+    }
 
-        return $this->{$name};
+    /**
+     * 获取用户在某第三方的标识
+     * @param int $type
+     * @param string $flag
+     * @return PartnerUser|null
+     */
+    public function getPartnerUser(?int $type = null, $flag = null): ?PartnerUser
+    {
+        if ($type === null) {
+            // 取第一个
+            return $this->partnerUsers->first();
+        }
+        return $this->partnerUsers[PartnerUser::getPartnerKeyStatic($type, $flag)];
     }
 }

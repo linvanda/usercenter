@@ -2,7 +2,8 @@
 
 namespace App\Foundation\Repository\User;
 
-use App\Domain\User\Partner;
+use App\Domain\User\PartnerUser;
+use App\Domain\User\PartnerUserMap;
 use App\Domain\User\User;
 use App\Domain\User\IUserRepository;
 use App\Domain\User\UserId;
@@ -55,8 +56,9 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
             $userArr = $this->getUserArrByUid($userId->uid);
         } elseif ($userId->phone) {
             $userArr = $this->getUserArrByPhone($userId->phone);
-        } elseif ($userId->partner) {
-            $userArr = $this->getUserArrByPartner($userId->partner);
+        } elseif ($userId->partners) {
+            // 用第一个查
+            $userArr = $this->getUserArrByPartner(reset($userId->getPartnerUsers()));
         }
 
         if (!$userArr) {
@@ -66,7 +68,12 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
         // TODO 需获取 relUids
         $userArr['rel_uids'] = [];
 
-        return new UserDTO($userArr);
+        $userDTO = new UserDTO($userArr);
+
+        // TODO UserDTO 需要设置 partnerIds 字段
+        $userDTO->partnerUsers = new PartnerUserMap();
+
+        return $userDTO;
     }
 
     /**
@@ -85,6 +92,8 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
         }
 
         // TODO 如果从用户表查不到数据，应该还要从合并表查询
+
+        // TODO 查询 parters 列表
 
         return $userInfo;
     }
@@ -108,21 +117,21 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
     }
 
     /**
-     * @param Partner $partner
+     * @param PartnerUser $partner
      * @return array
      * @throws \Exception
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    private function getUserArrByPartner(Partner $partner): array
+    private function getUserArrByPartner(PartnerUser $partner): array
     {
         if ($userInfo = $this->getUserInfoFromCache($partner, UserId::FLAG_PARTNER)) {
             return $userInfo;
         }
 
         //TODO 用户系统重构后，应当从统一的 partner 表查询信息
-        if ($partner->type() == Partner::P_WEIXIN) {
+        if ($partner->type() == PartnerUser::P_WEIXIN) {
             $userInfo = $this->getUserArrFromDB("wechat_openid=:openid", ['openid' => $partner->id()]);
-        } elseif ($partner->type() == Partner::P_ALIPAY) {
+        } elseif ($partner->type() == PartnerUser::P_ALIPAY) {
             $uid = $this->query->select('uid')->from('wei_auth_users')
                 ->where('user_id=:userid', ['userid' => $partner->id()])
                 ->where('is_delete=0')
@@ -224,7 +233,7 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
 
     private function getUserCacheKey($flag, int $type): string
     {
-        if ($flag instanceof Partner) {
+        if ($flag instanceof PartnerUser) {
             $flag = $flag->id() . '==' . $flag->type();
         }
 

@@ -18,26 +18,12 @@ if (file_exists($file)) {
 
 Config::getInstance()->loadFile(File::join(EASYSWOOLE_ROOT, 'config/config.php'), true);
 
-interface IA
-{
+$a = [
+        'name' => 'ssd',
+        'age' => 34,
+];
 
-}
-class A implements IA
-{
+$b = new ArrayIterator($a);
+$b->append(['sex'=>'dd']);
 
-}
-
-class B
-{
-    public function __construct(IA $a)
-    {
-    }
-}
-
-$builder = new \DI\ContainerBuilder();
-$builder->addDefinitions(\WecarSwoole\Util\File::join(EASYSWOOLE_ROOT, 'config/di/di.php'));
-$di = $builder->build();
-
-$di->set(IA::class, \DI\create(A::class));
-
-$b = $di->get(B::class);
+var_export($b->getArrayCopy());

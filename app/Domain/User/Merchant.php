@@ -2,12 +2,12 @@
 
 namespace App\Domain\User;
 
-use App\Domain\Entity;
+use WecarSwoole\Entity;
 
 class Merchant extends Entity
 {
-    public function __construct(int $id, int $type)
-    {
-        $this->id = new MerchantId($id, $type);
-    }
+    public const T_PLATFORM = 0;
+    public const T_STATION = 1;
+    public const T_GROUP = 2;
+    public const T_ORG = 3;
 }

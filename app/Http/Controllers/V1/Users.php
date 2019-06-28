@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\V1;
 
 use App\Domain\User\IUserRepository;
+use App\Domain\User\Merchant;
+use App\Domain\User\PartnerUser;
+use App\Domain\User\PartnerUserMap;
 use App\Domain\User\UserId;
-use Psr\SimpleCache\CacheInterface;
+use App\Domain\User\UserService;
+use App\DTO\User\UserDTO;
 use WecarSwoole\Container;
 use WecarSwoole\Http\Controller;
 
@@ -22,6 +26,21 @@ class Users extends Controller
                 'user_flag' => ['required'],
                 'flag_type' => ['required', 'inArray' => [1, 3, 4]],
                 'partner_type' => ['integer', 'optional'],
+            ],
+            'add' => [
+                'gender' => ['optional', 'inArray' => [0, 1, 2]],
+                'birthday' => ['optional', 'regex' => ['arg' => '\d{4}-\d{2}-\d{2}', 'msg' => '生日必须是 YYYY-mm-dd 格式']],
+                'phone' => ['optional', 'length' => 11],
+                'partner_type' => ['optional', 'integer'],
+                'merchant_type' => [
+                    'optional',
+                    'inArray' => [
+                        Merchant::T_PLATFORM,
+                        Merchant::T_GROUP,
+                        Merchant::T_ORG,
+                        Merchant::T_STATION
+                    ]
+                ],
             ]
         ];
     }
@@ -35,18 +54,40 @@ class Users extends Controller
         $params = $this->params();
 
         $userId = new UserId();
-        $flag = isset($params['partner_type']) && $params['flag_type'] == UserId::FLAG_PARTNER ?
-            [$params['user_flag'], $params['partner_type']] : $params['user_flag'];
+        if ($params['flag_type'] == UserId::FLAG_PARTNER) {
+            $flag = new PartnerUser($params['user_flag'], $params['partner_type'], $params['partner_flag']);
+        } else {
+            $flag = $params['user_flag'];
+        }
         $userId->setFLag($flag, $params['flag_type']);
 
-        $this->return(Container::get(IUserRepository::class)->getDTOByUserId($userId));
+        $this->return(Container::make(IUserRepository::class)->getDTOByUserId($userId)->toArray());
     }
 
     /**
      * 添加用户
+     * 可接收字段：name、nickname、phone、gender、birthday、id_number_type、id_number、channel、
+     *           partner_type 、partner_id、partner_flag、merchant_type、merchant_id、car_numbers
+     * 其中没有必填字段
+     * 添加成功则返回 uid，否则抛出异常
      */
     public function add()
     {
+        $params = $this->params();
+        $userDTO = new UserDTO($params, true, false);
+
+        // partner 标识处理
+        if ($params['partner_type'] && $params['partner_id']) {
+            $userDTO->partnerUsers = new PartnerUserMap(
+                [new PartnerUser($params['partner_id'], $params['partner_type'], $params['partner_flag'])]
+            );
+        }
+
+        $this->return(
+            [
+                'uid' => Container::make(UserService::class)->addUser($userDTO)
+            ]
+        );
     }
 
     /**

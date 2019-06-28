@@ -2,6 +2,7 @@
 
 namespace App\DTO\User;
 
+use App\Domain\User\PartnerUserMap;
 use WecarSwoole\DTO;
 
 /**
@@ -51,4 +52,29 @@ class UserDTO extends DTO
      * @var string
      */
     public $inviteCode;
+    /**
+     * 用户的第三方标识列表
+     * @var PartnerUserMap
+     */
+    public $partnerUsers;
+
+    public function toArray(
+        bool $camelToSnake = true,
+        bool $withNull = true,
+        bool $zip = false,
+        array $exFields = []
+    ): array {
+        $arr = parent::toArray($camelToSnake, $withNull, $zip, $exFields);
+
+        if (!$this->partnerUsers || !count($this->partnerUsers)) {
+            $arr['partner_users'] = [];
+        } else {
+            // 解析 partnerUsers
+            $arr['partner_users'] = array_map(function ($partnerUser) {
+                return $partnerUser->toArray();
+            }, $this->partnerUsers->getArrayCopy());
+        }
+
+        return $arr;
+    }
 }
