@@ -20,8 +20,6 @@ class PartnerUser implements IExtractable
     public const P_WEIXIN = 1; // 微信大号
     public const P_ALIPAY = 2; // 支付宝大号
     public const P_WX_ACCOUNT = 3; // 微信公众号（油站的公众号，小号）
-    public const P_WX_CARD = 4; // 微信卡
-    public const P_ALIPAY_CARD = 5; // 支付宝卡
     public const P_OTHER = 100; // 其它类型，一般是各种合作第三方
     // 支付宝和微信大号的flag
     protected const FLAGS = [
