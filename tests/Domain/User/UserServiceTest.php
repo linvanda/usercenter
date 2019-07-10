@@ -2,11 +2,11 @@
 
 namespace Test\Domain\User;
 
+use App\Domain\Events\UserAddedEvent;
+use App\Domain\Events\UserUpdatedEvent;
 use App\Domain\User\DivergeService;
 use App\Domain\User\IUserRepository;
 use App\Domain\User\MergeService;
-use App\Domain\User\PartnerUser;
-use App\Domain\User\PartnerUserMap;
 use App\Domain\User\User;
 use App\Domain\User\UserService;
 use App\DTO\User\UserDTO;
@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ProphecyInterface;
 use Prophecy\Prophet;
 use Prophecy\Argument;
-use Prophecy\Promise\CallbackPromise;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 class UserServiceTest extends TestCase
 {
@@ -25,18 +25,18 @@ class UserServiceTest extends TestCase
     /**
      * @var ProphecyInterface
      */
-    private $mergeService;
+    private $divergeService;
     /**
      * @var ProphecyInterface
      */
-    private $divergeService;
+    private $eventDispatcher;
 
     public function setUp()
     {
         // 设置外部依赖
         $this->userRepository = (new Prophet())->prophesize()->willImplement(IUserRepository::class);
-        $this->mergeService = (new Prophet())->prophesize(MergeService::class);
         $this->divergeService = (new Prophet())->prophesize(DivergeService::class);
+        $this->eventDispatcher = (new Prophet())->prophesize()->willImplement(EventDispatcherInterface::class);
     }
 
     /**
@@ -70,36 +70,59 @@ class UserServiceTest extends TestCase
 
     /**
      * 根据新用户的 partner 和 phone 查到两条记录
-     * 此处分几种子场景
+     * 两个是同一个人，需要更新
      */
-    public function testAddWhenHasTwoRecord()
+    public function testAddWhenTwoRecordsAsTheSameUser()
     {
         $userDTO = new UserDTO(['phone' => '13900000000', 'name' => '张三']);
-
-        /**
-         * 场景1：查到两条记录是同一个人
-         * 需要更新该用户
-         */
         $theSameUser = new User(new UserDTO(['uid' => 1456]));
+
         // stub
         $this->userRepository->getUserByPartner(Argument::any())->willReturn($theSameUser);
         $this->userRepository->getUserByPhone(Argument::any())->willReturn($theSameUser);
+
         // mock
         $this->userRepository->update(Argument::type(User::class))->shouldBeCalled();
+        $this->eventDispatcher->dispatch(Argument::type(UserUpdatedEvent::class))->shouldBeCalled();
 
         $newUser = $this->userService()->addUser($userDTO);
 
-        $this->assertEquals($theSameUser->userId->getUid(), $newUser->userId->getUid());
-//        $this->assertEquals($userDTO->phone, $newUser->userId->getPhone());
-//        $this->assertEquals($userDTO->name, $newUser->name);
+        $this->assertEquals(true, $theSameUser->equal($newUser));
+        $this->assertEquals($userDTO->phone, $newUser->phone);
+        $this->assertEquals($userDTO->name, $newUser->name);
+    }
+
+    /**
+     * 根据新用户的 partner 和 phone 查到两条记录
+     * 两个不是同一个人，需要处理分歧
+     */
+    public function testAddWhenTwoRecordsAreDiff()
+    {
+        $userDTO = new UserDTO(['phone' => '13900000000', 'name' => '张三']);
+        $user1 = new User(new UserDTO(['uid' => 1456]));
+        $user2 = new User(new UserDTO(['uid' => 7896]));
+
+        // stub
+        $this->userRepository->getUserByPartner(Argument::any())->willReturn($user1);
+        $this->userRepository->getUserByPhone(Argument::any())->willReturn($user2);
+
+        // mock。期望此方法被调用。此处不对此方法做详细断言，由对应的测试类完成
+        $this->divergeService->dealDivergence(
+            Argument::type(UserDTO::class),
+            Argument::type(User::class),
+            Argument::type(User::class)
+        )->shouldBeCalled();
+
+        $user = $this->userService()->addUser($userDTO);
+        $this->assertInstanceOf(User::class, $user);
     }
 
     private function userService(): UserService
     {
         return new UserService(
             $this->userRepository->reveal(),
-            $this->mergeService->reveal(),
-            $this->divergeService->reveal()
+            $this->divergeService->reveal(),
+            $this->eventDispatcher->reveal()
         );
     }
 
@@ -115,5 +138,8 @@ class UserServiceTest extends TestCase
                 $args[0]->userId->setUid($uid);
                 return $args[0];
             });
+
+        // 期望事件发布
+        $this->eventDispatcher->dispatch(Argument::type(UserAddedEvent::class))->shouldBeCalled();
     }
 }
