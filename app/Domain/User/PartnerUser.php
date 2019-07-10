@@ -70,8 +70,12 @@ class PartnerUser implements IExtractable
         return $type . '-' . ($flag ?? self::FLAGS[$type]);
     }
 
-    public function equal(PartnerUser $partnerUser): bool
+    public function equal(?PartnerUser $partnerUser): bool
     {
+        if (!$partnerUser) {
+            return false;
+        }
+
         return $this->userId === $partnerUser->userId &&
             $this->type === $partnerUser->type &&
             $this->flag === $partnerUser->flag;

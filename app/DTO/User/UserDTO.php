@@ -2,7 +2,9 @@
 
 namespace App\DTO\User;
 
+use App\Domain\User\PartnerUser;
 use App\Domain\User\PartnerUserMap;
+use App\Domain\User\User;
 use WecarSwoole\DTO;
 
 /**
@@ -58,6 +60,15 @@ class UserDTO extends DTO
      */
     public $partnerUsers;
 
+    public function __construct(array $data = [], bool $strict = true, bool $mapping = true)
+    {
+        parent::__construct($data, $strict, $mapping);
+
+        if ($this->partnerUsers === null) {
+            $this->partnerUsers = new PartnerUserMap([]);
+        }
+    }
+
     public function toArray(
         bool $camelToSnake = true,
         bool $withNull = true,
@@ -70,7 +81,7 @@ class UserDTO extends DTO
             $arr['partner_users'] = [];
         } else {
             // 解析 partnerUsers
-            $arr['partner_users'] = array_map(function ($partnerUser) {
+            $arr['partner_users'] = array_map(function (PartnerUser $partnerUser) {
                 return $partnerUser->toArray();
             }, $this->partnerUsers->getArrayCopy());
         }

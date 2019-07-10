@@ -57,20 +57,29 @@ class Users extends Controller
 
     /**
      * 通过 partner_id+partner_type、phone 或者 uid 获取用户信息
-     * @throws \Swoole\Exception
      * @throws \Throwable
      */
     public function info()
     {
         $params = $this->params();
 
-        $userId = new UserId();
-        if ($params['flag_type'] == UserId::FLAG_PARTNER) {
-            $flag = new PartnerUser($params['user_flag'], $params['partner_type'], $params['partner_flag']);
-        } else {
-            $flag = $params['user_flag'];
+        $userId = null;
+        switch ($params['flag_type']) {
+            case UserId::FLAG_UID:
+                $userId = new UserId($params['user_flag'], null, [], null);
+                break;
+            case UserId::FLAG_PHONE:
+                $userId = new UserId(null, $params['user_flag'], [], null);
+                break;
+            case UserId::FLAG_PARTNER:
+                $userId = new UserId(
+                    null,
+                    null,
+                    [],
+                    new PartnerUser($params['user_flag'], $params['partner_type'], $params['partner_flag'])
+                );
+                break;
         }
-        $userId->setFLag($flag, $params['flag_type']);
 
         $this->return(Container::get(IUserRepository::class)->getDTOByUserId($userId)->toArray());
     }
@@ -90,8 +99,8 @@ class Users extends Controller
 
         // partner 标识处理
         if ($params['partner_type'] && $params['partner_id']) {
-            $userDTO->partnerUsers = new PartnerUserMap(
-                [new PartnerUser($params['partner_id'], $params['partner_type'], $params['partner_flag'])]
+            $userDTO->partnerUsers->add(
+                new PartnerUser($params['partner_id'], $params['partner_type'], $params['partner_flag'])
             );
         }
 

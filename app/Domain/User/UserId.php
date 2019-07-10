@@ -3,7 +3,6 @@
 namespace App\Domain\User;
 
 use Swoole\Exception;
-use WecarSwoole\Exceptions\InvalidOperationException;
 use WecarSwoole\Util\AutoProperty;
 
 /**
@@ -85,36 +84,6 @@ class UserId
     }
 
     /**
-     * 设置用户标识
-     * @param $flag
-     * @param int $type
-     * @throws Exception
-     */
-    public function setFLag($flag, int $type = self::FLAG_UID)
-    {
-        switch ($type) {
-            case self::FLAG_UID:
-                $this->uid = $flag;
-                break;
-            case self::FLAG_REL_UIDS:
-                $this->relUids = is_array($flag) ? $flag : [$flag];
-                break;
-            case self::FLAG_PHONE:
-                $this->phone = $flag;
-                break;
-            case self::FLAG_PARTNER:
-                if ($flag instanceof PartnerUser) {
-                    $this->addPartnerUser($flag);
-                } else {
-                    throw new Exception("invalid partner id for user");
-                }
-                break;
-            default:
-                throw new Exception("invalid flag type for user");
-        }
-    }
-
-    /**
      * 添加用户的第三方标识
      * @param PartnerUser $partner
      */
@@ -136,5 +105,17 @@ class UserId
             return $this->partnerUsers->first();
         }
         return $this->partnerUsers[PartnerUser::getPartnerKeyStatic($type, $flag)];
+    }
+
+    public function modify(?PartnerUser $partnerUser, $phone = '', bool $onlyModifyIfNull = false)
+    {
+        if ($partnerUser) {
+            $key = $partnerUser->getPartnerKey();
+            if (!$onlyModifyIfNull || !isset($this->partnerUsers[$key])) {
+                $this->partnerUsers[$key] = $partnerUser;
+            }
+        }
+
+        $this->phone = $onlyModifyIfNull ? ($this->phone ?: $phone) : ($phone ?: $this->phone);
     }
 }

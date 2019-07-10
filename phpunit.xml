@@ -21,6 +21,9 @@
         </whitelist>
     </filter>
     <php>
-        <env name="ENVIRON" value="dev"/>
+        <const name="ENVIRON" value="dev"/>
+        <const name="ZERO_AS_NULL" value="1"/>
+        <const name="EMPTY_STR_AS_NULL" value="2"/>
+        <const name="EMPTY_ARRAY_AS_NULL" value="4"/>
     </php>
 </phpunit>

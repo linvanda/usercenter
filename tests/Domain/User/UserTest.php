@@ -2,77 +2,218 @@
 
 namespace Test\Domain\User;
 
-use App\Domain\User\DivergeService;
-use App\Domain\User\IUserRepository;
-use App\Domain\User\MergeService;
 use App\Domain\User\PartnerUser;
-use App\Domain\User\PartnerUserMap;
 use App\Domain\User\User;
 use App\DTO\User\UserDTO;
+use App\Exceptions\BirthdayException;
+use App\Exceptions\InvalidPhoneException;
+use App\Exceptions\PartnerException;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Prophecy\ProphecyInterface;
-use Prophecy\Prophet;
 use Prophecy\Argument;
+use Prophecy\Prophecy\ProphecyInterface;
+use App\Domain\User\IUserRepository;
+use Prophecy\Prophet;
+use WecarSwoole\Exceptions\Exception;
 
 class UserTest extends TestCase
 {
-    private $userDTO;
     /**
      * @var ProphecyInterface
      */
     private $userRepository;
     /**
-     * @var ProphecyInterface
+     * @var User
      */
-    private $mergeService;
+    private $user1;
     /**
-     * @var ProphecyInterface
+     * @var User
      */
-    private $divergeService;
+    private $user2;
+
+    /**
+     * @var User
+     */
+    private $user3;
+    /**
+     * @var UserDTO
+     */
+    private $userDTO;
 
     public function setUp()
     {
-        // 设置 DTO 信息
-        $this->userDTO = new UserDTO(['phone' => '13989888888']);
-        $this->userDTO->partnerUsers = new PartnerUserMap([
-            new PartnerUser('12345', PartnerUser::P_WEIXIN, '8988dddfd')
-        ]);
-
         // 设置外部依赖
         $this->userRepository = (new Prophet())->prophesize()->willImplement(IUserRepository::class);
-        $this->mergeService = (new Prophet())->prophesize(MergeService::class);
-        $this->divergeService = (new Prophet())->prophesize(DivergeService::class);
+        $this->userRepository->isPhoneBeUsed(Argument::any())->willReturn(false);
+
+        $this->user1 = new User(new UserDTO([
+            'uid' => 12345,
+            'phone' => '',
+            'name' => '李四',
+            'gender' => 0,
+        ], true, false));
+
+        $this->user2 = new User(new UserDTO([
+            'uid' => 8978,
+            'phone' => '18988998899',
+            'name' => '王五',
+            'gender' => 2,
+        ], true, false));
+
+        $this->user3 = new User(new UserDTO([
+            'uid' => 8978,
+            'phone' => '18988998890',
+            'name' => '貂蝉',
+            'gender' => 1,
+            'birthday' => '2009-01-01',
+            'birthday_change' => 1,
+        ], true, false));
+
+        $this->userDTO = new UserDTO(
+            [
+                'phone' => '13090000000',
+                'name' => '张三',
+                'gender' => 1,
+                'carNumbers' => ['粤B898832'],
+                'birthday' => '2010-01-12',
+            ],
+            true,
+            false
+        );
     }
 
     /**
-     * 全新用户（partner和phone都不存在记录的，期望注册成功）
+     * 更新策略：仅更新空值
+     * @throws Exception
+     * @throws \App\Exceptions\InvalidPhoneException
      */
-    public function testRegisterNormal()
+    public function testUpdateOnlyNull()
     {
-        $this->userRepository->getUserByPartner($this->userDTO->partnerUsers->first())->willReturn(null);
-        $this->userRepository->getUserByPhone($this->userDTO->phone)->willReturn(null);
+        $this->user1->updateFromDTO($this->userDTO, $this->userRepository->reveal(), User::UPDATE_ONLY_NULL);
 
-        // 期望 add 被调用一次并且返回uid
-        $this->userRepository->add(Argument::any())->shouldBeCalled()->willReturn(123);
-
-        $this->assertEquals(123, $this->createUser()->register());
+        $this->assertEquals('13090000000', $this->user1->phone);
+        $this->assertEquals('李四', $this->user1->name);
+        $this->assertEquals('1', $this->user1->gender);
+        $this->assertEquals('1', $this->user1->birthdayChange);
     }
 
     /**
-     * 测试phone和partner都有记录的情况
+     * 更新策略：全更新成新的，同时未指定强制更新phone
      */
-    public function testRegisterWhenPhoneAndPartnerExists()
+    public function testUpdateNewNoForce()
     {
-
+        $this->expectException(Exception::class);
+        $this->user2->updateFromDTO($this->userDTO, $this->userRepository->reveal(), User::UPDATE_NEW);
     }
 
-    private function createUser(): User
+    /**
+     * 强制更新，手机号在数据库没有记录
+     * @throws Exception
+     * @throws InvalidPhoneException
+     */
+    public function testUpdateNewWhenPhoneCheckValid()
     {
-        return new User(
+        $this->user2->updateFromDTO(
+            $this->userDTO,
             $this->userRepository->reveal(),
-            $this->mergeService->reveal(),
-            $this->divergeService->reveal(),
-            $this->userDTO
+            User::UPDATE_NEW,
+            true
+        );
+
+        $this->assertEquals('13090000000', $this->user2->phone);
+        $this->assertEquals('张三', $this->user2->name);
+        $this->assertEquals('1', $this->user2->gender);
+    }
+
+    /**
+     * 强制更新，手机号存在记录
+     * @throws Exception
+     * @throws InvalidPhoneException
+     */
+    public function testUpdateNewWhenPhoneCheckInvalid()
+    {
+        // 手机号已经存在，需要抛异常
+        $this->userRepository->isPhoneBeUsed(Argument::any())->willReturn(true);
+
+        $this->expectException(InvalidPhoneException::class);
+
+        $this->user2->updateFromDTO(
+            $this->userDTO,
+            $this->userRepository->reveal(),
+            User::UPDATE_NEW,
+            true
+        );
+    }
+
+    /**
+     * 生日修改次数限制
+     * @throws Exception
+     * @throws InvalidPhoneException
+     */
+    public function testBirthdayChangeLimit()
+    {
+        $this->expectException(BirthdayException::class);
+
+        $this->user3->updateFromDTO(
+            $this->userDTO,
+            $this->userRepository->reveal(),
+            User::UPDATE_NEW,
+            true
+        );
+    }
+
+    public function testBirthdayChangeOk()
+    {
+        $this->user3->birthdayChange = 0;
+
+        $this->user3->updateFromDTO(
+            $this->userDTO,
+            $this->userRepository->reveal(),
+            User::UPDATE_NEW,
+            true
+        );
+
+        $this->assertEquals($this->userDTO->birthday, $this->user3->birthday);
+    }
+
+    public function testUpdateWhenPartnerNoConflict()
+    {
+        $partner1 = new PartnerUser('1235', PartnerUser::P_WEIXIN, '111');
+        $partner2 = new PartnerUser('2989', PartnerUser::P_ALIPAY, '123');
+        $this->user1->userId->addPartnerUser($partner1);
+        $this->user1->userId->addPartnerUser($partner2);
+        $this->userDTO->partnerUsers->add($partner1);
+
+        // 两者的partner 相同，不会出问题
+        $this->user1->updateFromDTO(
+            $this->userDTO,
+            $this->userRepository->reveal(),
+            User::UPDATE_NEW,
+            true
+        );
+
+        $this->assertEquals($partner1, $this->user1->userId->getPartnerUser($partner1->type(), $partner1->flag()));
+        $this->assertEquals(2, count($this->user1->userId->getPartnerUsers()));
+    }
+
+    /**
+     * partner 冲突
+     * @throws Exception
+     * @throws InvalidPhoneException
+     */
+    public function testUpdateWhenPartnerConflict()
+    {
+        $partner1 = new PartnerUser('1235', PartnerUser::P_WEIXIN, '111');
+        $partner2 = new PartnerUser('2989', PartnerUser::P_WEIXIN, '111');
+        $this->user1->userId->addPartnerUser($partner1);
+        $this->userDTO->partnerUsers->add($partner2);
+
+        $this->expectException(PartnerException::class);
+
+        $this->user1->updateFromDTO(
+            $this->userDTO,
+            $this->userRepository->reveal(),
+            User::UPDATE_NEW,
+            true
         );
     }
 }

@@ -25,7 +25,7 @@ class PartnerUserMap extends Map
         if ($partnerUsers && is_int(key($partnerUsers))) {
             $partnerUsers = array_combine(
                 array_map(
-                    function ($pUser) {
+                    function (PartnerUser $pUser) {
                         return $pUser->getPartnerKey();
                     },
                     $partnerUsers
@@ -34,5 +34,14 @@ class PartnerUserMap extends Map
             );
         }
         parent::__construct($partnerUsers, PartnerUser::class);
+    }
+
+    /**
+     * @param PartnerUser $partnerUser
+     * @throws Exception
+     */
+    public function add(PartnerUser $partnerUser)
+    {
+        $this->offsetSet($partnerUser->getPartnerKey(), $partnerUser);
     }
 }

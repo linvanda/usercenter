@@ -14,9 +14,9 @@ interface IUserRepository
     /**
      * 添加用户
      * @param User $user
-     * @return int|bool 成功返回 uid，失败返回 false
+     * @return User 新增的用户
      */
-    public function add(User $user);
+    public function add(User $user): User;
 
     /**
      * 根据 UserId 获取用户信息
@@ -25,11 +25,13 @@ interface IUserRepository
      */
     public function getDTOByUserId(UserId $userId): ?UserDTO;
 
-    public function getUserByPartner(PartnerUser $partnerUser): ?User;
+    public function getUserByPartner(?PartnerUser $partnerUser): ?User;
 
-    public function getUserByPhone($phone): ?User;
+    public function getUserByPhone($phone = ''): ?User;
 
     public function getUserByUid(int $uid): ?User;
 
-    public function update(User $user, int $updateStrategy = User::UPDATE_NEW): bool;
+    public function update(User $user);
+
+    public function isPhoneBeUsed($phone): bool;
 }
