@@ -56,18 +56,18 @@ class User extends Entity
     protected $divergeService;
 
     public function __construct(
-        UserDTO $userDTO = null,
         IUserRepository $userRepository,
         MergeService $mergeService,
-        DivergeService $divergeService
+        DivergeService $divergeService,
+        UserDTO $userDTO = null
     ) {
         if ($userDTO) {
             // 从 DTO 创建 User 对象
             $this->buildFromArray($userDTO->toArray());
+            // 组装 user 标识
+            $this->userId = new UserId($userDTO->uid, $userDTO->phone, $userDTO->relUids ?? [], $userDTO->partnerUsers);
         }
 
-        // 组装 user 标识
-        $this->userId = new UserId($userDTO->uid, $userDTO->phone, $userDTO->relUids, $userDTO->partnerUsers);
         $this->userRepository = $userRepository;
         $this->mergeService = $mergeService;
         $this->divergeService = $divergeService;
@@ -87,7 +87,6 @@ class User extends Entity
         }
 
         $thisPartnerUser = $this->userId->getPartnerUser();
-
         $userOfPartner = $this->userRepository->getUserByPartner($thisPartnerUser);
         $userOfPhone = $this->userRepository->getUserByPhone($this->userId->getPhone());
 

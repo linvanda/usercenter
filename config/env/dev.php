@@ -3,6 +3,7 @@
 use WecarSwoole\Util\File;
 
 return [
+    'base_url' => 'https://wx.weicheche.cn/v2/refuel',
     /**
      * 数据库配置建议以数据库名作为 key
      * 如果没有读写分离，则可不分 read, write，直接在里面写配置信息

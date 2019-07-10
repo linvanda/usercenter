@@ -50,7 +50,7 @@ class UserId
         $this->partnerUsers = $partners ?? new PartnerUserMap();
     }
 
-    public function getUid(): int
+    public function getUid(): ?int
     {
         return $this->uid;
     }

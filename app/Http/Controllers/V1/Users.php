@@ -6,8 +6,8 @@ use App\Domain\User\IUserRepository;
 use App\Domain\User\Merchant;
 use App\Domain\User\PartnerUser;
 use App\Domain\User\PartnerUserMap;
+use App\Domain\User\User;
 use App\Domain\User\UserId;
-use App\Domain\User\UserService;
 use App\DTO\User\UserDTO;
 use WecarSwoole\Container;
 use WecarSwoole\Http\Controller;
@@ -46,8 +46,19 @@ class Users extends Controller
     }
 
     /**
+     * @throws \Exception
+     */
+    public function test()
+    {
+//        $resp = API::invoke('weiche:oil.info', ['name' => '三字'], ['throw_exception' => true]);
+//        $url = Url::realUrl('v1/user/{uid}', [], ['uid' => 3243]);
+//        $this->return($resp->getBody());
+    }
+
+    /**
      * 通过 partner_id+partner_type、phone 或者 uid 获取用户信息
      * @throws \Swoole\Exception
+     * @throws \Throwable
      */
     public function info()
     {
@@ -61,7 +72,7 @@ class Users extends Controller
         }
         $userId->setFLag($flag, $params['flag_type']);
 
-        $this->return(Container::make(IUserRepository::class)->getDTOByUserId($userId)->toArray());
+        $this->return(Container::get(IUserRepository::class)->getDTOByUserId($userId)->toArray());
     }
 
     /**
@@ -70,6 +81,7 @@ class Users extends Controller
      *           partner_type 、partner_id、partner_flag、merchant_type、merchant_id、car_numbers
      * 其中没有必填字段
      * 添加成功则返回 uid，否则抛出异常
+     * @throws \Throwable
      */
     public function add()
     {
@@ -83,11 +95,7 @@ class Users extends Controller
             );
         }
 
-        $this->return(
-            [
-                'uid' => Container::make(UserService::class)->addUser($userDTO)
-            ]
-        );
+        $this->return(['uid' => Container::make(User::class)->register($userDTO)]);
     }
 
     /**

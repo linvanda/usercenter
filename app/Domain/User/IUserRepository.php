@@ -25,11 +25,11 @@ interface IUserRepository
      */
     public function getDTOByUserId(UserId $userId): ?UserDTO;
 
-    public function getUserByPartner(PartnerUser $partnerUser): User;
+    public function getUserByPartner(PartnerUser $partnerUser): ?User;
 
-    public function getUserByPhone($phone): User;
+    public function getUserByPhone($phone): ?User;
 
-    public function getUserByUid(int $uid): User;
+    public function getUserByUid(int $uid): ?User;
 
     public function update(User $user, int $updateStrategy = User::UPDATE_NEW): bool;
 }

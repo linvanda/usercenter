@@ -8,6 +8,7 @@ class Users extends ApiRoute
 {
     public function map()
     {
+        $this->get('/v1/users/test', 'V1/Users/test');
         /*
          * 查询用户信息
          * flag_params:

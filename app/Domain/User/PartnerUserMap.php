@@ -33,7 +33,6 @@ class PartnerUserMap extends Map
                 $partnerUsers
             );
         }
-
         parent::__construct($partnerUsers, PartnerUser::class);
     }
 }
