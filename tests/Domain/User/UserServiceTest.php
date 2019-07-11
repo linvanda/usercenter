@@ -88,7 +88,7 @@ class UserServiceTest extends TestCase
         $newUser = $this->userService()->addUser($userDTO);
 
         $this->assertEquals(true, $theSameUser->equal($newUser));
-        $this->assertEquals($userDTO->phone, $newUser->phone);
+        $this->assertEquals($userDTO->phone, $newUser->phone());
         $this->assertEquals($userDTO->name, $newUser->name);
     }
 

@@ -33,5 +33,7 @@ interface IUserRepository
 
     public function update(User $user);
 
+    public function merge(User $targetUser, User $abandonUser);
+
     public function isPhoneBeUsed($phone): bool;
 }

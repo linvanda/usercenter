@@ -84,11 +84,18 @@ class DivergeServiceTest extends TestCase
     /**
      * 正常情况下，需要合并两个用户
      * @throws UserRegisterConflictException
+     * @throws \App\Exceptions\InvalidMergeException
+     * @throws \WecarSwoole\Exceptions\InvalidOperationException
      */
     public function testDivergeNormal()
     {
         $this->mergeService
-            ->merge(Argument::type(User::class), Argument::type(User::class), true)->shouldBeCalled();
+            ->merge(
+                Argument::type(User::class),
+                Argument::type(User::class),
+                Argument::type('bool'),
+                Argument::type('bool')
+            )->shouldBeCalled();
 
         $user = $this->divergeService()->dealDivergence($this->userDTO, $this->userOfPhone, $this->userOfPartner);
         $this->assertInstanceOf(User::class, $user);

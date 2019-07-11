@@ -3,6 +3,7 @@
 namespace App\Domain\User;
 
 use Swoole\Exception;
+use WecarSwoole\Exceptions\InvalidOperationException;
 use WecarSwoole\Util\AutoProperty;
 
 /**
@@ -12,8 +13,6 @@ use WecarSwoole\Util\AutoProperty;
  */
 class UserId
 {
-    use AutoProperty;
-
     public const FLAG_UID = 1;
     public const FLAG_REL_UIDS = 2;
     public const FLAG_PHONE = 3;
@@ -37,7 +36,7 @@ class UserId
      * @param int|null $uid
      * @param string|null $phone
      * @param array $relUids
-     * @param Partner $partner
+     * @param PartnerMap|null $partners
      */
     public function __construct(
         int $uid = null,
@@ -45,7 +44,9 @@ class UserId
         array $relUids = [],
         PartnerMap $partners = null
     ) {
-        $this->setProperties(func_get_args());
+        $this->uid = $uid;
+        $this->phone = $phone;
+        $this->relUids = $relUids ?? [];
         $this->partners = $partners ?? new PartnerMap();
     }
 
@@ -78,6 +79,11 @@ class UserId
         return $this->phone;
     }
 
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+    }
+
     public function getPartners(): PartnerMap
     {
         return $this->partners;
@@ -97,22 +103,23 @@ class UserId
      * @param int $type
      * @param string $flag
      * @return Partner|null
+     * @throws InvalidOperationException
      */
-    public function getPartner(?int $type = null, $flag = null): ?Partner
+    public function getPartner(int $type, $flag = null): ?Partner
     {
-        if ($type === null) {
-            // 取第一个
-            return $this->partners->first();
+        if (!$flag && !($flag = Partner::FLAGS[$type])) {
+            throw new InvalidOperationException("invalid type or flag for partner:type:{$type},flag:{$flag}");
         }
         return $this->partners[Partner::getPartnerKeyStatic($type, $flag)];
     }
 
-    public function modify(?Partner $partner, $phone = '', bool $onlyModifyIfNull = false)
+    public function modify(PartnerMap $partners = null, $phone = '', bool $onlyModifyIfNull = false)
     {
-        if ($partner) {
-            $key = $partner->getPartnerKey();
-            if (!$onlyModifyIfNull || !isset($this->partners[$key])) {
-                $this->partners[$key] = $partner;
+        if ($partners) {
+            foreach ($partners as $partnerKey => $partner) {
+                if (!$onlyModifyIfNull || !isset($this->partners[$partnerKey])) {
+                    $this->partners[$partnerKey] = $partner;
+                }
             }
         }
 

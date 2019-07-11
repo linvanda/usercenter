@@ -4,6 +4,7 @@ namespace App\Domain\User;
 
 use App\DTO\User\UserDTO;
 use App\Exceptions\BirthdayException;
+use App\Exceptions\InvalidMergeException;
 use App\Exceptions\InvalidPhoneException;
 use App\Exceptions\PartnerException;
 use WecarSwoole\Entity;
@@ -20,9 +21,7 @@ class User extends Entity
     public const UPDATE_ONLY_NULL = 2;
     public const UPDATE_NEW = 3;
 
-    /**
-     * @var UserId
-     */
+    /** @var UserId */
     protected $userId;
     protected $name;
     protected $nickname;
@@ -68,9 +67,45 @@ class User extends Entity
         }
     }
 
+    public function uid(): int
+    {
+        return $this->userId->getUid();
+    }
+
+    public function partners(): PartnerMap
+    {
+        return $this->userId->getPartners();
+    }
+
+    public function addPartner(Partner $partner)
+    {
+        $this->userId->addPartner($partner);
+    }
+
+    /**
+     * @param int $type
+     * @param $flag
+     * @return Partner|null
+     * @throws \WecarSwoole\Exceptions\InvalidOperationException
+     */
+    public function getPartner(int $type, $flag)
+    {
+        return $this->userId->getPartner($type, $flag);
+    }
+
+    public function relUids(): array
+    {
+        return $this->userId->getRelUids();
+    }
+
+    public function phone()
+    {
+        return $this->userId->getPhone();
+    }
+
     public function equal(User $user): bool
     {
-        return $user && $user->userId->getUid() == $this->userId->getUid();
+        return $user && $user->userId->getUid() === $this->userId->getUid();
     }
 
     /**
@@ -104,39 +139,31 @@ class User extends Entity
     }
 
     /**
-     * @param $name
-     * @return PartnerMap|array|int|mixed|null
-     * @throws \WecarSwoole\Exceptions\PropertyNotFoundException
+     * 将 $otherUser 信息合并到自身
+     * @param User $otherUser
+     * @param bool $mergePhone
+     * @throws InvalidMergeException
      */
-    public function __get($name)
+    public function mergeFromOtherUser(User $otherUser, bool $mergePhone = false)
     {
-        if ($name == 'phone') {
-            return $this->userId->getPhone();
+        if (!$mergePhone && $this->phone() && $otherUser->phone() && $this->phone() !== $otherUser->phone()) {
+            throw new InvalidMergeException("can not merge when phones are not the same.");
         }
 
-        if ($name == 'id' || $name == 'uid') {
-            return $this->userId->getUid();
-        }
-
-        if ($name == 'partners') {
-            return $this->userId->getPartners();
-        }
-
-        if ($name == 'relUids') {
-            return $this->userId->getRelUids();
-        }
-
-        return parent::__get($name);
-    }
-
-    public function partners(): PartnerMap
-    {
-        return $this->userId->getPartners();
-    }
-
-    public function relUids(): array
-    {
-        return $this->userId->getRelUids();
+        $this->updateIfNull(
+            new UserDTO([
+                'partners' => $otherUser->partners(),
+                'phone' => $otherUser->phone(),
+                'carNumbers' => $otherUser->carNumbers,
+                'birthday' => $otherUser->birthday,
+                'name' => $otherUser->name,
+                'nickname' => $otherUser->nickname,
+                'gender' => $otherUser->gender,
+                'headurl' => $otherUser->headurl,
+                'tinyHeadurl' => $otherUser->tinyHeadurl,
+                'registerFrom' => $otherUser->registerFrom,
+            ])
+        );
     }
 
     /**
@@ -145,7 +172,7 @@ class User extends Entity
      */
     private function updateIfNull(UserDTO $userDTO)
     {
-        $this->userId->modify($userDTO->partners->first(), $userDTO->phone, true);
+        $this->userId->modify($userDTO->partners, $userDTO->phone, true);
 
         // 车牌号
         if ($userDTO->carNumbers) {
@@ -187,7 +214,7 @@ class User extends Entity
         /**
          * 更新数据
          */
-        $this->userId->modify($userDTO->partners->first(), $userDTO->phone);
+        $this->userId->modify($userDTO->partners, $userDTO->phone);
 
         // 车牌号
         if ($userDTO->carNumbers) {
@@ -219,7 +246,7 @@ class User extends Entity
     private function validateUpdateRule(UserDTO $userDTO, IUserRepository $userRepository)
     {
         // 手机号检验
-        if ($userDTO->phone && $userDTO->phone !== $this->phone && $userRepository->isPhoneBeUsed($userDTO->phone)) {
+        if ($userDTO->phone && $userDTO->phone !== $this->phone() && $userRepository->isPhoneBeUsed($userDTO->phone)) {
             throw new InvalidPhoneException("phone has been register:{$userDTO->phone}");
         }
 
@@ -233,11 +260,12 @@ class User extends Entity
         }
 
         // partner 校验：如果同类型 partner 已经有值，则不允许修改
-        /** @var Partner $newPartner */
-        if (($newPartner = $userDTO->partners->first()) &&
-            !$newPartner->equal($this->userId->getPartners()[$newPartner->getPartnerKey()])
-        ) {
-            throw new PartnerException("partner has exits,can not change it as {$newPartner->userId()}");
+        if ($this->partners()->isDivergent($userDTO->partners)) {
+            throw new PartnerException(
+                "partner has exits,can not change it",
+                502,
+                ['uid' => $this->uid(), 'partner' => $userDTO->partners->first()->toArray()]
+            );
         }
     }
 

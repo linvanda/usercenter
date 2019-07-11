@@ -90,7 +90,7 @@ class UserTest extends TestCase
     {
         $this->user1->updateFromDTO($this->userDTO, $this->userRepository->reveal(), User::UPDATE_ONLY_NULL);
 
-        $this->assertEquals('13090000000', $this->user1->phone);
+        $this->assertEquals('13090000000', $this->user1->phone());
         $this->assertEquals('李四', $this->user1->name);
         $this->assertEquals('1', $this->user1->gender);
         $this->assertEquals('1', $this->user1->birthdayChange);
@@ -119,7 +119,7 @@ class UserTest extends TestCase
             true
         );
 
-        $this->assertEquals('13090000000', $this->user2->phone);
+        $this->assertEquals('13090000000', $this->user2->phone());
         $this->assertEquals('张三', $this->user2->name);
         $this->assertEquals('1', $this->user2->gender);
     }

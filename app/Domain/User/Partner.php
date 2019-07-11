@@ -22,7 +22,7 @@ class Partner implements IExtractable
     public const P_WX_ACCOUNT = 3; // 微信公众号（油站的公众号，小号）
     public const P_OTHER = 100; // 其它类型，一般是各种合作第三方
     // 支付宝和微信大号的flag
-    protected const FLAGS = [
+    public const FLAGS = [
         self::P_WEIXIN => 'wxb44ac0b31fbb1c11',
         self::P_ALIPAY => '2016091801918137'
     ];
@@ -31,7 +31,7 @@ class Partner implements IExtractable
     protected $userId;
     // 第三方类型，见前面的常量定义
     protected $type;
-    // 第三方标识，如公众号 app_id。由于微信
+    // 第三方标识，如公众号 app_id
     protected $flag;
 
     public function __construct($userId, int $type, $flag)

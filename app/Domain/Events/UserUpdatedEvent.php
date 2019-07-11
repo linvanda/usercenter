@@ -7,7 +7,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * 跟新用户信息事件
- * Class UserAddedEvent
+ * Class UserUpdatedEvent
  * @package App\Domain\Events
  */
 class UserUpdatedEvent extends Event

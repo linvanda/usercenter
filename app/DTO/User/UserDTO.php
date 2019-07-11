@@ -4,7 +4,6 @@ namespace App\DTO\User;
 
 use App\Domain\User\Partner;
 use App\Domain\User\PartnerMap;
-use App\Domain\User\User;
 use WecarSwoole\DTO;
 
 /**

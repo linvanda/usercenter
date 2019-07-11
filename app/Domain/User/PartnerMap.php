@@ -44,4 +44,25 @@ class PartnerMap extends Map
     {
         $this->offsetSet($partner->getPartnerKey(), $partner);
     }
+
+    /**
+     * 判断两个 partnerMap 是否有分歧
+     * 所谓分歧，指两者有同类型却不同userid的 partner
+     * @param PartnerMap $partnerMap
+     * @return bool
+     */
+    public function isDivergent(PartnerMap $partnerMap): bool
+    {
+        if (!count($this) || !count($partnerMap)) {
+            return false;
+        }
+
+        foreach ($this as $key => $partner) {
+            if (isset($partnerMap[$key]) && $partnerMap[$key] != $partner) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
