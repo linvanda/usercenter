@@ -125,8 +125,8 @@ class MergeServiceTest extends TestCase
      */
     public function testMergeChooseByRegtime()
     {
-        $user1 = new User(new UserDTO(['uid' => 123, 'regtime' => 1239999998, 'birthday' => '2009-01-01']));
-        $user2 = new User(new UserDTO(['name' => '张三', 'uid' => 456, 'regtime' => 1239999999, 'birthday' => '2019-01-01']));
+        $user1 = new User(new UserDTO(['uid' => 123, 'regtime' => '2018-01-01', 'birthday' => '2009-01-01']));
+        $user2 = new User(new UserDTO(['name' => '张三', 'uid' => 456, 'regtime' => '2019-02-01', 'birthday' => '2019-01-01']));
 
         $this->eventDispatcher->dispatch(Argument::type(UserMergedEvent::class))->shouldBeCalled();
         $this->userRepository->merge(Argument::type(User::class), Argument::type(User::class))->shouldBeCalled();

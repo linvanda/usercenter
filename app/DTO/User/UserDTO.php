@@ -61,6 +61,17 @@ class UserDTO extends DTO
 
     public function __construct(array $data = [], bool $strict = true, bool $mapping = true)
     {
+        // partners 特殊处理：从二维数组构建对象
+        if (isset($data['partners']) &&
+            $data['partners'] &&
+            is_array($data['partners']) &&
+            is_array($this->partners[0])
+        ) {
+            $data['partners'] = new PartnerMap(array_map(function ($item) {
+                return new Partner($item['user_id'], $item['type'], $item['flag'] ?? null);
+            }, $data['partners']));
+        }
+
         parent::__construct($data, $strict, $mapping);
 
         if ($this->partners === null) {

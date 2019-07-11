@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Domain\User;
+use WecarSwoole\Exceptions\Exception;
 use WecarSwoole\OTA\IExtractable;
 use WecarSwoole\OTA\ObjectToArray;
 
@@ -19,7 +20,6 @@ class Partner implements IExtractable
      */
     public const P_WEIXIN = 1; // 微信大号
     public const P_ALIPAY = 2; // 支付宝大号
-    public const P_WX_ACCOUNT = 3; // 微信公众号（油站的公众号，小号）
     public const P_OTHER = 100; // 其它类型，一般是各种合作第三方
     // 支付宝和微信大号的flag
     public const FLAGS = [
@@ -34,8 +34,18 @@ class Partner implements IExtractable
     // 第三方标识，如公众号 app_id
     protected $flag;
 
-    public function __construct($userId, int $type, $flag)
+    /**
+     * Partner constructor.
+     * @param $userId
+     * @param int $type
+     * @param null $flag
+     * @throws Exception
+     */
+    public function __construct($userId, int $type, $flag = null)
     {
+        if (!$flag && !($flag = self::FLAGS[$type])) {
+            throw new Exception("invalid partner,flag is null.userid:{$userId}");
+        }
         $this->userId = $userId;
         $this->type = $type;
         $this->flag = $flag;
@@ -68,16 +78,5 @@ class Partner implements IExtractable
     public static function getPartnerKeyStatic(int $type, $flag): string
     {
         return $type . '-' . ($flag ?? self::FLAGS[$type]);
-    }
-
-    public function equal(?Partner $partner): bool
-    {
-        if (!$partner) {
-            return false;
-        }
-
-        return $this->userId === $partner->userId &&
-            $this->type === $partner->type &&
-            $this->flag === $partner->flag;
     }
 }

@@ -21,12 +21,13 @@ class User extends Entity
     public const UPDATE_ONLY_NULL = 2;
     public const UPDATE_NEW = 3;
 
-    /** @var UserId */
+    /** @var UserId $userId 是内部标识，不应当对外暴露*/
     protected $userId;
     protected $name;
     protected $nickname;
     protected $gender;
     protected $birthday;
+    /** @var string */
     protected $regtime;
     protected $headurl;
     protected $tinyHeadurl;
@@ -65,11 +66,18 @@ class User extends Entity
         if (!$this->inviteCode) {
             $this->inviteCode = Random::str(12);
         }
+
+        $this->regtime = $this->regtime ?: date('Y-m-d H:i:s');
     }
 
     public function uid(): int
     {
         return $this->userId->getUid();
+    }
+
+    public function setUid(int $uid)
+    {
+        $this->userId->setUid($uid);
     }
 
     public function partners(): PartnerMap
@@ -88,7 +96,7 @@ class User extends Entity
      * @return Partner|null
      * @throws \WecarSwoole\Exceptions\InvalidOperationException
      */
-    public function getPartner(int $type, $flag)
+    public function getPartner(int $type, $flag = null): ?Partner
     {
         return $this->userId->getPartner($type, $flag);
     }
@@ -162,7 +170,7 @@ class User extends Entity
                 'headurl' => $otherUser->headurl,
                 'tinyHeadurl' => $otherUser->tinyHeadurl,
                 'registerFrom' => $otherUser->registerFrom,
-            ])
+            ], true, false)
         );
     }
 

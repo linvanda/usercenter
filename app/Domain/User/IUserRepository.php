@@ -31,7 +31,7 @@ interface IUserRepository
 
     public function getUserByUid(int $uid): ?User;
 
-    public function update(User $user);
+    public function update(User $user, User $oldUser = null);
 
     public function merge(User $targetUser, User $abandonUser);
 
