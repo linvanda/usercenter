@@ -15,7 +15,7 @@ class Users extends ApiRoute
          *      user_flag：必填。用户标识
          * query_params:
          *      flag_type: 必填。表示 user_flag 的类型：1 uid，3 phone，4 partner_id(第三方id)
-         *      partner_type：flag_type = 4 时必填，见 PartnerUser 里面的常量定义
+         *      partner_type：flag_type = 4 时必填，见 Partner 里面的常量定义
          *      partner_flag：flag_type = 4 时一般需要提供该参数，第三方标识（如微信卡号），微信大号和支付宝大号可以选填（建议带上）
          */
         $this->get('/v1/users/{user_flag}', '/V1/Users/info');

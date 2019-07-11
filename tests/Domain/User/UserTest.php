@@ -2,7 +2,7 @@
 
 namespace Test\Domain\User;
 
-use App\Domain\User\PartnerUser;
+use App\Domain\User\Partner;
 use App\Domain\User\User;
 use App\DTO\User\UserDTO;
 use App\Exceptions\BirthdayException;
@@ -177,11 +177,11 @@ class UserTest extends TestCase
 
     public function testUpdateWhenPartnerNoConflict()
     {
-        $partner1 = new PartnerUser('1235', PartnerUser::P_WEIXIN, '111');
-        $partner2 = new PartnerUser('2989', PartnerUser::P_ALIPAY, '123');
-        $this->user1->userId->addPartnerUser($partner1);
-        $this->user1->userId->addPartnerUser($partner2);
-        $this->userDTO->partnerUsers->add($partner1);
+        $partner1 = new Partner('1235', Partner::P_WEIXIN, '111');
+        $partner2 = new Partner('2989', Partner::P_ALIPAY, '123');
+        $this->user1->userId->addPartner($partner1);
+        $this->user1->userId->addPartner($partner2);
+        $this->userDTO->partners->add($partner1);
 
         // 两者的partner 相同，不会出问题
         $this->user1->updateFromDTO(
@@ -191,8 +191,8 @@ class UserTest extends TestCase
             true
         );
 
-        $this->assertEquals($partner1, $this->user1->userId->getPartnerUser($partner1->type(), $partner1->flag()));
-        $this->assertEquals(2, count($this->user1->userId->getPartnerUsers()));
+        $this->assertEquals($partner1, $this->user1->userId->getPartner($partner1->type(), $partner1->flag()));
+        $this->assertEquals(2, count($this->user1->userId->getPartners()));
     }
 
     /**
@@ -202,10 +202,10 @@ class UserTest extends TestCase
      */
     public function testUpdateWhenPartnerConflict()
     {
-        $partner1 = new PartnerUser('1235', PartnerUser::P_WEIXIN, '111');
-        $partner2 = new PartnerUser('2989', PartnerUser::P_WEIXIN, '111');
-        $this->user1->userId->addPartnerUser($partner1);
-        $this->userDTO->partnerUsers->add($partner2);
+        $partner1 = new Partner('1235', Partner::P_WEIXIN, '111');
+        $partner2 = new Partner('2989', Partner::P_WEIXIN, '111');
+        $this->user1->userId->addPartner($partner1);
+        $this->userDTO->partners->add($partner2);
 
         $this->expectException(PartnerException::class);
 

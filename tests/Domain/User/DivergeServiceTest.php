@@ -3,7 +3,7 @@
 namespace Test\Domain\User;
 
 use App\Domain\User\DivergeService;
-use App\Domain\User\PartnerUser;
+use App\Domain\User\Partner;
 use App\Domain\User\User;
 use App\DTO\User\UserDTO;
 use App\Exceptions\UserRegisterConflictException;
@@ -44,13 +44,13 @@ class DivergeServiceTest extends TestCase
         $this->userRepository = (new Prophet())->prophesize()->willImplement(IUserRepository::class);
         $this->mergeService = (new Prophet())->prophesize(MergeService::class);
 
-        $partnerUser = new PartnerUser(980, PartnerUser::P_WEIXIN, 1234);
+        $partner = new Partner(980, Partner::P_WEIXIN, 1234);
         $this->userOfPartner = new User(new UserDTO(['uid' => 123]));
         $this->userOfPhone = new User(new UserDTO(['uid' => 456]));
         $this->userDTO = new UserDTO(['phone' => '13099999999']);
 
-        $this->userOfPartner->userId->addPartnerUser($partnerUser);
-        $this->userDTO->partnerUsers->add($partnerUser);
+        $this->userOfPartner->userId->addPartner($partner);
+        $this->userDTO->partners->add($partner);
     }
 
     /**
@@ -71,10 +71,10 @@ class DivergeServiceTest extends TestCase
      */
     public function testDivergeWhenPhoneUserHasSamePartnerType()
     {
-        /** @var PartnerUser $newPartner */
-        $newPartner = $this->userDTO->partnerUsers->first();
-        $phonePartner = new PartnerUser(18378492, $newPartner->type(), $newPartner->flag());
-        $this->userOfPhone->userId->addPartnerUser($phonePartner);
+        /** @var Partner $newPartner */
+        $newPartner = $this->userDTO->partners->first();
+        $phonePartner = new Partner(18378492, $newPartner->type(), $newPartner->flag());
+        $this->userOfPhone->userId->addPartner($phonePartner);
 
         $this->expectException(UserRegisterConflictException::class);
 

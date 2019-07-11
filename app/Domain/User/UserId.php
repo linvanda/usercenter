@@ -28,25 +28,25 @@ class UserId
     protected $phone;
     /**
      * 第三方用户标识列表
-     * @var PartnerUserMap
+     * @var PartnerMap
      */
-    protected $partnerUsers;
+    protected $partners;
 
     /**
      * UserId constructor.
      * @param int|null $uid
      * @param string|null $phone
      * @param array $relUids
-     * @param PartnerUser $partner
+     * @param Partner $partner
      */
     public function __construct(
         int $uid = null,
         string $phone = null,
         array $relUids = [],
-        PartnerUserMap $partners = null
+        PartnerMap $partners = null
     ) {
         $this->setProperties(func_get_args());
-        $this->partnerUsers = $partners ?? new PartnerUserMap();
+        $this->partners = $partners ?? new PartnerMap();
     }
 
     public function getUid(): ?int
@@ -78,41 +78,41 @@ class UserId
         return $this->phone;
     }
 
-    public function getPartnerUsers(): PartnerUserMap
+    public function getPartners(): PartnerMap
     {
-        return $this->partnerUsers;
+        return $this->partners;
     }
 
     /**
      * 添加用户的第三方标识
-     * @param PartnerUser $partner
+     * @param Partner $partner
      */
-    public function addPartnerUser(PartnerUser $partner)
+    public function addPartner(Partner $partner)
     {
-        $this->partnerUsers[$partner->getPartnerKey()] = $partner;
+        $this->partners[$partner->getPartnerKey()] = $partner;
     }
 
     /**
      * 获取用户在某第三方的标识
      * @param int $type
      * @param string $flag
-     * @return PartnerUser|null
+     * @return Partner|null
      */
-    public function getPartnerUser(?int $type = null, $flag = null): ?PartnerUser
+    public function getPartner(?int $type = null, $flag = null): ?Partner
     {
         if ($type === null) {
             // 取第一个
-            return $this->partnerUsers->first();
+            return $this->partners->first();
         }
-        return $this->partnerUsers[PartnerUser::getPartnerKeyStatic($type, $flag)];
+        return $this->partners[Partner::getPartnerKeyStatic($type, $flag)];
     }
 
-    public function modify(?PartnerUser $partnerUser, $phone = '', bool $onlyModifyIfNull = false)
+    public function modify(?Partner $partner, $phone = '', bool $onlyModifyIfNull = false)
     {
-        if ($partnerUser) {
-            $key = $partnerUser->getPartnerKey();
-            if (!$onlyModifyIfNull || !isset($this->partnerUsers[$key])) {
-                $this->partnerUsers[$key] = $partnerUser;
+        if ($partner) {
+            $key = $partner->getPartnerKey();
+            if (!$onlyModifyIfNull || !isset($this->partners[$key])) {
+                $this->partners[$key] = $partner;
             }
         }
 

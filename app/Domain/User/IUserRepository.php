@@ -25,7 +25,7 @@ interface IUserRepository
      */
     public function getDTOByUserId(UserId $userId): ?UserDTO;
 
-    public function getUserByPartner(?PartnerUser $partnerUser): ?User;
+    public function getUserByPartner(?Partner $partner): ?User;
 
     public function getUserByPhone($phone = ''): ?User;
 

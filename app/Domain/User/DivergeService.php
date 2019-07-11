@@ -36,7 +36,7 @@ class DivergeService
 
         $errContext = [
             'new_phone' => $userOfPhone->phone,
-            'new_partner' => $userOfPartner->userId->getPartnerUser()->toArray(),
+            'new_partner' => $userOfPartner->userId->getPartner()->toArray(),
             'extra' => '根据新用户的phone和partner信息查出两条不一样的记录'
         ];
 
@@ -46,8 +46,8 @@ class DivergeService
         }
 
         // phone 查出来的有同类型 partner（如另一个微信大号），也需要人工处理
-        $newUserPartner = $userDTO->partnerUsers->first();
-        if ($userOfPhone->userId->getPartnerUsers()[$newUserPartner->getPartnerKey()]) {
+        $newUserPartner = $userDTO->partners->first();
+        if ($userOfPhone->userId->getPartners()[$newUserPartner->getPartnerKey()]) {
             throw new UserRegisterConflictException("用户数据存在冲突，需要人工处理", 503, $errContext);
         }
 

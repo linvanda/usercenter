@@ -60,7 +60,7 @@ class User extends Entity
         }
 
         // 组装 user 标识
-        $this->userId = new UserId($userDTO->uid, $userDTO->phone, $userDTO->relUids ?? [], $userDTO->partnerUsers);
+        $this->userId = new UserId($userDTO->uid, $userDTO->phone, $userDTO->relUids ?? [], $userDTO->partners);
 
         // 邀请码
         if (!$this->inviteCode) {
@@ -105,7 +105,7 @@ class User extends Entity
 
     /**
      * @param $name
-     * @return PartnerUserMap|array|int|mixed|null
+     * @return PartnerMap|array|int|mixed|null
      * @throws \WecarSwoole\Exceptions\PropertyNotFoundException
      */
     public function __get($name)
@@ -118,8 +118,8 @@ class User extends Entity
             return $this->userId->getUid();
         }
 
-        if ($name == 'partnerUsers') {
-            return $this->userId->getPartnerUsers();
+        if ($name == 'partners') {
+            return $this->userId->getPartners();
         }
 
         if ($name == 'relUids') {
@@ -129,13 +129,23 @@ class User extends Entity
         return parent::__get($name);
     }
 
+    public function partners(): PartnerMap
+    {
+        return $this->userId->getPartners();
+    }
+
+    public function relUids(): array
+    {
+        return $this->userId->getRelUids();
+    }
+
     /**
      * 仅更新本对象空属性
      * @param UserDTO $userDTO
      */
     private function updateIfNull(UserDTO $userDTO)
     {
-        $this->userId->modify($userDTO->partnerUsers->first(), $userDTO->phone, true);
+        $this->userId->modify($userDTO->partners->first(), $userDTO->phone, true);
 
         // 车牌号
         if ($userDTO->carNumbers) {
@@ -177,7 +187,7 @@ class User extends Entity
         /**
          * 更新数据
          */
-        $this->userId->modify($userDTO->partnerUsers->first(), $userDTO->phone);
+        $this->userId->modify($userDTO->partners->first(), $userDTO->phone);
 
         // 车牌号
         if ($userDTO->carNumbers) {
@@ -209,10 +219,7 @@ class User extends Entity
     private function validateUpdateRule(UserDTO $userDTO, IUserRepository $userRepository)
     {
         // 手机号检验
-        if ($userDTO->phone &&
-            $userDTO->phone !== $this->phone &&
-            $userRepository->isPhoneBeUsed($userDTO->phone)
-        ) {
+        if ($userDTO->phone && $userDTO->phone !== $this->phone && $userRepository->isPhoneBeUsed($userDTO->phone)) {
             throw new InvalidPhoneException("phone has been register:{$userDTO->phone}");
         }
 
@@ -226,9 +233,9 @@ class User extends Entity
         }
 
         // partner 校验：如果同类型 partner 已经有值，则不允许修改
-        /** @var PartnerUser $newPartner */
-        if (($newPartner = $userDTO->partnerUsers->first()) &&
-            !$newPartner->equal($this->userId->getPartnerUsers()[$newPartner->getPartnerKey()])
+        /** @var Partner $newPartner */
+        if (($newPartner = $userDTO->partners->first()) &&
+            !$newPartner->equal($this->userId->getPartners()[$newPartner->getPartnerKey()])
         ) {
             throw new PartnerException("partner has exits,can not change it as {$newPartner->userId()}");
         }

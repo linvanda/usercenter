@@ -2,8 +2,8 @@
 
 namespace App\DTO\User;
 
-use App\Domain\User\PartnerUser;
-use App\Domain\User\PartnerUserMap;
+use App\Domain\User\Partner;
+use App\Domain\User\PartnerMap;
 use App\Domain\User\User;
 use WecarSwoole\DTO;
 
@@ -56,16 +56,16 @@ class UserDTO extends DTO
     public $inviteCode;
     /**
      * 用户的第三方标识列表
-     * @var PartnerUserMap
+     * @var PartnerMap
      */
-    public $partnerUsers;
+    public $partners;
 
     public function __construct(array $data = [], bool $strict = true, bool $mapping = true)
     {
         parent::__construct($data, $strict, $mapping);
 
-        if ($this->partnerUsers === null) {
-            $this->partnerUsers = new PartnerUserMap([]);
+        if ($this->partners === null) {
+            $this->partners = new PartnerMap([]);
         }
     }
 
@@ -77,13 +77,13 @@ class UserDTO extends DTO
     ): array {
         $arr = parent::toArray($camelToSnake, $withNull, $zip, $exFields);
 
-        if (!$this->partnerUsers || !count($this->partnerUsers)) {
+        if (!$this->partners || !count($this->partners)) {
             $arr['partner_users'] = [];
         } else {
-            // 解析 partnerUsers
-            $arr['partner_users'] = array_map(function (PartnerUser $partnerUser) {
-                return $partnerUser->toArray();
-            }, $this->partnerUsers->getArrayCopy());
+            // 解析 partners
+            $arr['partner_users'] = array_map(function (Partner $partner) {
+                return $partner->toArray();
+            }, $this->partners->getArrayCopy());
         }
 
         return $arr;

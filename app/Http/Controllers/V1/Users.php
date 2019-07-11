@@ -4,8 +4,8 @@ namespace App\Http\Controllers\V1;
 
 use App\Domain\User\IUserRepository;
 use App\Domain\User\Merchant;
-use App\Domain\User\PartnerUser;
-use App\Domain\User\PartnerUserMap;
+use App\Domain\User\Partner;
+use App\Domain\User\PartnerMap;
 use App\Domain\User\User;
 use App\Domain\User\UserId;
 use App\DTO\User\UserDTO;
@@ -76,7 +76,7 @@ class Users extends Controller
                     null,
                     null,
                     [],
-                    new PartnerUser($params['user_flag'], $params['partner_type'], $params['partner_flag'])
+                    new Partner($params['user_flag'], $params['partner_type'], $params['partner_flag'])
                 );
                 break;
         }
@@ -99,8 +99,8 @@ class Users extends Controller
 
         // partner 标识处理
         if ($params['partner_type'] && $params['partner_id']) {
-            $userDTO->partnerUsers->add(
-                new PartnerUser($params['partner_id'], $params['partner_type'], $params['partner_flag'])
+            $userDTO->partners->add(
+                new Partner($params['partner_id'], $params['partner_type'], $params['partner_flag'])
             );
         }
 

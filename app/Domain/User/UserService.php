@@ -39,14 +39,14 @@ class UserService
      */
     public function addUser(UserDTO $userDTO, int $updateStrategy = User::UPDATE_ONLY_NULL): User
     {
-        $thisPartnerUser = $userDTO->partnerUsers->first();
+        $thisPartner = $userDTO->partners->first();
 
         // 新用户没有 partner 和 phone 信息，则直接新增用户记录
-        if (!$thisPartnerUser && !$userDTO->phone) {
+        if (!$thisPartner && !$userDTO->phone) {
             return $this->add($userDTO);
         }
 
-        $userOfPartner = $this->userRepository->getUserByPartner($thisPartnerUser);
+        $userOfPartner = $this->userRepository->getUserByPartner($thisPartner);
         $userOfPhone = $this->userRepository->getUserByPhone($userDTO->phone ?? '');
 
         // partner 和 phone 都没有查到用户记录，说明是完全的新用户，直接添加
@@ -67,9 +67,9 @@ class UserService
 
         // 只有 phone 查出了记录
         if ($userOfPhone) {
-            $newPartner = $userDTO->partnerUsers->first();
+            $newPartner = $userDTO->partners->first();
             if ($newPartner &&
-                $userOfPhone->userId->getPartnerUsers()[$newPartner->getPartnerKey()]
+                $userOfPhone->userId->getPartners()[$newPartner->getPartnerKey()]
             ) {
                 // phone 查出来的用户的 partner 和当前的不一致，抛出异常
                 throw new UserRegisterConflictException(
@@ -91,7 +91,7 @@ class UserService
                 504,
                 [
                     'new_phone' => $userDTO->phone,
-                    'new_partner' => $userDTO->partnerUsers->first()->toArray()
+                    'new_partner' => $userDTO->partners->first()->toArray()
                 ]
             );
         }

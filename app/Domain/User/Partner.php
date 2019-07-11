@@ -10,7 +10,7 @@ use WecarSwoole\OTA\ObjectToArray;
  * Class Partner
  * @package App\Domain\User
  */
-class PartnerUser implements IExtractable
+class Partner implements IExtractable
 {
     use ObjectToArray;
 
@@ -70,14 +70,14 @@ class PartnerUser implements IExtractable
         return $type . '-' . ($flag ?? self::FLAGS[$type]);
     }
 
-    public function equal(?PartnerUser $partnerUser): bool
+    public function equal(?Partner $partner): bool
     {
-        if (!$partnerUser) {
+        if (!$partner) {
             return false;
         }
 
-        return $this->userId === $partnerUser->userId &&
-            $this->type === $partnerUser->type &&
-            $this->flag === $partnerUser->flag;
+        return $this->userId === $partner->userId &&
+            $this->type === $partner->type &&
+            $this->flag === $partner->flag;
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Foundation\Repository\User;
 
-use App\Domain\User\PartnerUser;
-use App\Domain\User\PartnerUserMap;
+use App\Domain\User\Partner;
+use App\Domain\User\PartnerMap;
 use App\Domain\User\User;
 use App\Domain\User\IUserRepository;
 use App\Domain\User\UserId;
@@ -58,7 +58,7 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
             $userArr = $this->getUserArrByPhone($userId->phone);
         } elseif ($userId->partners) {
             // 用第一个查
-            $userArr = $this->getUserArrByPartner(reset($userId->getPartnerUsers()));
+            $userArr = $this->getUserArrByPartner(reset($userId->getPartners()));
         }
 
         if (!$userArr) {
@@ -71,7 +71,7 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
         $userDTO = new UserDTO($userArr);
 
         // TODO UserDTO 需要设置 partnerIds 字段
-        $userDTO->partnerUsers = new PartnerUserMap();
+        $userDTO->partners = new PartnerMap();
 
         return $userDTO;
     }
@@ -117,21 +117,21 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
     }
 
     /**
-     * @param PartnerUser $partner
+     * @param Partner $partner
      * @return array
      * @throws \Exception
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    private function getUserArrByPartner(PartnerUser $partner): array
+    private function getUserArrByPartner(Partner $partner): array
     {
         if ($userInfo = $this->getUserInfoFromCache($partner, UserId::FLAG_PARTNER)) {
             return $userInfo;
         }
 
         //TODO 用户系统重构后，应当从统一的 partner 表查询信息
-        if ($partner->type() == PartnerUser::P_WEIXIN) {
+        if ($partner->type() == Partner::P_WEIXIN) {
             $userInfo = $this->getUserArrFromDB("wechat_openid=:openid", ['openid' => $partner->id()]);
-        } elseif ($partner->type() == PartnerUser::P_ALIPAY) {
+        } elseif ($partner->type() == Partner::P_ALIPAY) {
             $uid = $this->query->select('uid')->from('wei_auth_users')
                 ->where('user_id=:userid', ['userid' => $partner->id()])
                 ->where('is_delete=0')
@@ -233,7 +233,7 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
 
     private function getUserCacheKey($flag, int $type): string
     {
-        if ($flag instanceof PartnerUser) {
+        if ($flag instanceof Partner) {
             $flag = $flag->id() . '==' . $flag->type();
         }
 
