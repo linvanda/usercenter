@@ -7,9 +7,9 @@ use App\Exceptions\BirthdayException;
 use App\Exceptions\InvalidMergeException;
 use App\Exceptions\InvalidPhoneException;
 use App\Exceptions\PartnerException;
+use EasySwoole\Utility\Random;
 use WecarSwoole\Entity;
 use WecarSwoole\Exceptions\Exception;
-use WecarSwoole\Util\Random;
 
 class User extends Entity
 {
@@ -64,7 +64,7 @@ class User extends Entity
 
         // 邀请码
         if (!$this->inviteCode) {
-            $this->inviteCode = Random::str(12);
+            $this->inviteCode = Random::character(12);
         }
 
         $this->regtime = $this->regtime ?: date('Y-m-d H:i:s');

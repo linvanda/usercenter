@@ -65,7 +65,7 @@ class UserDTO extends DTO
         if (isset($data['partners']) &&
             $data['partners'] &&
             is_array($data['partners']) &&
-            is_array($this->partners[0])
+            is_array($data['partners'][0])
         ) {
             $data['partners'] = new PartnerMap(array_map(function ($item) {
                 return new Partner($item['user_id'], $item['type'], $item['flag'] ?? null);
@@ -86,12 +86,11 @@ class UserDTO extends DTO
         array $exFields = []
     ): array {
         $arr = parent::toArray($camelToSnake, $withNull, $zip, $exFields);
-
         if (!$this->partners || !count($this->partners)) {
-            $arr['partner_users'] = [];
+            $arr['partners'] = [];
         } else {
             // 解析 partners
-            $arr['partner_users'] = array_map(function (Partner $partner) {
+            $arr['partners'] = array_map(function (Partner $partner) {
                 return $partner->toArray();
             }, $this->partners->getArrayCopy());
         }

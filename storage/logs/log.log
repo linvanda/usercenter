@@ -3626,3 +3626,5 @@ Stack trace:
 [2019-07-08 21:13:42][DEBUG][NOTICE] : [Undefined index: HTTPS at file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/Util/Url.php line:124]
 [2019-07-08 21:13:42][DEBUG][NOTICE] : [Undefined index: HTTP_X_FORWARDED_PROTO at file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/Util/Url.php line:124]
 [2019-07-08 21:13:42][DEBUG][NOTICE] : [Undefined index: HTTP_HOST at file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/Util/Url.php line:125]
+[2019-07-13 14:53:59][DEBUG][ERROR] : [Operation timed out at file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/RedisFactory.php line:28]
+[2019-07-13 14:54:16][DEBUG][ERROR] : [Operation timed out at file:/Users/linvanda/Application/weicheche/usercenter/vendor/framework/wecarswoole/src/RedisFactory.php line:28]

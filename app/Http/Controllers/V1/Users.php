@@ -5,7 +5,6 @@ namespace App\Http\Controllers\V1;
 use App\Domain\User\IUserRepository;
 use App\Domain\User\Merchant;
 use App\Domain\User\Partner;
-use App\Domain\User\PartnerMap;
 use App\Domain\User\User;
 use App\Domain\User\UserId;
 use App\DTO\User\UserDTO;
@@ -46,16 +45,6 @@ class Users extends Controller
     }
 
     /**
-     * @throws \Exception
-     */
-    public function test()
-    {
-//        $resp = API::invoke('weiche:oil.info', ['name' => '三字'], ['throw_exception' => true]);
-//        $url = Url::realUrl('v1/user/{uid}', [], ['uid' => 3243]);
-//        $this->return($resp->getBody());
-    }
-
-    /**
      * 通过 partner_id+partner_type、phone 或者 uid 获取用户信息
      * @throws \Throwable
      */
@@ -81,7 +70,8 @@ class Users extends Controller
                 break;
         }
 
-        $this->return(Container::get(IUserRepository::class)->getDTOByUserId($userId)->toArray());
+        $userDTO = Container::get(IUserRepository::class)->getDTOByUserId($userId);
+        $this->return($userDTO ? $userDTO->toArray() : []);
     }
 
     /**
