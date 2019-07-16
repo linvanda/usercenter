@@ -1,6 +1,6 @@
 /vendor/
 .idea/
 /storage/*
+/storage/temp/*
 !/storage/app/
-!/storage/temp/
-!/storage/logs/
+!/storage/temp/.gitkeep
