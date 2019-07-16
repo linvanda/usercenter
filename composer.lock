@@ -746,7 +746,7 @@
             "source": {
                 "type": "git",
                 "url": "https://gitlab4.weicheche.cn/framework/wecarswoole.git",
-                "reference": "4321c52876b7478a65ce355772c46d5e48b4d61a"
+                "reference": "bd9de5b4529fdcbdc4b12206791da36d6a4cebad"
             },
             "require": {
                 "dev/locker": "^1.0",
@@ -781,7 +781,7 @@
                 }
             },
             "description": "wecheche foundational web framework",
-            "time": "2019-07-11T04:02:15+00:00"
+            "time": "2019-07-16T09:19:02+00:00"
         },
         {
             "name": "jeremeamia/superclosure",
