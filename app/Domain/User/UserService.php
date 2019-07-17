@@ -3,6 +3,7 @@
 namespace App\Domain\User;
 
 use App\Domain\Events\UserAddedEvent;
+use App\Domain\Events\UserBoundEvent;
 use App\Domain\Events\UserUpdatedEvent;
 use App\DTO\User\UserDTO;
 use App\Exceptions\InvalidPhoneException;
@@ -12,15 +13,18 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 class UserService
 {
     private $userRepository;
+    private $merchantRepository;
     private $divergeService;
     private $eventDispatcher;
 
     public function __construct(
         IUserRepository $userRepository,
+        IMerchantRepository $merchantRepository,
         DivergeService $divergeService,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->userRepository = $userRepository;
+        $this->merchantRepository = $merchantRepository;
         $this->divergeService = $divergeService;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -68,21 +72,24 @@ class UserService
             if ($userOfPhone->partners()->isDivergent($userDTO->partners)) {
                 // phone 查出来的用户的 partner 和当前的不一致，抛出异常
                 throw new UserRegisterConflictException(
-                    '用户数据存在异常，需要人工处理',
+                    "用户{$userDTO->phone}数据存在异常，需要人工处理",
                     503,
                     [
-                        'new_phone' => $userOfPhone->phone,
+                        'new_phone' => $userOfPhone->phone(),
                         'new_partner' => $userDTO->partners->first()->toArray()
                     ]
                 );
+            } else {
+                // 更新
+                return $this->update($userOfPhone, $userDTO, $updateStrategy);
             }
         }
 
         // 只有 partner 查出了记录
-        if ($userDTO->phone && $userOfPartner->phone) {
+        if ($userDTO->phone && $userOfPartner->phone()) {
             // 两者的 phone 不一致，抛出异常
             throw new UserRegisterConflictException(
-                '用户数据存在异常，需要人工处理',
+                "您已用手机{$userOfPartner->phone()}注册过，如需帮助，请联系工作人员",
                 504,
                 [
                     'new_phone' => $userDTO->phone,
@@ -123,6 +130,9 @@ class UserService
         $user->updateFromDTO($userDTO, $this->userRepository, $updateStrategy, $forceChangePhone);
         $this->userRepository->update($user);
 
+        // merchant
+        $this->bindUserToMerchant($user, $userDTO->merchant);
+
         // 发布用户信息更新事件
         $this->eventDispatcher->dispatch(new UserUpdatedEvent($oldUser, $user));
 
@@ -133,8 +143,28 @@ class UserService
     {
         $user = $this->userRepository->add(new User($userDTO));
 
+        // merchant
+        $this->bindUserToMerchant($user, $userDTO->merchant);
+
         // 发布用户添加事件
         $this->eventDispatcher->dispatch(new UserAddedEvent($user));
+
         return $user;
+    }
+
+    /**
+     * @param User $user
+     * @param Merchant $merchant
+     */
+    private function bindUserToMerchant(User $user, Merchant $merchant)
+    {
+        if ($merchant->isPlatform()) {
+            return;
+        }
+
+        $merchant->addUser($user, $this->merchantRepository);
+        $this->merchantRepository->save($merchant);
+
+        $this->eventDispatcher->dispatch(new UserBoundEvent($user, $merchant));
     }
 }

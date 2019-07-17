@@ -42,7 +42,7 @@ class UserSubscriber implements EventSubscriberInterface
         $this->changeLog($event->oldUser(), $event->newUser(), 1);
     }
 
-    public function usrMerged(UserMergedEvent $event)
+    public function userMerged(UserMergedEvent $event)
     {
         $this->changeLog($event->abandonUser(), $event->targetUser(), 2);
 

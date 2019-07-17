@@ -7,6 +7,7 @@ use App\Domain\User\Merchant;
 use App\Domain\User\Partner;
 use App\Domain\User\User;
 use App\Domain\User\UserId;
+use App\Domain\User\UserService;
 use App\DTO\User\UserDTO;
 use WecarSwoole\Container;
 use WecarSwoole\Http\Controller;
@@ -28,9 +29,17 @@ class Users extends Controller
             ],
             'add' => [
                 'gender' => ['optional', 'inArray' => [0, 1, 2]],
-                'birthday' => ['optional', 'regex' => ['arg' => '\d{4}-\d{2}-\d{2}', 'msg' => '生日必须是 YYYY-mm-dd 格式']],
+                'birthday' => ['optional', 'regex' => ['arg' => '/\d{4}-\d{2}-\d{2}/', 'msg' => '生日必须是 YYYY-mm-dd 格式']],
                 'phone' => ['optional', 'length' => 11],
                 'partner_type' => ['optional', 'integer'],
+                'update_strategy' => [
+                    'optional',
+                    'inArray' => [
+                        User::UPDATE_ONLY_NULL,
+                        User::UPDATE_NEW,
+                        User::UPDATE_NONE
+                    ]
+                ],
                 'merchant_type' => [
                     'optional',
                     'inArray' => [
@@ -40,6 +49,7 @@ class Users extends Controller
                         Merchant::T_STATION
                     ]
                 ],
+                'merchant_id' => ['optional', 'integer'],
             ]
         ];
     }
@@ -87,14 +97,12 @@ class Users extends Controller
         $params = $this->params();
         $userDTO = new UserDTO($params, true, false);
 
-        // partner 标识处理
-        if ($params['partner_type'] && $params['partner_id']) {
-            $userDTO->partners->add(
-                new Partner($params['partner_id'], $params['partner_type'], $params['partner_flag'])
-            );
-        }
-
-        $this->return(['uid' => Container::make(User::class)->register($userDTO)]);
+        $this->return(
+            [
+                'uid' => Container::get(UserService::class)
+                    ->addUser($userDTO, $params['update_strategy'] ?? User::UPDATE_ONLY_NULL)->uid()
+            ]
+        );
     }
 
     /**

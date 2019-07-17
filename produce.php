@@ -4,13 +4,13 @@ return [
     'SERVER_NAME' => "EasySwoole",
     'MAIN_SERVER' => [
         'LISTEN_ADDRESS' => '0.0.0.0',
-        'PORT' => 8080,
+        'PORT' => 9501,
         'SERVER_TYPE' => EASYSWOOLE_WEB_SERVER,
         'SOCK_TYPE' => SWOOLE_TCP,
         'RUN_MODEL' => SWOOLE_PROCESS,
         'SETTING' => [
-            'worker_num' => 4,
-            'task_worker_num' => 16,
+            'worker_num' => 2,
+            'task_worker_num' => 8,
             'reload_async' => true,
             'task_enable_coroutine' => true,
             'max_wait_time' => 5,

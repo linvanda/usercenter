@@ -5,6 +5,7 @@ namespace Test\Domain\User;
 use App\Domain\Events\UserAddedEvent;
 use App\Domain\Events\UserUpdatedEvent;
 use App\Domain\User\DivergeService;
+use App\Domain\User\IMerchantRepository;
 use App\Domain\User\IUserRepository;
 use App\Domain\User\MergeService;
 use App\Domain\User\User;
@@ -22,6 +23,11 @@ class UserServiceTest extends TestCase
      * @var ProphecyInterface
      */
     private $userRepository;
+
+    /**
+     * @var ProphecyInterface
+     */
+    private $merchantRepository;
     /**
      * @var ProphecyInterface
      */
@@ -35,6 +41,7 @@ class UserServiceTest extends TestCase
     {
         // 设置外部依赖
         $this->userRepository = (new Prophet())->prophesize()->willImplement(IUserRepository::class);
+        $this->merchantRepository = (new Prophet())->prophesize()->willImplement(IMerchantRepository::class);
         $this->divergeService = (new Prophet())->prophesize(DivergeService::class);
         $this->eventDispatcher = (new Prophet())->prophesize()->willImplement(EventDispatcherInterface::class);
     }
@@ -42,7 +49,7 @@ class UserServiceTest extends TestCase
     /**
      * 新用户没有提供 phone 和 partner 信息，期望直接添加
      */
-    public function testAddWithNoPhoneAndPartner()
+    public function testAddUserWithNoPhoneOrPartner()
     {
         $userDTO = new UserDTO(['name' => '张三']);
 
@@ -121,6 +128,7 @@ class UserServiceTest extends TestCase
     {
         return new UserService(
             $this->userRepository->reveal(),
+            $this->merchantRepository->reveal(),
             $this->divergeService->reveal(),
             $this->eventDispatcher->reveal()
         );

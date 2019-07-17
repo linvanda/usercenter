@@ -8,6 +8,7 @@ use App\Domain\User\IUserRepository;
 use App\Domain\User\UserId;
 use App\DTO\User\UserDTO;
 use App\Foundation\Repository\MySQLUserCenterRepository;
+use EasySwoole\Utility\Random;
 use Psr\SimpleCache\CacheInterface;
 use Swoole\Exception;
 use WecarSwoole\Exceptions\InvalidOperationException;
@@ -42,17 +43,18 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
     public function add(User $user): User
     {
         $userData = [
-            'nickname' => $user->nickname,
+            'nickname' => $user->nickname ?? '',
             'phone' => $user->phone(),
             'name' => $user->name,
             'gender' => $user->gender,
             'birthday' => $user->birthday,
             'headurl' => $user->headurl,
-            'tinyheadurl' => $user->tinyheadurl,
+            'tinyheadurl' => $user->tinyHeadurl,
             'regtime' => $user->regtime,
             'channel' => $user->registerFrom,
             'invite_code' => $user->inviteCode,
-            'update_time' => time(),
+            'password' => Random::character(8),
+            'update_time' => date('Y-m-d H:i:s'),
         ];
 
         // 微信大号
@@ -67,23 +69,93 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
             throw new Exception("添加用户失败");
         }
 
-        // 支付宝大号
-        if ($alipayPartner = $user->getPartner(Partner::P_ALIPAY)) {
-            $this->query->insert('wei_auth_users')
-                ->values([
-                    'type' => 1,
-                    'uid' => $uid,
-                    'user_id' => $alipayPartner->userId(),
-                    'create_time' => time(),
-                    'update_time' => time()
-                ])->execute();
-        }
-
-        // TODO 车牌号目前没有地方记录
-
         $user->setUid($uid);
 
+        $this->addUserPartner($user);
+        $this->addCarNumber($user);
+
         return $user;
+    }
+
+    /**
+     * @param User $user
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws InvalidOperationException
+     * @throws \Exception
+     */
+    public function update(User $user, User $oldUser = null)
+    {
+        if (!$user || !$user->uid()) {
+            return;
+        }
+
+        if (!$oldUser && !($oldUser = $this->getUserByUid($user->uid()))) {
+            throw new InvalidOperationException("user is not exist:{$user->uid()}");
+        }
+
+        $userData = [
+            'name' => $user->name === $oldUser->name ? null : $user->name,
+            'phone' => $user->phone() === $oldUser->phone() ? null : $user->phone(),
+            'nickname' => $user->nickname === $oldUser->nickname ? null : $user->nickname,
+            'gender' => $user->gender === $oldUser->gender ? null : $user->gender,
+            'birthday' => $user->birthday === $oldUser->birthday ? null : $user->birthday,
+            'headurl' => $user->headurl === $oldUser->headurl ? null : $user->headurl,
+            'tinyheadurl' => $user->tinyHeadurl === $oldUser->tinyHeadurl ? null : $user->tinyHeadurl,
+            'birthday_change' => $user->birthdayChange === $oldUser->birthdayChange ? null : $user->birthdayChange,
+            'name' => $user->name === $oldUser->name ? null : $user->name,
+        ];
+
+        if ($wxPartner = $user->getPartner(Partner::P_WEIXIN)) {
+            $userData['wechat_openid'] = $wxPartner->userId();
+        }
+
+        $userData = array_filter($userData, function ($item) {
+            return $item !== null;
+        });
+
+        if ($userData) {
+            $this->query->update('wei_users')->set($userData)->where(['uid' => $user->uid()])->execute();
+        }
+
+        // TODO 车牌号
+        if ($this->isCarNumberChanged($user, $oldUser)) {
+            $this->addCarNumber($user);
+        }
+
+        // partner
+        if ($user->getPartner(Partner::P_ALIPAY) && !$oldUser->getPartner(Partner::P_ALIPAY)) {
+            $this->addUserPartner($user);
+        }
+
+        $this->clearUserCache($user);
+    }
+
+    /**
+     * @param User $user
+     * @throws \Exception
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public function delete(User $user)
+    {
+        $this->query->update('wei_users')->set(['del_time' => time()])->where(['uid' => $user->uid()])->execute();
+        $this->clearUserCache($user);
+    }
+
+    /**
+     * @param User $targetUser
+     * @param User $abandonUser
+     * @throws \Exception
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public function saveMerge(User $targetUser, User $abandonUser)
+    {
+        // 更新 $targetUser
+        $this->update($targetUser);
+
+        // 删除 $abandonUser
+        $this->delete($abandonUser);
+
+        // TODO 记录 rel_uids
     }
 
     /**
@@ -114,6 +186,64 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
         $userDTO = new UserDTO($userArr);
 
         return $userDTO;
+    }
+
+    /**
+     * @param Partner|null $partner
+     * @return User|null
+     * @throws \Exception
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public function getUserByPartner(?Partner $partner): ?User
+    {
+        if (!$partner || !($userArr = $this->getUserArrByPartner($partner))) {
+            return null;
+        }
+
+        // 从 $userArr 创建 User 对象
+        return new User(new UserDTO($userArr));
+    }
+
+    /**
+     * @param string $phone
+     * @return User|null
+     * @throws \Exception
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public function getUserByPhone($phone = ''): ?User
+    {
+        if (!$phone || !($userArr = $this->getUserArrByPhone($phone))) {
+            return null;
+        }
+
+        return new User(new UserDTO($userArr));
+    }
+
+    /**
+     * @param int $uid
+     * @return User|null
+     * @throws \Exception
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public function getUserByUid(int $uid): ?User
+    {
+        if (!$uid || !($userArr = $this->getUserArrByUid($uid))) {
+            return null;
+        }
+
+        return new User(new UserDTO($userArr));
+    }
+
+    /**
+     * @param $phone
+     * @return bool
+     * @throws \Dev\MySQL\Exception\DBException
+     * @throws \Exception
+     */
+    public function isPhoneBeUsed($phone): bool
+    {
+        return (bool)$this->query->select('phone')
+            ->from('wei_users')->where(['phone' => $phone, 'del_time' => 0])->column();
     }
 
     /**
@@ -166,10 +296,10 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
 
         //TODO 用户系统重构后，应当从统一的 partner 表查询信息
         if ($partner->type() == Partner::P_WEIXIN) {
-            $userInfo = $this->getUserArrFromDB("wechat_openid=:openid", ['openid' => $partner->id()]);
+            $userInfo = $this->getUserArrFromDB("wechat_openid=:openid", ['openid' => $partner->userId()]);
         } elseif ($partner->type() == Partner::P_ALIPAY) {
             $uid = $this->query->select('uid')->from('wei_auth_users')
-                ->where('user_id=:userid', ['userid' => $partner->id()])
+                ->where('user_id=:userid', ['userid' => $partner->userId()])
                 ->where('is_delete=0')
                 ->column();
 
@@ -313,96 +443,20 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
         return "userinfo-" . md5("{$type}-{$flag}");
     }
 
-    /**
-     * @param Partner|null $partner
-     * @return User|null
-     * @throws \Exception
-     * @throws \Psr\SimpleCache\InvalidArgumentException
-     */
-    public function getUserByPartner(?Partner $partner): ?User
+    private function addCarNumber(User $user)
     {
-        if (!$partner || !($userArr = $this->getUserArrByPartner($partner))) {
-            return null;
-        }
-
-        // 从 $userArr 创建 User 对象
-        return new User(new UserDTO($userArr));
-    }
-
-    /**
-     * @param string $phone
-     * @return User|null
-     * @throws \Exception
-     * @throws \Psr\SimpleCache\InvalidArgumentException
-     */
-    public function getUserByPhone($phone = ''): ?User
-    {
-        if (!$phone || !($userArr = $this->getUserArrByPhone($phone))) {
-            return null;
-        }
-
-        return new User(new UserDTO($userArr));
-    }
-
-    /**
-     * @param int $uid
-     * @return User|null
-     * @throws \Exception
-     * @throws \Psr\SimpleCache\InvalidArgumentException
-     */
-    public function getUserByUid(int $uid): ?User
-    {
-        if (!$uid || !($userArr = $this->getUserArrByUid($uid))) {
-            return null;
-        }
-
-        return new User(new UserDTO($userArr));
+        // TODO
     }
 
     /**
      * @param User $user
-     * @throws \Psr\SimpleCache\InvalidArgumentException
      * @throws InvalidOperationException
      * @throws \Exception
      */
-    public function update(User $user, User $oldUser = null)
+    private function addUserPartner(User $user)
     {
-        if (!$user || !$user->uid()) {
-            return;
-        }
-
-        if (!$oldUser && !($oldUser = $this->getUserByUid($user->uid()))) {
-            throw new InvalidOperationException("user is not exist:{$user->uid()}");
-        }
-
-        $userData = [
-            'name' => $user->name === $oldUser->name ? null : $user->name,
-            'phone' => $user->phone === $oldUser->phone ? null : $user->phone,
-            'nickname' => $user->nickname === $oldUser->nickname ? null : $user->nickname,
-            'gender' => $user->gender === $oldUser->gender ? null : $user->gender,
-            'birthday' => $user->birthday === $oldUser->birthday ? null : $user->birthday,
-            'headurl' => $user->headurl === $oldUser->headurl ? null : $user->headurl,
-            'tinyheadurl' => $user->tinyHeadurl === $oldUser->tinyHeadurl ? null : $user->tinyHeadurl,
-            'birthday_change' => $user->birthdayChange === $oldUser->birthdayChange ? null : $user->birthdayChange,
-            'name' => $user->name === $oldUser->name ? null : $user->name,
-        ];
-
-        if ($wxPartner = $user->getPartner(Partner::P_WEIXIN)) {
-            $userData['wechat_openid'] = $wxPartner->userId();
-        }
-
-        $userData = array_filter($userData, function ($item) {
-            return $item !== null;
-        });
-
-        $this->query->update('wei_users')->set($userData)->where(['uid' => $user->uid()])->execute();
-
-        // TODO 车牌号
-
-        // partner
-        if (($alipayPartner = $user->getPartner(Partner::P_ALIPAY)) &&
-            !$oldUser->getPartner(Partner::P_ALIPAY)
-        ) {
+        // 支付宝大号
+        if ($alipayPartner = $user->getPartner(Partner::P_ALIPAY)) {
             $this->query->insert('wei_auth_users')
                 ->values([
                     'type' => 1,
@@ -412,47 +466,13 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
                     'update_time' => time()
                 ])->execute();
         }
-
-        $this->clearUserCache($user);
     }
 
-    /**
-     * @param User $user
-     * @throws \Exception
-     * @throws \Psr\SimpleCache\InvalidArgumentException
-     */
-    public function delete(User $user)
+    private function isCarNumberChanged(User $newUser, User $oldUser): bool
     {
-        $this->query->update('wei_users')->set(['del_time' => time()])->where(['uid' => $user->uid()])->execute();
-        $this->clearUserCache($user);
-    }
+        $carNum1 = $newUser->carNumbers;
+        $carNum2 = $oldUser->carNumbers;
 
-    /**
-     * @param User $targetUser
-     * @param User $abandonUser
-     * @throws \Exception
-     * @throws \Psr\SimpleCache\InvalidArgumentException
-     */
-    public function merge(User $targetUser, User $abandonUser)
-    {
-        // 更新 $targetUser
-        $this->update($targetUser);
-
-        // 删除 $abandonUser
-        $this->delete($abandonUser);
-
-        // TODO 记录 rel_uids
-    }
-
-    /**
-     * @param $phone
-     * @return bool
-     * @throws \Dev\MySQL\Exception\DBException
-     * @throws \Exception
-     */
-    public function isPhoneBeUsed($phone): bool
-    {
-        return (bool)$this->query->select('phone')
-            ->from('wei_users')->where(['phone' => $phone, 'del_time' => 0])->column();
+        return count($carNum1) != count($carNum2) || array_diff($carNum1, $carNum2) || array_diff($carNum2, $carNum1);
     }
 }

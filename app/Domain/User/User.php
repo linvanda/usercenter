@@ -21,6 +21,9 @@ class User extends Entity
     public const UPDATE_ONLY_NULL = 2;
     public const UPDATE_NEW = 3;
 
+    private const DEFAULT_HEADURL = 'http://fs1.weicheche.cn/avatar/origin/default_male.jpg';
+    private const DEFAULT_TINY_HEADURL = 'http://fs1.weicheche.cn/avatar/tiny/default_male.jpg';
+
     /** @var UserId $userId 是内部标识，不应当对外暴露*/
     protected $userId;
     protected $name;
@@ -54,20 +57,7 @@ class User extends Entity
 
     public function __construct(UserDTO $userDTO = null)
     {
-        if ($userDTO) {
-            // 从 DTO 创建 User 对象
-            $this->buildFromArray($userDTO->toArray());
-        }
-
-        // 组装 user 标识
-        $this->userId = new UserId($userDTO->uid, $userDTO->phone, $userDTO->relUids ?? [], $userDTO->partners);
-
-        // 邀请码
-        if (!$this->inviteCode) {
-            $this->inviteCode = Random::character(12);
-        }
-
-        $this->regtime = $this->regtime ?: date('Y-m-d H:i:s');
+        $this->buildFromUserDTO($userDTO);
     }
 
     public function uid(): int
@@ -213,7 +203,7 @@ class User extends Entity
     private function updateToNew(UserDTO $userDTO, IUserRepository $userRepository, $forceChangePhone)
     {
         // 必须显式指定要修改手机号，否则不允许修改
-        if (!$forceChangePhone && $userDTO->phone && $this->phone && $userDTO->phone != $this->phone) {
+        if (!$forceChangePhone && $userDTO->phone && $this->phone() && $userDTO->phone != $this->phone()) {
             throw new Exception("can not change phone unless declare force change it");
         }
 
@@ -240,7 +230,7 @@ class User extends Entity
         $this->birthday = $userDTO->birthday ?? $this->birthday;
         $this->headurl = $userDTO->headurl ?: $this->headurl;
         $this->tinyHeadurl = $userDTO->tinyHeadurl ?: $this->tinyHeadurl;
-        $this->registerFrom = $this->registerFrom ?: $userDTO->registerFrom;
+        $this->registerFrom = $this->registerFrom ?: $userDTO->registerFrom;// 这里例外
     }
 
     /**
@@ -298,5 +288,26 @@ class User extends Entity
         if ($userDTO->carNumbers && !is_array($userDTO->carNumbers)) {
             throw new Exception("carNumbers must be array");
         }
+    }
+
+    private function buildFromUserDTO(UserDTO $userDTO)
+    {
+        $this->userId = new UserId(
+            $userDTO->uid,
+            $userDTO->phone,
+            $userDTO->relUids ?? [],
+            $userDTO->partners
+        );
+        $this->name = $userDTO->name;
+        $this->nickname = $userDTO->nickname;
+        $this->gender = $userDTO->gender;
+        $this->birthday = $userDTO->birthday;
+        $this->carNumbers = $userDTO->carNumbers;
+        $this->registerFrom = $userDTO->registerFrom;
+        $this->regtime = $userDTO->regtime ?: date('Y-m-d H:i:s');
+        $this->inviteCode = $userDTO->inviteCode ?: Random::character(12);
+        $this->headurl = $userDTO->headurl ?: self::DEFAULT_HEADURL;
+        $this->tinyHeadurl = $userDTO->tinyHeadurl ?: self::DEFAULT_TINY_HEADURL;
+        $this->birthdayChange = $userDTO->birthdayChange ?: 0;
     }
 }

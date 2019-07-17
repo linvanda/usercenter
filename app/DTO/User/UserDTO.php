@@ -2,6 +2,7 @@
 
 namespace App\DTO\User;
 
+use App\Domain\User\Merchant;
 use App\Domain\User\Partner;
 use App\Domain\User\PartnerMap;
 use WecarSwoole\DTO;
@@ -59,24 +60,14 @@ class UserDTO extends DTO
      */
     public $partners;
 
+    /**
+     * @var Merchant
+     */
+    public $merchant;
+
     public function __construct(array $data = [], bool $strict = true, bool $mapping = true)
     {
-        // partners 特殊处理：从二维数组构建对象
-        if (isset($data['partners']) &&
-            $data['partners'] &&
-            is_array($data['partners']) &&
-            is_array($data['partners'][0])
-        ) {
-            $data['partners'] = new PartnerMap(array_map(function ($item) {
-                return new Partner($item['user_id'], $item['type'], $item['flag'] ?? null);
-            }, $data['partners']));
-        }
-
-        parent::__construct($data, $strict, $mapping);
-
-        if ($this->partners === null) {
-            $this->partners = new PartnerMap([]);
-        }
+        parent::__construct(self::formatOrigionData($data), $strict, $mapping);
     }
 
     public function toArray(
@@ -86,6 +77,8 @@ class UserDTO extends DTO
         array $exFields = []
     ): array {
         $arr = parent::toArray($camelToSnake, $withNull, $zip, $exFields);
+
+        // partners 的处理
         if (!$this->partners || !count($this->partners)) {
             $arr['partners'] = [];
         } else {
@@ -95,6 +88,46 @@ class UserDTO extends DTO
             }, $this->partners->getArrayCopy());
         }
 
+        // merchant 的处理
+        unset($arr['merchant']);
+
         return $arr;
+    }
+
+    private static function formatOrigionData(array $data)
+    {
+        /**
+         * partners 的处理
+         */
+        // 从二维数组构建对象
+        if (self::hasValidPartnersArr($data)) {
+            $data['partners'] = new PartnerMap(array_map(function ($item) {
+                return new Partner($item['user_id'], $item['type'], $item['flag'] ?? null);
+            }, $data['partners']));
+        } elseif (isset($data['partner_type']) && isset($data['partner_id'])) {
+            $data['partners'] = new PartnerMap(
+                [new Partner($data['partner_id'], $data['partner_type'], $data['partner_flag'])]
+            );
+        } elseif (isset($data['partners']) && !$data['partners'] instanceof PartnerMap) {
+            $data['partners'] = new PartnerMap([]);
+        }
+
+        /**
+         * merchant 的处理
+         */
+        $data['merchant'] = new Merchant(
+            $data['merchant_id'] ?? 0,
+            $data['merchant_type'] ?? Merchant::T_PLATFORM
+        );
+
+        return $data;
+    }
+
+    private static function hasValidPartnersArr(array $data): bool
+    {
+        return isset($data['partners']) &&
+        $data['partners'] &&
+        is_array($data['partners']) &&
+        is_array($data['partners'][0]);
     }
 }

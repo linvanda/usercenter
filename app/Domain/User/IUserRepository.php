@@ -18,6 +18,12 @@ interface IUserRepository
      */
     public function add(User $user): User;
 
+    public function update(User $user, User $oldUser = null);
+
+    public function saveMerge(User $targetUser, User $abandonUser);
+
+    public function delete(User $user);
+
     /**
      * 根据 UserId 获取用户信息
      * @param UserId $userId
@@ -30,10 +36,6 @@ interface IUserRepository
     public function getUserByPhone($phone = ''): ?User;
 
     public function getUserByUid(int $uid): ?User;
-
-    public function update(User $user, User $oldUser = null);
-
-    public function merge(User $targetUser, User $abandonUser);
 
     public function isPhoneBeUsed($phone): bool;
 }

@@ -9,11 +9,16 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 class MergeService
 {
     private $userRepository;
+    private $merchantRepository;
     private $eventDispatcher;
 
-    public function __construct(IUserRepository $userRepository, EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        IUserRepository $userRepository,
+        IMerchantRepository $merchantRepository,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->userRepository = $userRepository;
+        $this->merchantRepository = $merchantRepository;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -36,14 +41,27 @@ class MergeService
             $forceMerge
         );
 
-        // 将 $abandonUser 中非空属性赋值到 $targetUser 上的空属性上
-        $targetUser->mergeFromOtherUser($abandonUser, $forceMerge);
-        $this->userRepository->merge($targetUser, $abandonUser);
+        $this->mergeUser($targetUser, $abandonUser, $forceMerge);
 
         // 发布合并事件
         $this->eventDispatcher->dispatch(new UserMergedEvent($targetUser, $abandonUser));
 
         return $targetUser;
+    }
+
+    /**
+     * @param User $targetUser
+     * @param User $abandonUser
+     * @param bool $forceMerge
+     * @throws InvalidMergeException
+     */
+    private function mergeUser(User $targetUser, User $abandonUser, bool $forceMerge)
+    {
+        $targetUser->mergeFromOtherUser($abandonUser, $forceMerge);
+        $this->userRepository->saveMerge($targetUser, $abandonUser);
+
+        // 合并商户绑定关系
+        $this->merchantRepository->mergeMerchantUser($targetUser, $abandonUser);
     }
 
     /**
@@ -118,7 +136,7 @@ class MergeService
      * @return bool
      * @throws \WecarSwoole\Exceptions\InvalidOperationException
      */
-    public function userHasWXPartner(User $user): bool
+    private function userHasWXPartner(User $user): bool
     {
         return $user->getPartner(Partner::P_WEIXIN, Partner::FLAGS[Partner::P_WEIXIN]) ? true : false;
     }

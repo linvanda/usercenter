@@ -63,7 +63,7 @@ return [
     ],
     // 缓存配置
     'cache' => [
-        'driver' => 'redis', // 可用：redis、file、array、null(一般测试时用来禁用缓存)
+        'driver' => 'null', // 可用：redis、file、array、null(一般测试时用来禁用缓存)
         'prefix' => 'usercenter',
         'expire' => 3600, // 缓存默认过期时间，单位秒
         'redis' => 'cache', // 当 driver = redis 时，使用哪个 redis 配置

@@ -44,7 +44,7 @@ class Partner implements IExtractable
     public function __construct($userId, int $type, $flag = null)
     {
         if (!$flag && !($flag = self::FLAGS[$type])) {
-            throw new Exception("invalid partner,flag is null.userid:{$userId}");
+            throw new Exception("invalid partner type:{$type}.partner_id:{$userId}");
         }
         $this->userId = $userId;
         $this->type = $type;
