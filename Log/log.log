@@ -1,0 +1,130 @@
+[2019-07-24 18:04:52][DEBUG][NOTICE] : [Undefined index: PORT at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:04:52][DEBUG][NOTICE] : [Undefined index: SERVER_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:04:52][DEBUG][NOTICE] : [Undefined index: LISTEN_ADDRESS at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:04:52][DEBUG][NOTICE] : [Undefined index: RUN_MODEL at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:04:52][DEBUG][NOTICE] : [Undefined index: SOCK_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:04:52][DEBUG][ERROR] : ["unknown server type :{$type}" at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php line:69]
+[2019-07-24 18:04:52][DEBUG][NOTICE] : [Undefined index: SERVER_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:117]
+[2019-07-24 18:04:52][DEBUG][ERROR] : [Uncaught TypeError: Argument 1 passed to EasySwoole\EasySwoole\Core::registerDefaultCallBack() must be an instance of Swoole\Server, null given, called in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php on line 117 and defined in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php:217
+Stack trace:
+#0 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php(117): EasySwoole\EasySwoole\Core->registerDefaultCallBack(NULL, NULL)
+#1 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/DefaultCommand/Start.php(42): EasySwoole\EasySwoole\Core->createServer()
+#2 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandContainer.php(46): EasySwoole\EasySwoole\Command\DefaultCommand\Start->exec(Array)
+#3 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandRunner.php(50): EasySwoole\Eas at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:217]
+[2019-07-24 18:05:00][DEBUG][NOTICE] : [Undefined index: PORT at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:05:00][DEBUG][NOTICE] : [Undefined index: SERVER_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:05:00][DEBUG][NOTICE] : [Undefined index: LISTEN_ADDRESS at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:05:00][DEBUG][NOTICE] : [Undefined index: RUN_MODEL at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:05:00][DEBUG][NOTICE] : [Undefined index: SOCK_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:05:00][DEBUG][ERROR] : ["unknown server type :{$type}" at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php line:69]
+[2019-07-24 18:05:00][DEBUG][NOTICE] : [Undefined index: SERVER_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:117]
+[2019-07-24 18:05:00][DEBUG][ERROR] : [Uncaught TypeError: Argument 1 passed to EasySwoole\EasySwoole\Core::registerDefaultCallBack() must be an instance of Swoole\Server, null given, called in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php on line 117 and defined in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php:217
+Stack trace:
+#0 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php(117): EasySwoole\EasySwoole\Core->registerDefaultCallBack(NULL, NULL)
+#1 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/DefaultCommand/Start.php(42): EasySwoole\EasySwoole\Core->createServer()
+#2 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandContainer.php(46): EasySwoole\EasySwoole\Command\DefaultCommand\Start->exec(Array)
+#3 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandRunner.php(50): EasySwoole\Eas at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:217]
+[2019-07-24 18:10:37][DEBUG][NOTICE] : [Undefined index: PORT at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:10:37][DEBUG][NOTICE] : [Undefined index: SERVER_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:10:37][DEBUG][NOTICE] : [Undefined index: LISTEN_ADDRESS at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:10:37][DEBUG][NOTICE] : [Undefined index: RUN_MODEL at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:10:37][DEBUG][NOTICE] : [Undefined index: SOCK_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:10:37][DEBUG][ERROR] : ["unknown server type :{$type}" at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php line:69]
+[2019-07-24 18:10:37][DEBUG][NOTICE] : [Undefined index: SERVER_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:117]
+[2019-07-24 18:10:37][DEBUG][ERROR] : [Uncaught TypeError: Argument 1 passed to EasySwoole\EasySwoole\Core::registerDefaultCallBack() must be an instance of Swoole\Server, null given, called in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php on line 117 and defined in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php:217
+Stack trace:
+#0 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php(117): EasySwoole\EasySwoole\Core->registerDefaultCallBack(NULL, NULL)
+#1 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/DefaultCommand/Start.php(42): EasySwoole\EasySwoole\Core->createServer()
+#2 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandContainer.php(46): EasySwoole\EasySwoole\Command\DefaultCommand\Start->exec(Array)
+#3 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandRunner.php(50): EasySwoole\Eas at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:217]
+[2019-07-24 18:10:53][DEBUG][NOTICE] : [Undefined index: PORT at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:10:53][DEBUG][NOTICE] : [Undefined index: SERVER_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:10:53][DEBUG][NOTICE] : [Undefined index: LISTEN_ADDRESS at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:10:53][DEBUG][NOTICE] : [Undefined index: RUN_MODEL at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:10:53][DEBUG][NOTICE] : [Undefined index: SOCK_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:10:53][DEBUG][ERROR] : ["unknown server type :{$type}" at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php line:69]
+[2019-07-24 18:10:53][DEBUG][NOTICE] : [Undefined index: SERVER_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:117]
+[2019-07-24 18:10:53][DEBUG][ERROR] : [Uncaught TypeError: Argument 1 passed to EasySwoole\EasySwoole\Core::registerDefaultCallBack() must be an instance of Swoole\Server, null given, called in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php on line 117 and defined in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php:217
+Stack trace:
+#0 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php(117): EasySwoole\EasySwoole\Core->registerDefaultCallBack(NULL, NULL)
+#1 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/DefaultCommand/Start.php(42): EasySwoole\EasySwoole\Core->createServer()
+#2 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandContainer.php(46): EasySwoole\EasySwoole\Command\DefaultCommand\Start->exec(Array)
+#3 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandRunner.php(50): EasySwoole\Eas at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:217]
+[2019-07-24 18:11:12][DEBUG][NOTICE] : [Undefined index: PORT at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:11:12][DEBUG][NOTICE] : [Undefined index: SERVER_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:11:12][DEBUG][NOTICE] : [Undefined index: LISTEN_ADDRESS at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:11:12][DEBUG][NOTICE] : [Undefined index: RUN_MODEL at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:11:12][DEBUG][NOTICE] : [Undefined index: SOCK_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:11:12][DEBUG][ERROR] : ["unknown server type :{$type}" at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php line:69]
+[2019-07-24 18:11:12][DEBUG][NOTICE] : [Undefined index: SERVER_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:117]
+[2019-07-24 18:11:12][DEBUG][ERROR] : [Uncaught TypeError: Argument 1 passed to EasySwoole\EasySwoole\Core::registerDefaultCallBack() must be an instance of Swoole\Server, null given, called in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php on line 117 and defined in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php:217
+Stack trace:
+#0 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php(117): EasySwoole\EasySwoole\Core->registerDefaultCallBack(NULL, NULL)
+#1 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/DefaultCommand/Start.php(42): EasySwoole\EasySwoole\Core->createServer()
+#2 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandContainer.php(46): EasySwoole\EasySwoole\Command\DefaultCommand\Start->exec(Array)
+#3 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandRunner.php(50): EasySwoole\Eas at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:217]
+[2019-07-24 18:13:17][DEBUG][NOTICE] : [Undefined index: PORT at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:13:17][DEBUG][NOTICE] : [Undefined index: SERVER_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:13:17][DEBUG][NOTICE] : [Undefined index: LISTEN_ADDRESS at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:13:17][DEBUG][NOTICE] : [Undefined index: RUN_MODEL at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:13:17][DEBUG][NOTICE] : [Undefined index: SOCK_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:13:17][DEBUG][ERROR] : ["unknown server type :{$type}" at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php line:69]
+[2019-07-24 18:13:17][DEBUG][NOTICE] : [Undefined index: SERVER_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:117]
+[2019-07-24 18:13:17][DEBUG][ERROR] : [Uncaught TypeError: Argument 1 passed to EasySwoole\EasySwoole\Core::registerDefaultCallBack() must be an instance of Swoole\Server, null given, called in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php on line 117 and defined in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php:217
+Stack trace:
+#0 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php(117): EasySwoole\EasySwoole\Core->registerDefaultCallBack(NULL, NULL)
+#1 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/DefaultCommand/Start.php(42): EasySwoole\EasySwoole\Core->createServer()
+#2 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandContainer.php(46): EasySwoole\EasySwoole\Command\DefaultCommand\Start->exec(Array)
+#3 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandRunner.php(50): EasySwoole\Eas at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:217]
+[2019-07-24 18:16:09][DEBUG][NOTICE] : [Undefined index: PORT at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:16:09][DEBUG][NOTICE] : [Undefined index: SERVER_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:16:09][DEBUG][NOTICE] : [Undefined index: LISTEN_ADDRESS at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:16:09][DEBUG][NOTICE] : [Undefined index: RUN_MODEL at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:16:09][DEBUG][NOTICE] : [Undefined index: SOCK_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:16:09][DEBUG][ERROR] : ["unknown server type :{$type}" at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php line:69]
+[2019-07-24 18:16:09][DEBUG][NOTICE] : [Undefined index: SERVER_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:117]
+[2019-07-24 18:16:09][DEBUG][ERROR] : [Uncaught TypeError: Argument 1 passed to EasySwoole\EasySwoole\Core::registerDefaultCallBack() must be an instance of Swoole\Server, null given, called in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php on line 117 and defined in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php:217
+Stack trace:
+#0 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php(117): EasySwoole\EasySwoole\Core->registerDefaultCallBack(NULL, NULL)
+#1 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/DefaultCommand/Start.php(42): EasySwoole\EasySwoole\Core->createServer()
+#2 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandContainer.php(46): EasySwoole\EasySwoole\Command\DefaultCommand\Start->exec(Array)
+#3 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandRunner.php(50): EasySwoole\Eas at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:217]
+[2019-07-24 18:17:09][DEBUG][NOTICE] : [Undefined index: PORT at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:17:09][DEBUG][NOTICE] : [Undefined index: SERVER_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:17:09][DEBUG][NOTICE] : [Undefined index: LISTEN_ADDRESS at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:17:09][DEBUG][NOTICE] : [Undefined index: RUN_MODEL at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:17:09][DEBUG][NOTICE] : [Undefined index: SOCK_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:17:09][DEBUG][ERROR] : ["unknown server type :{$type}" at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php line:69]
+[2019-07-24 18:17:09][DEBUG][NOTICE] : [Undefined index: SERVER_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:117]
+[2019-07-24 18:17:09][DEBUG][ERROR] : [Uncaught TypeError: Argument 1 passed to EasySwoole\EasySwoole\Core::registerDefaultCallBack() must be an instance of Swoole\Server, null given, called in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php on line 117 and defined in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php:217
+Stack trace:
+#0 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php(117): EasySwoole\EasySwoole\Core->registerDefaultCallBack(NULL, NULL)
+#1 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/DefaultCommand/Start.php(42): EasySwoole\EasySwoole\Core->createServer()
+#2 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandContainer.php(46): EasySwoole\EasySwoole\Command\DefaultCommand\Start->exec(Array)
+#3 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandRunner.php(50): EasySwoole\Eas at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:217]
+[2019-07-24 18:22:41][DEBUG][NOTICE] : [Undefined index: PORT at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:22:41][DEBUG][NOTICE] : [Undefined index: SERVER_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:22:41][DEBUG][NOTICE] : [Undefined index: LISTEN_ADDRESS at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:22:41][DEBUG][NOTICE] : [Undefined index: RUN_MODEL at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:22:41][DEBUG][NOTICE] : [Undefined index: SOCK_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:22:41][DEBUG][ERROR] : ["unknown server type :{$type}" at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php line:69]
+[2019-07-24 18:22:41][DEBUG][NOTICE] : [Undefined index: SERVER_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:117]
+[2019-07-24 18:22:41][DEBUG][ERROR] : [Uncaught TypeError: Argument 1 passed to EasySwoole\EasySwoole\Core::registerDefaultCallBack() must be an instance of Swoole\Server, null given, called in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php on line 117 and defined in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php:217
+Stack trace:
+#0 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php(117): EasySwoole\EasySwoole\Core->registerDefaultCallBack(NULL, NULL)
+#1 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/DefaultCommand/Start.php(42): EasySwoole\EasySwoole\Core->createServer()
+#2 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandContainer.php(46): EasySwoole\EasySwoole\Command\DefaultCommand\Start->exec(Array)
+#3 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandRunner.php(50): EasySwoole\Eas at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:217]
+[2019-07-24 18:23:37][DEBUG][NOTICE] : [Undefined index: PORT at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:23:37][DEBUG][NOTICE] : [Undefined index: SERVER_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:23:37][DEBUG][NOTICE] : [Undefined index: LISTEN_ADDRESS at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:23:37][DEBUG][NOTICE] : [Undefined index: RUN_MODEL at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:23:37][DEBUG][NOTICE] : [Undefined index: SOCK_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:115]
+[2019-07-24 18:23:37][DEBUG][ERROR] : ["unknown server type :{$type}" at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/ServerManager.php line:69]
+[2019-07-24 18:23:37][DEBUG][NOTICE] : [Undefined index: SERVER_TYPE at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:117]
+[2019-07-24 18:23:37][DEBUG][ERROR] : [Uncaught TypeError: Argument 1 passed to EasySwoole\EasySwoole\Core::registerDefaultCallBack() must be an instance of Swoole\Server, null given, called in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php on line 117 and defined in /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php:217
+Stack trace:
+#0 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php(117): EasySwoole\EasySwoole\Core->registerDefaultCallBack(NULL, NULL)
+#1 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/DefaultCommand/Start.php(42): EasySwoole\EasySwoole\Core->createServer()
+#2 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandContainer.php(46): EasySwoole\EasySwoole\Command\DefaultCommand\Start->exec(Array)
+#3 /Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Command/CommandRunner.php(50): EasySwoole\Eas at file:/Users/linvanda/Application/weicheche/usercenter/vendor/easyswoole/easyswoole/src/Core.php line:217]

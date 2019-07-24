@@ -4,14 +4,13 @@ namespace EasySwoole\EasySwoole;
 
 use App\Bootstrap;
 use WecarSwoole\CronTabUtil;
-use WecarSwoole\Util\File;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
 use EasySwoole\Http\Request;
 use EasySwoole\Http\Response;
 use EasySwoole\Component\Di;
+use WecarSwoole\Process\ApolloWatcher;
 use WecarSwoole\Process\HotReload;
-
 
 class EasySwooleEvent implements Event
 {
@@ -21,9 +20,6 @@ class EasySwooleEvent implements Event
 
         // HTTP 控制器命名空间
         Di::getInstance()->set(SysConst::HTTP_CONTROLLER_NAMESPACE, 'App\\Http\\Controllers\\');
-
-        //加载应用配置
-        Config::getInstance()->loadFile(File::join(EASYSWOOLE_ROOT, 'config/config.php'), true);
     }
 
     /**
@@ -37,17 +33,28 @@ class EasySwooleEvent implements Event
             ServerManager::getInstance()->getSwooleServer()->addProcess(
                 (new HotReload(
                     'HotReload',
-                    ['disableInotify' => true, 'monitorDirs' => [EASYSWOOLE_ROOT . '/app', EASYSWOOLE_ROOT . '/mock']]
+                    [
+                        'disableInotify' => true,
+                        'monitorDirs' => [
+                            EASYSWOOLE_ROOT . '/app',
+                            EASYSWOOLE_ROOT . '/mock',
+                            CONFIG_ROOT
+                        ]
+                    ]
                 ))->getProcess()
             );
         }
 
-        $register->add(EventRegister::onWorkerStart, function () {
+        // worker 进程启动脚本
+        $register->add(EventRegister::onWorkerStart, function ($server, $workerId) {
             Bootstrap::boot();
         });
 
-        // 加载定时任务
+        // 定时任务
         CronTabUtil::register();
+
+        // Apollo 配置变更监听程序
+        ServerManager::getInstance()->getSwooleServer()->addProcess((new ApolloWatcher())->getProcess());
     }
 
     public static function onRequest(Request $request, Response $response): bool

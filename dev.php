@@ -9,8 +9,8 @@ return [
         'SOCK_TYPE' => SWOOLE_TCP,
         'RUN_MODEL' => SWOOLE_PROCESS,
         'SETTING' => [
-            'worker_num' => 2,
-            'task_worker_num' => 3,
+            'worker_num' => 1,
+            'task_worker_num' => 1,
             'reload_async' => true,
             'task_enable_coroutine' => true,
             'max_wait_time' => 5,

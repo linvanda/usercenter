@@ -1,6 +1,14 @@
 /vendor/
 .idea/
-/storage/*
+
+/storage/apollo/*
+!/storage/apollo/.gitkeep
+
+/storage/app/*
+!/storage/app/.gitkeep
+
 /storage/temp/*
-!/storage/app/
 !/storage/temp/.gitkeep
+
+/storage/logs/*
+!/storage/logs/.gitkeep

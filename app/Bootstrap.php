@@ -2,7 +2,7 @@
 
 namespace App;
 
-use \WecarSwoole\Bootstrap as BaseBootstrap;
+use WecarSwoole\Bootstrap as BaseBootstrap;
 
 /**
  * bootstrap 启动脚本会在 work/task 进程启动时执行

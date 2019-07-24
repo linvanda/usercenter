@@ -4,7 +4,6 @@ $baseConfig = [
     'app_name' => '用户系统',
     // 应用标识
     'app_flag' => 'YH',
-    'logger' => include_once __DIR__ . '/logger.php',
     // 邮件。可以配多个
     'mailer' => [
         'default' => [
@@ -28,6 +27,8 @@ $baseConfig = [
 
 return array_merge(
     $baseConfig,
-    ['cron_config' => require_once __DIR__ . '/cron.php'],
+    ['logger' => include_once __DIR__ . '/logger.php'],
+    ['api' => require_once __DIR__ . '/api/api.php'],
+    ['subscriber' => require_once __DIR__ . '/subscriber/subscriber.php'],
     require_once __DIR__ . '/env/' . ENVIRON . '.php'
 );
