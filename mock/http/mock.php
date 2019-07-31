@@ -2,8 +2,7 @@
 
 use WecarSwoole\Util\Mock;
 use WecarSwoole\Client\Config\HttpConfig;
-use WecarSwoole\Client\Contract\IHttpRequestBean;
-use Swoole\Coroutine as Co;
+use Psr\Http\Message\RequestInterface;
 
 $mock = new Mock();
 
@@ -19,9 +18,9 @@ return [
      * 注意：如果直接返回数组，则多次使用的是同一份模拟数据，如果想每次都随机生成不同的，需要使用匿名函数
      *
      */
-    'weiche:oil.info' => function (HttpConfig $config, IHttpRequestBean $request) use ($mock) {
+    'weiche:oil.info' => function (HttpConfig $config, RequestInterface $request) use ($mock) {
         // 此处模拟响应延迟
-        Co::sleep(2);
+//        Co::sleep(2);
 
         return [
             'http_code' => 200,
@@ -29,11 +28,10 @@ return [
                 'status' => 200,
                 'data' => [
                     'id' => $mock->number('100-10000'),
-                    'name' => $request->getParams()['name'],
                     'age' => $mock->number('10-20'),
                 ]
             ],
-            'activate' => true
+            'activate' => false
         ];
     },
     // 直接返回数据

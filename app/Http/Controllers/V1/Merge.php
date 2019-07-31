@@ -11,6 +11,16 @@ use WecarSwoole\Http\Controller;
  */
 class Merge extends Controller
 {
+    protected function validateRules(): array
+    {
+        return [
+            'mergeUsers' => [
+                'target_uid' => ['required'],
+                'abandon_uid' => ['required']
+            ]
+        ];
+    }
+
     public function mergeUsers()
     {
         $this->return([json_encode(basename($this->request()->getRequestTarget()))]);

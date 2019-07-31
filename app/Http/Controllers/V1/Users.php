@@ -9,6 +9,8 @@ use App\Domain\User\User;
 use App\Domain\User\UserId;
 use App\Domain\User\UserService;
 use App\DTO\User\UserDTO;
+use WecarSwoole\Client\API;
+use WecarSwoole\Config\Config;
 use WecarSwoole\Container;
 use WecarSwoole\Http\Controller;
 
@@ -50,6 +52,19 @@ class Users extends Controller
                     ]
                 ],
                 'merchant_id' => ['optional', 'integer'],
+            ],
+            'edit' => [
+                'uid' => ['required']
+            ],
+            'changePhone' => [
+                'uid' => ['required'],
+                'phone' => ['required', 'length' => 11],
+            ],
+            'bindPartner' => [
+                'uid' => ['required'],
+                'partner_id' => ['required'],
+                'partner_flag' => ['required'],
+                'partner_type' => ['required']
             ]
         ];
     }
@@ -110,5 +125,23 @@ class Users extends Controller
      */
     public function edit()
     {
+        $params = $this->params();
+
+    }
+
+    /**
+     * 修改手机号
+     */
+    public function changePhone()
+    {
+
+    }
+
+    /**
+     * 绑定 partner
+     */
+    public function bindPartner()
+    {
+
     }
 }

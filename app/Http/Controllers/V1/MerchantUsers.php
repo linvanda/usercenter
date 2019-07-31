@@ -11,19 +11,22 @@ use WecarSwoole\Http\Controller;
  */
 class MerchantUsers extends Controller
 {
+    protected function validateRules(): array
+    {
+        return [
+            'bind' => [
+                'uid' => ['required'],
+                'merchant_type' => ['required'],
+                'merchant_id' => ['required'],
+            ]
+        ];
+    }
+
     /**
      * 用户绑定到商户
      */
     public function bind()
     {
 
-    }
-
-    /**
-     * 获取商户用户列表
-     */
-    public function getUsers()
-    {
-        $this->return([['name' => '李娇'], ['name' => '李娇'],]);
     }
 }
