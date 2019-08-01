@@ -12,7 +12,7 @@ class Test extends Controller
     public function index()
     {
         $cache = Container::get(CacheInterface::class);
-//        $cache->set("tttsk", ['name']);
+//        $cache->set("tttsk", ['hahah'], 86400*2);
         $this->return($cache->get('tttsk'));
     }
 }
