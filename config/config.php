@@ -1,6 +1,7 @@
 <?php
 
 use function WecarSwoole\Config\apollo;
+use WecarSwoole\Util\File;
 
 $baseConfig = [
     'app_name' => '用户系统',
@@ -14,21 +15,22 @@ $baseConfig = [
     // 邮件。可以配多个
     'mailer' => [
         'default' => [
-            'host' => 'smtp.exmail.qq.com',
-            'username' => 'robot2@weicheche.cn',
-            'password' => 'j6qW4Y7onb2MfXpr'
+            'host' => apollo('fw.mail', 'mail.host'),
+            'username' => apollo('fw.mail', 'mail.username'),
+            'password' => apollo('fw.mail', 'mail.password'),
+            'port' => apollo('fw.mail', 'mail.port'),
         ]
     ],
     // 并发锁配置
     'concurrent_locker' => [
-        'onoff' => 'on',
-        'redis' => 'main'
+        'onoff' => apollo('application', 'concurrent_locker.onoff') ?: 'off',
+        'redis' => apollo('application', 'concurrent_locker.redis') ?: 'main',
     ],
     // 请求日志配置。默认是关闭的，如果项目需要开启，则自行修改为 on
     'request_log' => [
-        'onoff' => 'off',
+        'onoff' => apollo('application', 'request_log.onoff') ?: 'off',
         // 记录哪些请求类型的日志
-        'methods' => ['POST', 'GET', 'PUT', 'DELETE']
+        'methods' => explode(',', apollo('application', 'request_log.methods'))
     ],
     /**
      * 数据库配置建议以数据库名作为 key
@@ -58,7 +60,7 @@ $baseConfig = [
             ],
             // 连接池配置
             'pool' => [
-                'size' => 15
+                'size' => apollo('application', 'mysql.weicheche.pool_size') ?: 15
             ]
         ],
     ],
@@ -67,19 +69,41 @@ $baseConfig = [
             'host' => apollo('fw.redis.01', 'redis.host'),
             'port' => apollo('fw.redis.01', 'redis.port'),
             'auth' => apollo('fw.redis.01', 'redis.auth'),
+            // 连接池配置
+            '__pool' => [
+                'max_object_num' => apollo('application', 'redis.pool.main.max_num') ?? 15,
+                'min_object_num' => apollo('application', 'redis.pool.main.min_num') ?? 1,
+                'max_idle_time' => apollo('application', 'redis.pool.main.idle_time') ?? 300,
+            ]
         ],
         'cache' => [
             'host' => apollo('fw.redis.01', 'redis.host'),
             'port' => apollo('fw.redis.01', 'redis.port'),
             'auth' => apollo('fw.redis.01', 'redis.auth'),
+            // 连接池配置
+            '__pool' => [
+                'max_object_num' => apollo('application', 'redis.pool.cache.max_num') ?? 15,
+                'min_object_num' => apollo('application', 'redis.pool.cache.min_num') ?? 1,
+                'max_idle_time' => apollo('application', 'redis.pool.cache.idle_time') ?? 300,
+            ]
         ],
     ],
+    // 缓存配置
+    'cache' => [
+        'driver' => apollo('application', 'cache.driver'),// 可用：redis、file、array、null(一般测试时用来禁用缓存)
+        'prefix' => 'usercenter',
+        'expire' => 3600, // 缓存默认过期时间，单位秒
+        'redis' => 'cache', // 当 driver = redis 时，使用哪个 redis 配置
+        'dir' => File::join(EASYSWOOLE_ROOT, 'storage/cache'), // 当 driver = file 时，缓存存放目录
+    ],
+    // 最低记录级别：debug, info, warning, error, critical, off
+    'log_level' => apollo('application', 'log_level') ?: 'info',
+    'base_url' => apollo('application', 'base_url'),
 ];
 
 return array_merge(
     $baseConfig,
     ['logger' => include_once __DIR__ . '/logger.php'],
     ['api' => require_once __DIR__ . '/api/api.php'],
-    ['subscriber' => require_once __DIR__ . '/subscriber/subscriber.php'],
-    require_once __DIR__ . '/env/' . ENVIRON . '.php'
+    ['subscriber' => require_once __DIR__ . '/subscriber/subscriber.php']
 );

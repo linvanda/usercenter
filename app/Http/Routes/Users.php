@@ -38,8 +38,7 @@ class Users extends ApiRoute
          * 修改用户信息
          *  uid 必填，用户uid
          *  以下可选
-         *  name、nickname、phone、gender、birthday、id_number_type、id_number
-         *  car_numbers
+         *  name、nickname、phone、gender、birthday
          */
         $this->post('/v1/user/edit', '/V1/Users/edit');
 
@@ -59,6 +58,12 @@ class Users extends ApiRoute
          */
         $this->post('/v1/user/partner/bind', '/V1/Users/bindPartner');
 
+        /**
+         * 清除用户缓存
+         */
+        $this->get('/v1/user/cache/clear', '/V1/Users/clearCache');
+
+        // 测试
         $this->get('/v1/test/index', '/V1/Test/index');
     }
 }

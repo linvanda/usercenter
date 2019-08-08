@@ -50,6 +50,11 @@ class UserId
         $this->partners = $partners ?? new PartnerMap();
     }
 
+    public function __clone()
+    {
+        $this->partners = clone $this->partners;
+    }
+
     public function getUid(): ?int
     {
         return $this->uid;

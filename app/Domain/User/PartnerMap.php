@@ -51,9 +51,9 @@ class PartnerMap extends Map
      * @param PartnerMap $partnerMap
      * @return bool
      */
-    public function isDivergent(PartnerMap $partnerMap): bool
+    public function isDivergent(?PartnerMap $partnerMap): bool
     {
-        if (!count($this) || !count($partnerMap)) {
+        if (!$partnerMap || !count($this) || !count($partnerMap)) {
             return false;
         }
 

@@ -10,7 +10,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  * 用户绑定到商户事件
  * @package App\Domain\Events
  */
-class UserBoundEvent extends Event
+class MerchantUserBoundEvent extends Event
 {
     private $user;
     private $merchant;

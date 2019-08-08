@@ -18,6 +18,7 @@ return [
         'fw.mysql.weicheche.ro',
         'fw.mysql.weicheche.rw',
         'fw.redis.01',
-        'fw.redis.03'
+        'fw.redis.03',
+        'fw.mail'
     ]
 ];

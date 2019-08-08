@@ -3,29 +3,30 @@
 namespace App\Domain\User;
 
 use App\Domain\Events\UserAddedEvent;
-use App\Domain\Events\UserBoundEvent;
 use App\Domain\Events\UserUpdatedEvent;
 use App\DTO\User\UserDTO;
+use App\ErrCode;
 use App\Exceptions\InvalidPhoneException;
 use App\Exceptions\UserRegisterConflictException;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use WecarSwoole\Exceptions\Exception;
 
 class UserService
 {
     private $userRepository;
-    private $merchantRepository;
     private $divergeService;
+    private $merchantService;
     private $eventDispatcher;
 
     public function __construct(
         IUserRepository $userRepository,
-        IMerchantRepository $merchantRepository,
         DivergeService $divergeService,
+        MerchantService $merchantService,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->userRepository = $userRepository;
-        $this->merchantRepository = $merchantRepository;
         $this->divergeService = $divergeService;
+        $this->merchantService = $merchantService;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -73,7 +74,7 @@ class UserService
                 // phone 查出来的用户的 partner 和当前的不一致，抛出异常
                 throw new UserRegisterConflictException(
                     "用户{$userDTO->phone}数据存在异常，需要人工处理",
-                    503,
+                    ErrCode::USER_DATA_ANOMALY,
                     [
                         'new_phone' => $userOfPhone->phone(),
                         'new_partner' => $userDTO->partners->first()->toArray()
@@ -90,7 +91,7 @@ class UserService
             // 两者的 phone 不一致，抛出异常
             throw new UserRegisterConflictException(
                 "您已用手机{$userOfPartner->phone()}注册过，如需帮助，请联系工作人员",
-                504,
+                ErrCode::PHONE_ALREADY_EXIST,
                 [
                     'new_phone' => $userDTO->phone,
                     'new_partner' => $userDTO->partners->first()->toArray()
@@ -105,11 +106,38 @@ class UserService
      * 更新用户信息
      * @param UserDTO $userDTO
      * @param int $updateStrategy
-     * @return User 返回更新后的 User
+     * @throws Exception
+     * @throws InvalidPhoneException
+     * @throws \App\Exceptions\BirthdayException
+     * @throws \App\Exceptions\PartnerException
      */
-    public function updateUser(UserDTO $userDTO, int $updateStrategy = User::UPDATE_NEW): User
+    public function updateUser(UserDTO $userDTO, int $updateStrategy = User::UPDATE_NEW)
     {
-        // TODO
+        if (!$user = $this->userRepository->getUserByUid($userDTO->uid)) {
+            throw new Exception("用户不存在:{$userDTO->uid}", ErrCode::USER_NOT_EXIST);
+        }
+
+        $this->update($user, $userDTO, $updateStrategy, true);
+    }
+
+    /**
+     * 给用户绑定第三方标识
+     * @param int $uid
+     * @param Partner $partner
+     * @throws Exception
+     */
+    public function bindPartner(int $uid, Partner $partner)
+    {
+        if (!$user = $this->userRepository->getUserByUid($uid)) {
+            throw new Exception("用户不存在:{$uid}", ErrCode::USER_NOT_EXIST);
+        }
+
+        $oldUser = clone $user;
+        $user->addPartner($partner);
+        $this->userRepository->addPartner($user, $partner);
+
+        // 发布更新事件
+        $this->eventDispatcher->dispatch(new UserUpdatedEvent($oldUser, $user));
     }
 
     /**
@@ -131,7 +159,7 @@ class UserService
         $this->userRepository->update($user);
 
         // merchant
-        $this->bindUserToMerchant($user, $userDTO->merchant);
+        $this->merchantService->bindUser($userDTO->merchant, $user);
 
         // 发布用户信息更新事件
         $this->eventDispatcher->dispatch(new UserUpdatedEvent($oldUser, $user));
@@ -144,27 +172,11 @@ class UserService
         $user = $this->userRepository->add(new User($userDTO));
 
         // merchant
-        $this->bindUserToMerchant($user, $userDTO->merchant);
+        $this->merchantService->bindUser($userDTO->merchant, $user);
 
         // 发布用户添加事件
         $this->eventDispatcher->dispatch(new UserAddedEvent($user));
 
         return $user;
-    }
-
-    /**
-     * @param User $user
-     * @param Merchant $merchant
-     */
-    private function bindUserToMerchant(User $user, Merchant $merchant)
-    {
-        if ($merchant->isPlatform()) {
-            return;
-        }
-
-        $merchant->addUser($user, $this->merchantRepository);
-        $this->merchantRepository->save($merchant);
-
-        $this->eventDispatcher->dispatch(new UserBoundEvent($user, $merchant));
     }
 }

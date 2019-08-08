@@ -2,6 +2,7 @@
 
 namespace App\Domain\User;
 use App\DTO\User\UserDTO;
+use App\ErrCode;
 use App\Exceptions\UserRegisterConflictException;
 
 /**
@@ -44,12 +45,20 @@ class DivergeService
 
         // partner 查出来的有 phone，属于无法自动处理的分歧，需要人工处理
         if ($userOfPartner->phone()) {
-            throw new UserRegisterConflictException("用户{$userDTO->phone}数据存在冲突，需要人工处理", 501, $errContext);
+            throw new UserRegisterConflictException(
+                "用户{$userDTO->phone}数据存在冲突，需要人工处理",
+                ErrCode::USER_DATA_ANOMALY,
+                $errContext
+            );
         }
 
         // phone 查出来的有同类型 partner（如另一个微信大号），也需要人工处理
         if ($userOfPhone->partners()->isDivergent($userDTO->partners)) {
-            throw new UserRegisterConflictException("用户{$userDTO->phone}数据存在冲突，需要人工处理", 502, $errContext);
+            throw new UserRegisterConflictException(
+                "用户{$userDTO->phone}数据存在冲突，需要人工处理",
+                ErrCode::USER_DATA_ANOMALY,
+                $errContext
+            );
         }
 
         // partner 的没有 phone，phone 的没有同类型 partner，将 partner 用户合并到 phone 用户身上

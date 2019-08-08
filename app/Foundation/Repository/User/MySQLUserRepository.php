@@ -3,6 +3,7 @@
 namespace App\Foundation\Repository\User;
 
 use App\Domain\User\Partner;
+use App\Domain\User\PartnerMap;
 use App\Domain\User\User;
 use App\Domain\User\IUserRepository;
 use App\Domain\User\UserId;
@@ -71,7 +72,7 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
 
         $user->setUid($uid);
 
-        $this->addUserPartner($user);
+        $this->addUserPartners($user, $user->partners());
         $this->addCarNumber($user);
 
         return $user;
@@ -102,7 +103,6 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
             'headurl' => $user->headurl === $oldUser->headurl ? null : $user->headurl,
             'tinyheadurl' => $user->tinyHeadurl === $oldUser->tinyHeadurl ? null : $user->tinyHeadurl,
             'birthday_change' => $user->birthdayChange === $oldUser->birthdayChange ? null : $user->birthdayChange,
-            'name' => $user->name === $oldUser->name ? null : $user->name,
         ];
 
         if ($wxPartner = $user->getPartner(Partner::P_WEIXIN)) {
@@ -123,11 +123,19 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
         }
 
         // partner
-        if ($user->getPartner(Partner::P_ALIPAY) && !$oldUser->getPartner(Partner::P_ALIPAY)) {
-            $this->addUserPartner($user);
-        }
+        $this->addUserPartners($user, $user->partners());
+        $this->clearUserCache($user->uid());
+    }
 
-        $this->clearUserCache($user);
+    /**
+     * @param User $user
+     * @param Partner $partner
+     * @throws InvalidOperationException
+     * @throws \Exception
+     */
+    public function addPartner(User $user, Partner $partner)
+    {
+        $this->addUserPartners($user, new PartnerMap([$partner]));
     }
 
     /**
@@ -138,7 +146,7 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
     public function delete(User $user)
     {
         $this->query->update('wei_users')->set(['del_time' => time()])->where(['uid' => $user->uid()])->execute();
-        $this->clearUserCache($user);
+        $this->clearUserCache($user->uid());
     }
 
     /**
@@ -232,6 +240,15 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
         }
 
         return new User(new UserDTO($userArr));
+    }
+
+    /**
+     * @param int uid
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public function clearUserCache(int $uid)
+    {
+        $this->cache->delete($this->getUserCacheKey($uid, UserId::FLAG_UID));
     }
 
     /**
@@ -425,15 +442,6 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
         }
     }
 
-    /**
-     * @param User $user
-     * @throws \Psr\SimpleCache\InvalidArgumentException
-     */
-    private function clearUserCache(User $user)
-    {
-        $this->cache->delete($this->getUserCacheKey($user->uid(), UserId::FLAG_UID));
-    }
-
     private function getUserCacheKey($flag, int $type): string
     {
         if ($flag instanceof Partner) {
@@ -449,22 +457,67 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
     }
 
     /**
+     * 添加 partner
      * @param User $user
      * @throws InvalidOperationException
      * @throws \Exception
      */
-    private function addUserPartner(User $user)
+    private function addUserPartners(User $user, PartnerMap $partnerMap)
     {
-        // 支付宝大号
-        if ($alipayPartner = $user->getPartner(Partner::P_ALIPAY)) {
+        foreach ($partnerMap as $partner) {
+            switch ($partner->type()) {
+                case Partner::P_ALIPAY:
+                    $this->addAliPayPartner($user, $partner);
+                    break;
+                case Partner::P_WEIXIN:
+                    $this->addWxPartner($user, $partner);
+                    break;
+            }
+        }
+    }
+
+    /**
+     * @param User $user
+     * @param Partner $partner
+     * @throws \Exception
+     */
+    private function addWxPartner(User $user, Partner $partner)
+    {
+        $this->query->update('wei_users')
+            ->set(['wechat_openid' => $partner->userId()])
+            ->where(['uid' => $user->uid()])
+            ->execute();
+    }
+
+    /**
+     * @param User $user
+     * @param Partner $partner
+     * @throws \Exception
+     */
+    private function addAliPayPartner(User $user, Partner $partner)
+    {
+        $one = $this->query
+            ->select('id,user_id')
+            ->from('wei_auth_users')
+            ->where(
+                "uid=:uid and type=1 and is_delete=0",
+                ['uid' => $user->uid()]
+            )->one();
+
+        if (!$one) {
             $this->query->insert('wei_auth_users')
                 ->values([
                     'type' => 1,
                     'uid' => $user->uid(),
-                    'user_id' => $alipayPartner->userId(),
+                    'user_id' => $partner->userId(),
                     'create_time' => time(),
                     'update_time' => time()
                 ])->execute();
+        } elseif ($one['user_id'] != $partner->userId()) {
+            $this->query->update('wei_auth_users')
+                ->set(['user_id' => $partner->userId()])
+                ->where(['id' => $one['id']])
+                ->execute();
         }
     }
 

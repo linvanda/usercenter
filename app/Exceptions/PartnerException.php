@@ -2,9 +2,9 @@
 
 namespace App\Exceptions;
 
-use WecarSwoole\Exceptions\CriticalErrorException;
+use WecarSwoole\Exceptions\Exception;
 
-class PartnerException extends CriticalErrorException
+class PartnerException extends Exception
 {
     //
 }

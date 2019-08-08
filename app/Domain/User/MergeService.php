@@ -3,8 +3,10 @@
 namespace App\Domain\User;
 
 use App\Domain\Events\UserMergedEvent;
+use App\ErrCode;
 use App\Exceptions\InvalidMergeException;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use WecarSwoole\Exceptions\Exception;
 
 class MergeService
 {
@@ -24,16 +26,28 @@ class MergeService
 
     /**
      * 合并两个用户
-     * @param User $user1
-     * @param User $user2
+     * @param User|int $user1
+     * @param User|int $user2
      * @param bool $useFirstAsTarget 是否强制将第一个用户选为目标用户（第二个合并到第一个身上）,默认系统会自己选择合并目标
      * @param bool $forceMerge 是否强制合并，如果两个用户都有 phone (且不一样)，则必须强制合并才行
      * @return User 返回目标用户（生效到那个）
      * @throws InvalidMergeException
      * @throws \WecarSwoole\Exceptions\InvalidOperationException
+     * @throws Exception
      */
-    public function merge(User $user1, User $user2, bool $useFirstAsTarget = false, bool $forceMerge = false): User
+    public function merge($user1, $user2, bool $useFirstAsTarget = false, bool $forceMerge = false): User
     {
+        if (!$user1 instanceof User) {
+            $user1 = $this->userRepository->getUserByUid($user1);
+        }
+        if (!$user2 instanceof User) {
+            $user2 = $this->userRepository->getUserByUid($user2);
+        }
+
+        if (!$user1 || !$user2) {
+            throw new Exception("用户不存在", ErrCode::USER_NOT_EXIST);
+        }
+
         list($targetUser, $abandonUser) = $this->chooseTargetAndAbandonUser(
             $user1,
             $user2,
@@ -81,7 +95,8 @@ class MergeService
     ): array {
         if (!$forceMerge && $user1->phone() && $user2->phone() && $user1->phone() !== $user2->phone()) {
             throw new InvalidMergeException(
-                "must force merge when they have phone all.phone:{$user1->phone()},{$user2->phone()}"
+                "must force merge when they have phone all.phone:{$user1->phone()},{$user2->phone()}",
+                ErrCode::MERGE_FAIL
             );
         }
 

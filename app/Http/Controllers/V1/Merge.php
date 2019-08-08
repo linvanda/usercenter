@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\V1;
 
+use App\Domain\User\MergeService;
+use WecarSwoole\Container;
 use WecarSwoole\Http\Controller;
 
 /**
@@ -21,8 +23,20 @@ class Merge extends Controller
         ];
     }
 
+    /**
+     * @throws \App\Exceptions\InvalidMergeException
+     * @throws \Throwable
+     * @throws \WecarSwoole\Exceptions\Exception
+     * @throws \WecarSwoole\Exceptions\InvalidOperationException
+     */
     public function mergeUsers()
     {
-        $this->return([json_encode(basename($this->request()->getRequestTarget()))]);
+        Container::get(MergeService::class)->merge(
+            $this->params('target_uid'),
+            $this->params('abandon_uid'),
+            true,
+            true
+        );
+        $this->return();
     }
 }

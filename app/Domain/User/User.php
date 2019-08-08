@@ -3,6 +3,7 @@
 namespace App\Domain\User;
 
 use App\DTO\User\UserDTO;
+use App\ErrCode;
 use App\Exceptions\BirthdayException;
 use App\Exceptions\InvalidMergeException;
 use App\Exceptions\InvalidPhoneException;
@@ -58,6 +59,11 @@ class User extends Entity
     public function __construct(UserDTO $userDTO = null)
     {
         $this->buildFromUserDTO($userDTO);
+    }
+
+    public function __clone()
+    {
+        $this->userId = clone $this->userId;
     }
 
     public function uid(): int
@@ -245,7 +251,7 @@ class User extends Entity
     {
         // 手机号检验
         if ($userDTO->phone && $userDTO->phone !== $this->phone() && $userRepository->isPhoneBeUsed($userDTO->phone)) {
-            throw new InvalidPhoneException("phone has been register:{$userDTO->phone}");
+            throw new InvalidPhoneException("phone has been register:{$userDTO->phone}", ErrCode::PHONE_ALREADY_EXIST);
         }
 
         // 生日修改次数检验
@@ -254,14 +260,14 @@ class User extends Entity
             $userDTO->birthday !== $this->birthday &&
             $this->birthdayChange > 0
         ) {
-            throw new BirthdayException("birthday can be change once only");
+            throw new BirthdayException("birthday can be change once only", ErrCode::BIRTHDAY_CHANGE_LIMIT);
         }
 
         // partner 校验：如果同类型 partner 已经有值，则不允许修改
         if ($this->partners()->isDivergent($userDTO->partners)) {
             throw new PartnerException(
                 "partner has exits,can not change it",
-                502,
+                ErrCode::PARTNER_CANNOT_BE_CHANGED,
                 ['uid' => $this->uid(), 'partner' => $userDTO->partners->first()->toArray()]
             );
         }

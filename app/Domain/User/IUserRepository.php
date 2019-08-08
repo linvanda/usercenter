@@ -20,6 +20,13 @@ interface IUserRepository
 
     public function update(User $user, User $oldUser = null);
 
+    /**
+     * 添加 partner
+     * @param User $user
+     * @param Partner $partner
+     */
+    public function addPartner(User $user, Partner $partner);
+
     public function saveMerge(User $targetUser, User $abandonUser);
 
     public function delete(User $user);
@@ -38,4 +45,6 @@ interface IUserRepository
     public function getUserByUid(int $uid): ?User;
 
     public function isPhoneBeUsed($phone): bool;
+
+    public function clearUserCache(int $uid);
 }

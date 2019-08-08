@@ -2,9 +2,9 @@
 
 namespace App\Exceptions;
 
-use WecarSwoole\Exceptions\EmergencyErrorException;
+use WecarSwoole\Exceptions\Exception;
 
-class InvalidMergeException extends EmergencyErrorException
+class InvalidMergeException extends Exception
 {
     //
 }

@@ -2,8 +2,6 @@
 
 namespace App\Domain\User;
 
-use App\Domain\Events\UserBoundEvent;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use WecarSwoole\Exceptions\Exception;
 
 /**

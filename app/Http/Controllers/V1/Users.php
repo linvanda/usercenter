@@ -54,7 +54,10 @@ class Users extends Controller
                 'merchant_id' => ['optional', 'integer'],
             ],
             'edit' => [
-                'uid' => ['required']
+                'uid' => ['required'],
+                'gender' => ['optional', 'inArray' => [0, 1, 2]],
+                'birthday' => ['optional', 'regex' => ['arg' => '/\d{4}-\d{2}-\d{2}/', 'msg' => '生日必须是 YYYY-mm-dd 格式']],
+                'phone' => ['optional', 'length' => 11],
             ],
             'changePhone' => [
                 'uid' => ['required'],
@@ -64,7 +67,15 @@ class Users extends Controller
                 'uid' => ['required'],
                 'partner_id' => ['required'],
                 'partner_flag' => ['required'],
-                'partner_type' => ['required']
+                'partner_type' => ['required', 'inArray' => [
+                    Partner::P_WEIXIN,
+                    Partner::P_ALIPAY,
+                    Partner::P_OTHER
+                ]]
+            ],
+            'clearCache' => [
+                'flag' => ['required', 'equal' => ['5hr39opqm9i4', false, '非法请求']],
+                'uid' => ['required']
             ]
         ];
     }
@@ -122,26 +133,53 @@ class Users extends Controller
 
     /**
      * 修改用户信息
+     * 可修改的信息：name、nickname、phone、gender、birthday
+     * @throws \Throwable
      */
     public function edit()
     {
-        $params = $this->params();
+        Container::get(UserService::class)->updateUser(
+            new UserDTO(
+                [
+                    'uid' => $this->params('uid'),
+                    'name' => $this->params('name'),
+                    'nickname' => $this->params('nickname'),
+                    'phone' => $this->params('phone'),
+                    'gender' => $this->params('gender'),
+                    'birthday' => $this->params('birthday')
+                ],
+                true,
+                false
+            )
+        );
 
+        $this->return();
     }
 
     /**
-     * 修改手机号
-     */
-    public function changePhone()
-    {
-
-    }
-
-    /**
-     * 绑定 partner
+     * 绑定用户 partner
+     *  uid 必填，用户uid
+     *  partner_id      必填，第三方用户id（如微信大号 openid）
+     *  partner_flag    必填，第三方标识（如微信大号 app_id）
+     *  partner_type    必填，第三方类型（如微信大号）
+     * @throws \Throwable
      */
     public function bindPartner()
     {
+        $params = $this->params();
+        $partner = new Partner($params['partner_id'], $params['partner_type'], $params['partner_flag']);
+        Container::get(UserService::class)->bindPartner($params['uid'], $partner);
 
+        $this->return();
+    }
+
+    /**
+     * 清除用户缓存
+     * @throws \Throwable
+     */
+    public function clearCache()
+    {
+        Container::get(IUserRepository::class)->clearUserCache($this->params('uid'));
+        $this->return('清除成功');
     }
 }
