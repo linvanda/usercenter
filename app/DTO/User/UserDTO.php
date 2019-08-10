@@ -23,7 +23,7 @@ class UserDTO extends DTO
     public $name;
     public $nickname;
     /**
-     * @mapping 1=>男,2=>女,0=>未知
+     * @var int 性别：1=>男,2=>女,0=>未知
      */
     public $gender;
     public $birthday;

@@ -16,6 +16,6 @@ class ErrCode extends BaseErrCode
     public const USER_DATA_ANOMALY = 601; // 用户数据异常
     public const USER_NOT_EXIST = 602; // 用户不存在
     public const BIRTHDAY_CHANGE_LIMIT = 603; // 生日修改次数限制
-    public const PARTNER_CANNOT_BE_CHANGED = 604;
-    public const MERGE_FAIL = 605;
+    public const PARTNER_CANNOT_BE_CHANGED = 604;// 不能修改 partner 信息
+    public const MERGE_FAIL = 605; // 合并用户失败
 }

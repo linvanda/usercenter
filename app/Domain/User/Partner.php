@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Domain\User;
+
 use WecarSwoole\Exceptions\Exception;
 use WecarSwoole\OTA\IExtractable;
 use WecarSwoole\OTA\ObjectToArray;

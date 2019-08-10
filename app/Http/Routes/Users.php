@@ -20,19 +20,11 @@ class Users extends ApiRoute
         /**
          * 添加用户
          * 可接收的字段：
-         * name、nickname、phone、gender、birthday、id_number_type、id_number、channel、
+         * name、nickname、phone、gender、birthday、channel、
          * partner_type 、partner_id、partner_flag、merchant_type、merchant_id、car_numbers
          * update_strategy 当用户存在时，更新策略：1 不更新，2 仅更新空值，3 以新值更新旧值，默认 2
          */
         $this->post('/v1/user/add', '/V1/Users/add');
-
-        /**
-         * 用户-商户关系绑定
-         * uid 必填，用户uid
-         * merchant_type 必填，商户类型
-         * merchant_id 必填，商户 id
-         */
-        $this->post('/v1/user/merchant/bind', '/V1/MerchantUsers/bind');
 
         /**
          * 修改用户信息
@@ -41,6 +33,14 @@ class Users extends ApiRoute
          *  name、nickname、phone、gender、birthday
          */
         $this->post('/v1/user/edit', '/V1/Users/edit');
+
+        /**
+         * 用户-商户关系绑定
+         * uid 必填，用户uid
+         * merchant_type 必填，商户类型
+         * merchant_id 必填，商户 id
+         */
+        $this->post('/v1/user/merchant/bind', '/V1/MerchantUsers/bind');
 
         /**
          * 合并用户

@@ -121,6 +121,9 @@ class Users extends Controller
     public function add()
     {
         $params = $this->params();
+        if (isset($params['car_numbers']) && is_string($params['car_numbers'])) {
+            $params['car_numbers'] = array_filter(explode(',', $params['car_numbers']));
+        }
         $userDTO = new UserDTO($params, true, false);
 
         $this->return(
