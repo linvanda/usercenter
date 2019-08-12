@@ -4,7 +4,7 @@ return [
     'SERVER_NAME' => "usercenter",
     'MAIN_SERVER' => [
         'LISTEN_ADDRESS' => '0.0.0.0',
-        'PORT' => 9501,
+        'PORT' => 9502,
         'SERVER_TYPE' => EASYSWOOLE_WEB_SERVER,
         'SOCK_TYPE' => SWOOLE_TCP,
         'RUN_MODEL' => SWOOLE_PROCESS,
