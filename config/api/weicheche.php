@@ -13,20 +13,15 @@ return [
     ],
     // api 定义
     'api' => [
-        'oil.info' => [
-            'server' => 'OL',
-            'path' => '/stationoil/getStationOilPriceInfoV2',
-            'method' => 'POST'
-        ],
-        'user.add' => [
-            'server' => 'http://localhost:9501',
-            'path' => '/v1/users',
-            'method' => 'POST'
-        ],
         'sms.send' => [
             'server' => 'DX',
             'path' => 'v1.0/sms/send',
             'method' => 'POST'
-        ]
+        ],
+        'test.go' => [
+            'server' => 'http://localhost:9502',
+            'path' => '/v1/test/go',
+            'method' => 'GET'
+        ],
     ]
 ];

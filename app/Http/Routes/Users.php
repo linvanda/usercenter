@@ -65,5 +65,6 @@ class Users extends ApiRoute
 
         // 测试
         $this->get('/v1/test/index', '/V1/Test/index');
+        $this->get('/v1/test/go', '/V1/Test/go');
     }
 }
