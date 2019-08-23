@@ -15,7 +15,7 @@ class Test extends Controller
 {
     public function index()
     {
-        var_export(swoole_get_local_ip());
+        Container::get(LoggerInterface::class)->critical("text err");
     }
 
     public function go()
