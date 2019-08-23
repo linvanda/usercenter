@@ -22,4 +22,9 @@ class Test extends Controller
     {
         Container::get(LoggerInterface::class)->info("come here");
     }
+
+    public function sa()
+    {
+        Container::get(LoggerInterface::class)->critical("text err");
+    }
 }
