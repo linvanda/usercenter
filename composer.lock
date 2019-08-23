@@ -945,13 +945,13 @@
             "source": {
                 "type": "git",
                 "url": "https://gitlab4.weicheche.cn/framework/wecarswoole.git",
-                "reference": "95762e889ade449d02d924cef653a91050d4f41f"
+                "reference": "4b572b1a7401eef5357ad05791d1f56d58e5d75b"
             },
             "require": {
                 "dev/locker": "^1.0",
                 "dev/mysql": "^1.0",
                 "doctrine/annotations": "~1.6.0",
-                "easyswoole/easyswoole": "~3.2.5",
+                "easyswoole/easyswoole": "^3.2",
                 "ext-redis": "*",
                 "ext-swoole": ">=4.3.0",
                 "monolog/monolog": "~1.24.0",
@@ -980,7 +980,7 @@
                 }
             },
             "description": "wecheche foundational web framework",
-            "time": "2019-08-14T07:49:57+00:00"
+            "time": "2019-08-21T04:08:31+00:00"
         },
         {
             "name": "jeremeamia/superclosure",

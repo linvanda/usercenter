@@ -15,8 +15,7 @@ class Test extends Controller
 {
     public function index()
     {
-        API::invoke('weiche:test.go');
-//        throw new Exception("test exce");
+        var_export(swoole_get_local_ip());
     }
 
     public function go()
