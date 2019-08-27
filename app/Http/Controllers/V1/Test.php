@@ -15,7 +15,7 @@ class Test extends Controller
 {
     public function index()
     {
-        $this->return("123");
+        $this->return("456");
     }
 
     public function go()
