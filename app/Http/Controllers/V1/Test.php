@@ -15,7 +15,7 @@ class Test extends Controller
 {
     public function index()
     {
-        Container::get(LoggerInterface::class)->critical("text err");
+        $this->return("123");
     }
 
     public function go()
