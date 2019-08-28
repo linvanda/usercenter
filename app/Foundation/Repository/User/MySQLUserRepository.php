@@ -259,7 +259,7 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
      */
     public function isPhoneBeUsed($phone): bool
     {
-        return (bool)$this->query->select('phone')
+        return (bool) $this->query->select('phone')
             ->from('wei_users')->where(['phone' => $phone, 'del_time' => 0])->column();
     }
 
@@ -417,7 +417,7 @@ class MySQLUserRepository extends MySQLUserCenterRepository implements IUserRepo
                     return null;
                 }
 
-                return $this->cache->get($uidOfPartner, UserId::FLAG_UID);
+                return $this->cache->get($this->getUserCacheKey($uidOfPartner, UserId::FLAG_UID));
         }
 
         return null;
