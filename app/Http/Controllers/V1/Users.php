@@ -5,12 +5,11 @@ namespace App\Http\Controllers\V1;
 use App\Domain\User\IUserRepository;
 use App\Domain\User\Merchant;
 use App\Domain\User\Partner;
+use App\Domain\User\PartnerMap;
 use App\Domain\User\User;
 use App\Domain\User\UserId;
 use App\Domain\User\UserService;
 use App\DTO\User\UserDTO;
-use WecarSwoole\Client\API;
-use WecarSwoole\Config\Config;
 use WecarSwoole\Container;
 use WecarSwoole\Http\Controller;
 
@@ -101,7 +100,7 @@ class Users extends Controller
                     null,
                     null,
                     [],
-                    new Partner($params['user_flag'], $params['partner_type'], $params['partner_flag'])
+                    new PartnerMap([new Partner($params['user_flag'], $params['partner_type'], $params['partner_flag'])])
                 );
                 break;
         }
